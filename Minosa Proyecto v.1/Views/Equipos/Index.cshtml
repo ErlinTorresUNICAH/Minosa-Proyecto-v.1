@@ -1,0 +1,52 @@
+﻿@model List<Minosa_Proyecto_v._1.Models.EquipoViewModel>
+
+<h2>Lista de Equipos</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Número de Serie</th>
+            <th>Descripción</th>
+            <th>Tipo de Equipo</th>
+            <th>Modelo</th>
+            <th>Área</th>
+            <th>Dirección IP</th>
+            <th>Estado</th>
+            <th>Activo</th>
+            <th>Respaldo</th>
+            <th>Observaciones</th>
+            <th>Acciones</th> <!-- Nueva columna para los enlaces -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var equipo in Model)
+        {
+                <tr>
+                    <td>@equipo.NumeroSerie</td>
+                    <td>@equipo.Descripcion</td>
+                    <td>@equipo.Tipo_Equipo</td>
+                    <td>@equipo.Modelo</td>
+                    <td>@equipo.Area</td>
+                    <td>@equipo.Direccion_IP</td>
+                    <td>@equipo.Estado</td>
+                    <td>@equipo.Activo</td>
+                    <td>@equipo.Respaldo</td>
+                    <td>@equipo.Observaciones</td>
+                    <td>
+                        <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = equipo.ID_equipo })" class="btn btn-info">Ver Detalles</a>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary">Agregar Nuevo Equipo</a>
+<a asp-controller="Proveedores" asp-action="Index" class="btn btn-secondary">Ver Proveedores</a>
+
+
+@if (ViewBag.Error != null)
+{
+        <div class="alert alert-danger">
+        @ViewBag.Error
+        </div>
+}

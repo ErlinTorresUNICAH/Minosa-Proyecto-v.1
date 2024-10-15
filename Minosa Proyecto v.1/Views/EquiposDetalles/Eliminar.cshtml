@@ -1,0 +1,24 @@
+﻿@model Minosa_Proyecto_v._1.Models.EquipoDetalleViewModel
+
+<h2>¿Estás seguro de que deseas eliminar este equipo?</h2>
+
+<p><strong>Número de Serie:</strong> @Model.NumeroSerie</p>
+<p><strong>Descripción:</strong> @Model.Descripcion</p>
+<p><strong>Estado:</strong> @Model.Estado</p>
+<p><strong>Área:</strong> @Model.Nombre_Area</p>
+<p><strong>Tipo de Equipo:</strong> @Model.Tipo_Equipo</p>
+
+<form asp-action="Eliminar" method="post">
+    <input type="hidden" asp-for="ID_equipo" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Detalles" class="btn btn-secondary">Cancelar</a>
+</form>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}

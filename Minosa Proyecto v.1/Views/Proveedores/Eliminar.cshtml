@@ -1,0 +1,14 @@
+﻿@model Proveedor
+
+<h2>¿Estás seguro de que deseas eliminar este proveedor?</h2>
+
+<p>Nombre: @Model.Nombre</p>
+<p>Dirección: @Model.Direccion</p>
+<p>Teléfono: @Model.Telefono</p>
+<p>Correo: @Model.Correo</p>
+
+<form asp-action="Eliminar" method="post">
+    <input type="hidden" asp-for="ID_proveedor" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

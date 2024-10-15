@@ -1,0 +1,34 @@
+﻿@model List<Proveedor>
+
+<h2>Proveedores</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Correo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var proveedor in Model)
+        {
+            <tr>
+                <td>@proveedor.ID_proveedor</td>
+                <td>@proveedor.Nombre</td>
+                <td>@proveedor.Direccion</td>
+                <td>@proveedor.Telefono</td>
+                <td>@proveedor.Correo</td>
+                <td>
+                    <a asp-action="Editar" asp-route-id="@proveedor.ID_proveedor">Editar</a> 
+                    <a asp-action="Eliminar" asp-route-id="@proveedor.ID_proveedor">Eliminar</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<a asp-action="Crear" class="btn btn-primary">Nuevo Proveedor</a>
