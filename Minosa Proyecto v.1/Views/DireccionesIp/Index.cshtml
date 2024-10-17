@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DireccionIp>
+
+<h2>Lista de Direcciones IP</h2>
+
+<a asp-action="Crear" class="btn btn-primary">Crear Nueva Dirección IP</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>IPV4</th>
+            <th>Estado</th>
+            <th>VLAN</th>
+            <th>Activa</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ip in Model)
+        {
+            <tr>
+                <td>@ip.IPV4</td>
+                <td>@ip.Estado</td>
+                <td>@ip.Nombre_Vlan</td>
+                <td>
+                    @if (ip.Activa)
+                    {
+                        <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
+                    }
+                    else
+                    {
+                        <span class="text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Editar" asp-route-id="@ip.ID_ip" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Eliminar" asp-route-id="@ip.ID_ip" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

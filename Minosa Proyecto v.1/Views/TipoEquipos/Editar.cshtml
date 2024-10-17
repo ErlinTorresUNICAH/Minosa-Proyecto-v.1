@@ -1,0 +1,10 @@
+﻿@model TipoEquipo
+
+<h2>Editar Tipo de Equipo</h2>
+
+<form asp-action="Editar" method="post">
+    <input type="hidden" asp-for="ID_tipo_equipo" />
+    <label>Tipo de Equipo:</label>
+    <input asp-for="Tipo_Equipo" />
+    <button type="submit">Guardar</button>
+</form>

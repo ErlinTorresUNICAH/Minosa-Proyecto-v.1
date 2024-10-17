@@ -1,0 +1,10 @@
+﻿@model TipoEquipo
+
+<h2>Eliminar Tipo de Equipo</h2>
+
+<p>¿Está seguro de que desea eliminar este tipo de equipo?</p>
+
+<form asp-action="Eliminar" method="post">
+    <input type="hidden" asp-for="ID_tipo_equipo" />
+    <button type="submit">Eliminar</button>
+</form>

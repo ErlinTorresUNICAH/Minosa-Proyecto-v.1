@@ -1,0 +1,39 @@
+﻿@model IEnumerable<Area>
+
+<h2>Lista de Áreas</h2>
+
+<a asp-action="Crear" class="btn btn-primary">Crear Nueva Área</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre del Área</th>
+            <th>Zona</th> <!-- Mostrar el nombre de la zona -->
+            <th>Activa</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var area in Model)
+        {
+            <tr>
+                <td>@area.Nombre_Area</td>
+                <td>@area.Nombre_Zona</td>  <!-- Mostrar el nombre de la zona -->
+                <td>
+                    @if (area.Activo)
+                    {
+                        <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
+                    }
+                    else
+                    {
+                        <span class="text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Editar" asp-route-id="@area.ID_area" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Eliminar" asp-route-id="@area.ID_area" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,20 @@
+﻿@model Area
+
+<h2>Editar Área</h2>
+
+<form asp-action="Editar" method="post">
+    <!-- Campo oculto para el ID del área -->
+    <input type="hidden" asp-for="ID_area" />
+
+    <div class="form-group">
+        <label asp-for="Nombre_Area"></label>
+        <input asp-for="Nombre_Area" class="form-control" />
+        <span asp-validation-for="Nombre_Area" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="id_zona">Zona</label>
+        <select asp-for="id_zona" class="form-control" asp-items="ViewBag.Zonas"></select>
+        <span asp-validation-for="id_zona" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+</form>

@@ -1,0 +1,26 @@
+﻿@model Zona
+
+<h2>Eliminar Zona</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<form asp-action="Eliminar" method="post">
+    <!-- Campo oculto para el ID de la zona -->
+    <input type="hidden" asp-for="ID_zona" />
+
+    <div class="form-group">
+        <label>Nombre de la Zona:</label>
+        <input asp-for="Nombre_Zona" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Descripción:</label>
+        <input asp-for="Descripcion_Zona" class="form-control" readonly />
+    </div>
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

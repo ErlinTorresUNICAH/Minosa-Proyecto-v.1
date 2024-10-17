@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Vlan>
+
+<h2>Lista de VLANs</h2>
+
+<a asp-action="Crear" class="btn btn-primary">Crear Nueva VLAN</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre de la VLAN</th>
+            <th>SubNet</th>
+            <th>Gateway</th>
+            <th>Dhcp Inicio</th>
+            <th>Dhcp Fin</th>
+            <th>Observaciones</th>
+            <th>Activo</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vlan in Model)
+        {
+            <tr>
+                <td>@vlan.Nombre_Vlan</td>
+                <td>@vlan.SubNet</td>
+                <td>@vlan.Gateway</td>
+                <td>@vlan.DhcpIni</td>
+                <td>@vlan.DhcpFin</td>
+                <td>@vlan.Observaciones</td>
+                <td>
+                    @if (vlan.Activo)
+                    {
+                        <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
+                    }
+                    else
+                    {
+                        <span class="text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Editar" asp-route-id="@vlan.ID_vlan" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Eliminar" asp-route-id="@vlan.ID_vlan" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,12 @@
+﻿@model Marca
+
+<h2>Crear Marca</h2>
+
+<form asp-action="Crear" method="post">
+    <div class="form-group">
+        <label asp-for="NombreMarca"></label>
+        <input asp-for="NombreMarca" class="form-control" />
+        <span asp-validation-for="NombreMarca" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>

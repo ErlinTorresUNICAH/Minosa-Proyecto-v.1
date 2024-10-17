@@ -1,0 +1,29 @@
+﻿@model DireccionIp
+
+<h2>Eliminar Dirección IP</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<form asp-action="Eliminar" method="post">
+    <input type="hidden" asp-for="ID_ip" />
+
+    <div class="form-group">
+        <label>IPV4:</label>
+        <input asp-for="IPV4" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>Estado:</label>
+        <input asp-for="Estado" class="form-control" readonly />
+    </div>
+    <div class="form-group">
+        <label>VLAN:</label>
+        <input asp-for="Nombre_Vlan" class="form-control" readonly />
+    </div>
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

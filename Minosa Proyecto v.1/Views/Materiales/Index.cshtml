@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Material>
+
+<h2>Lista de Materiales</h2>
+
+<a asp-action="Crear" class="btn btn-primary">Crear Nuevo Material</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Descripción</th>
+            <th>Cantidad</th>
+            <th>Área</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var material in Model)
+        {
+            <tr>
+                <td>@material.Descripcion</td>
+                <td>@material.Cantidad</td>
+                <td>@material.Nombre_Area</td>
+                <td>
+                    <a asp-action="Editar" asp-route-id="@material.ID_Material">Editar</a> |
+                    <a asp-action="Eliminar" asp-route-id="@material.ID_Material">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

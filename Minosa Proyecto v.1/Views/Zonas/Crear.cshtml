@@ -1,0 +1,17 @@
+﻿@model Zona
+
+<h2>Crear Zona</h2>
+
+<form asp-action="Crear" method="post">
+    <div class="form-group">
+        <label asp-for="Nombre_Zona"></label>
+        <input asp-for="Nombre_Zona" class="form-control" />
+        <span asp-validation-for="Nombre_Zona" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Descripcion_Zona"></label>
+        <input asp-for="Descripcion_Zona" class="form-control" />
+        <span asp-validation-for="Descripcion_Zona" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Crear</button>
+</form>

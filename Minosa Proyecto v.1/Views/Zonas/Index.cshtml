@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Zona>
+
+<h2>Lista de Zonas</h2>
+
+<a asp-action="Crear" class="btn btn-primary">Crear Nueva Zona</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre de la Zona</th>
+            <th>Descripción</th>
+            <th>Activa</th>
+            <th>Creación</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var zona in Model)
+        {
+            <tr>
+                <td>@zona.Nombre_Zona</td>
+                <td>@zona.Descripcion_Zona</td>
+                <td>
+                    @if (zona.Activo)
+                    {
+                        <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
+                    }
+                    else
+                    {
+                        <span class="text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                    }
+                </td>
+                <td>@zona.Creacion_Zona.ToString("dd/MM/yyyy")</td>
+                <td>
+                    <a asp-action="Editar" asp-route-id="@zona.ID_zona" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Eliminar" asp-route-id="@zona.ID_zona" class="btn btn-danger btn-sm">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

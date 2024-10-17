@@ -1,0 +1,22 @@
+﻿@model Marca
+
+<h2>Eliminar Marca</h2>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<form asp-action="Eliminar" method="post">
+    <!-- Campo oculto para el ID de la marca -->
+    <input type="hidden" asp-for="ID_marca" />
+
+    <div class="form-group">
+        <label>Nombre de la Marca:</label>
+        <input asp-for="NombreMarca" class="form-control" readonly />
+    </div>
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

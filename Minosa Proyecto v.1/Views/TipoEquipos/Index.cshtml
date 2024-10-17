@@ -1,0 +1,25 @@
+﻿@model IEnumerable<TipoEquipo>
+
+<h2>Tipos de Equipos</h2>
+<a asp-action="Crear">Agregar Nuevo Tipo de Equipo</a>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Tipo de Equipo</th>
+        <th>Fecha de Creación</th>
+        <th>Acciones</th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.ID_tipo_equipo</td>
+            <td>@item.Tipo_Equipo</td>
+            <td>@item.Creacion_Tipo_Equipo</td>
+            <td>
+                <a asp-action="Editar" asp-route-id="@item.ID_tipo_equipo">Editar</a> |
+                <a asp-action="Eliminar" asp-route-id="@item.ID_tipo_equipo">Eliminar</a>
+            </td>
+        </tr>
+    }
+</table>
