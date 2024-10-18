@@ -13,5 +13,6 @@
         <input asp-for="Descripcion_Zona" class="form-control" />
         <span asp-validation-for="Descripcion_Zona" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Crear</button>
+    <button type="submit" class="btn btn-outline-success"><i class="fa-solid fa-folder-plus"></i> Crear</button>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
 </form>

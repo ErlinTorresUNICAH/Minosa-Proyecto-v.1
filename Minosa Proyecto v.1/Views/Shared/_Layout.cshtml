@@ -4,78 +4,174 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Minosa_Proyecto_v._1</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <!-- Bootstrap 4.0.0 CDN -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Otras Hojas de Estilo -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Minosa_Proyecto_v._1.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
+    <!-- Iconos de Font Awesome para el icono de escaneo -->
+   @*  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" /> *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+
+   
+
+
+    <style>
+        body {
+            font-size: .875rem;
+        }
+
+        .sidebar {
+            width: 200px;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+            background-color: #f8f9fa;
+        }
+
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+        }
+
+            .sidebar .nav-link.active {
+                color: #007bff;
+            }
+
+            .sidebar .nav-link:hover {
+                color: #ff624c;
+            }
+
+        .navbar {
+            position: fixed;
+            width: 100%;
+            z-index: 1020;
+        }
+        /* Asegúrate de que el contenido esté debajo del navbar */
+        .content-wrapper {
+            margin-left: 240px; /* Espacio para la barra lateral */
+            margin-top: 85px; /* Ajuste para la barra de navegación fija */
+            padding-top: 20px;
+        }
+
+        .main-content {
+            padding-left: 240px;
+        }
+
+        .footer {
+            margin-left: 200px; /* Ajustar al ancho de la barra lateral */
+            max-width: calc(100% - 200px); /* El footer ocupa el espacio restante */
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+
+        .main-content {
+            padding-left: 40px; /* Ajuste de 240px a 40px */
+        }
+
+
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Minosa_Proyecto_v._1</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Equipos" asp-action="Index">Almacen</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Equipos" asp-action="Index">Actividad</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark fixed-top">
+
+        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="#">Minosa_Proyecto_v._1</a>
+        <ul class="navbar-nav px-3">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li class="nav-item text-nowrap">
+                    <a class="nav-link" asp-controller="Usuario" asp-action="Detalles" asp-route-id="1">Bienvenido, @User.Identity.Name</a>
+                </li>
+                <li class="nav-item text-nowrap">
+                    <form method="post" asp-controller="Login" asp-action="Logout" class="form-inline">
+                        <button type="submit" class="btn btn-outline-light">
+                            <i class="bi bi-sign-turn-right-fill"></i> Cerrar sesión
+                            </button>
                         
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Usuario" asp-action="Detalles" asp-route-id="1">Perfil</a> <!-- Cambia el id según corresponda -->
-                        </li>
-                    </ul>
+                    </form>
+                </li>
+            }
+            else
+            {
+                <li class="nav-item text-nowrap">
+                    <a class="btn btn-primary nav-link" asp-controller="Login" asp-action="Index">Iniciar sesión</a>
+                </li>
+            }
+        </ul>
+    </nav>
 
-                    <ul class="navbar-nav">
-                        @if (User.Identity.IsAuthenticated)
-                        {
-                            <li class="nav-item">
-                                <p class="nav-link">Bienvenido, @User.Identity.Name</p>
-                            </li>
-                            <li class="nav-item">
-                                <form method="post" asp-controller="Login" asp-action="Logout" class="form-inline">
-                                    <button type="submit" class="btn btn-danger nav-link">Cerrar sesión</button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="btn btn-primary nav-link" asp-controller="Login" asp-action="Index">Iniciar sesión</a>
-                            </li>
-                        }
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <!-- Sidebar -->
+    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-house-door"></i> Inicio
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Equipos" asp-action="Index">
+                        <i class="bi bi-box"></i> Almacen
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Equipos" asp-action="Index">
+                        <i class="bi bi-activity"></i> Actividad
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Usuario" asp-action="Detalles" asp-route-id="1">
+                        <i class="bi bi-person-fill-gear"></i> Perfil
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Privacy">
+                        <i class="bi bi-file-earmark-bar-graph"></i> Reportes
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </nav>
 
-    <div class="container">
-        <main role="main" class="pb-3">
+    <!-- Main Content -->
+    <div class="content-wrapper">
+        <main role="main" class="container-fluid main-content">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer text-muted mt-5">
         <div class="container">
             &copy; 2024 - Minosa_Proyecto_v._1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap 4.0.0 Scripts -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

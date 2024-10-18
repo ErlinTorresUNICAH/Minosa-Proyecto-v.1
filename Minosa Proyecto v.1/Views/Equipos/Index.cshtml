@@ -2,25 +2,27 @@
 
 <h2>Lista de Equipos</h2>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Número de Serie</th>
-            <th>Descripción</th>
-            <th>Tipo de Equipo</th>
-            <th>Modelo</th>
-            <th>Área</th>
-            <th>Dirección IP</th>
-            <th>Estado</th>
-            <th>Activo</th>
-            <th>Respaldo</th>
-            <th>Observaciones</th>
-            <th>Acciones</th> <!-- Nueva columna para los enlaces -->
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var equipo in Model)
-        {
+<!-- Hacer la tabla full-width sin scroll horizontal -->
+<div class="table-responsive">
+    <table class="table table-striped table-bordered" style="table-layout: auto; width: 100%;">
+        <thead>
+            <tr>
+                <th>Número de Serie</th>
+                <th>Descripción</th>
+                <th>Tipo de Equipo</th>
+                <th>Modelo</th>
+                <th>Área</th>
+                <th>Dirección IP</th>
+                <th>Estado</th>
+                <th>Activo</th>
+                <th>Respaldo</th>
+                <th>Observaciones</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var equipo in Model)
+            {
                 <tr>
                     <td>@equipo.NumeroSerie</td>
                     <td>@equipo.Descripcion</td>
@@ -33,28 +35,56 @@
                     <td>@equipo.Respaldo</td>
                     <td>@equipo.Observaciones</td>
                     <td>
-                        <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = equipo.ID_equipo })" class="btn btn-info">Ver Detalles</a>
+                        <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = equipo.ID_equipo })" class="btn btn-info btn-sm">Ver Detalles</a>
                     </td>
                 </tr>
-        }
-    </tbody>
-</table>
+            }
+        </tbody>
+    </table>
+</div>
 
-<a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary">Agregar Nuevo Equipo</a>
-<a asp-controller="Proveedores" asp-action="Index" class="btn btn-secondary">Ver Proveedores</a>
-<a asp-controller="TipoEquipos" asp-action="Index" class="btn btn-secondary">Ver Tipos de Equipo</a>
-<a asp-controller="Modelos" asp-action="Index" class="btn btn-secondary">Ver Modelos</a>
-<a asp-controller="Marcas" asp-action="Index" class="btn btn-secondary">Ver Marcas</a>
-<a asp-controller="Areas" asp-action="Index" class="btn btn-secondary">Ver Áreas</a>
-<a asp-controller="Zonas" asp-action="Index" class="btn btn-secondary">Ver Zonas</a>
-<a asp-controller="Materiales" asp-action="Index" class="btn btn-secondary">Ver Materiales</a>
-<a asp-controller="DireccionesIp" asp-action="Index" class="btn btn-secondary">Ver Direcciones IP</a>
-<a asp-controller="Vlans" asp-action="Index" class="btn btn-secondary">Ver VLANs</a>
+<!-- Botones ajustados para que no ocupen espacio innecesario -->
+<div class="row mt-3">
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary btn-block"><i class="fa-solid fa-folder-plus"></i> Nuevo Equipo</a>
 
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Proveedores" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-truck-fast"></i> Proveedores</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="TipoEquipos" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-computer"></i> Tipos de Equipo</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="DireccionesIp" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-qrcode"></i> Direcciones IP</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Modelos" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-regular fa-clone"></i> Modelos</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Marcas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-tags"></i> Marcas</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Areas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-regular fa-building"></i> Áreas</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Zonas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-mountain-city"></i> Zonas</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Materiales" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-hammer"></i> Materiales</a>
+    </div>
+    
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Vlans" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-wifi"></i> VLANs</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Radios" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-tower-cell"></i> Radios</a>
+    </div>
+</div>
 
 @if (ViewBag.Error != null)
 {
-        <div class="alert alert-danger">
+    <div class="alert alert-danger">
         @ViewBag.Error
-        </div>
+    </div>
 }

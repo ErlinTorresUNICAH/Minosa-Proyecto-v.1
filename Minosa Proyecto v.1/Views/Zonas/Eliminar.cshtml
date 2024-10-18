@@ -1,6 +1,6 @@
 ﻿@model Zona
 
-<h2>Eliminar Zona</h2>
+<h2>Esta Seguro de Eliminar la Zona</h2>
 
 @if (ViewBag.Error != null)
 {
@@ -21,6 +21,6 @@
         <label>Descripción:</label>
         <input asp-for="Descripcion_Zona" class="form-control" readonly />
     </div>
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Eliminar</button>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
 </form>
