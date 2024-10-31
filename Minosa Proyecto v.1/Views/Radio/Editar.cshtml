@@ -1,0 +1,59 @@
+﻿@model Radio
+
+<h2>Editar Radio</h2>
+
+<form asp-action="Editar" method="post">
+    <input type="hidden" asp-for="ID_Radio" />
+
+    <div class="form-group">
+        <label asp-for="Frecuencia"></label>
+        <input asp-for="Frecuencia" class="form-control" />
+        <span asp-validation-for="Frecuencia" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Frecuencia_Rango"></label>
+        <input asp-for="Frecuencia_Rango" class="form-control" />
+        <span asp-validation-for="Frecuencia_Rango" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Modo"></label>
+        <input asp-for="Modo" class="form-control" />
+        <span asp-validation-for="Modo" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Ssid"></label>
+        <input asp-for="Ssid" class="form-control" />
+        <span asp-validation-for="Ssid" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Modulacion"></label>
+        <input asp-for="Modulacion" class="form-control" />
+        <span asp-validation-for="Modulacion" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Potencia"></label>
+        <input asp-for="Potencia" class="form-control" />
+        <span asp-validation-for="Potencia" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Tx_Power"></label>
+        <input asp-for="Tx_Power" class="form-control" />
+        <span asp-validation-for="Tx_Power" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Rx_Level"></label>
+        <input asp-for="Rx_Level" class="form-control" />
+        <span asp-validation-for="Rx_Level" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Tx_Freq"></label>
+        <input asp-for="Tx_Freq" class="form-control" />
+        <span asp-validation-for="Tx_Freq" class="text-danger"></span>
+   @*  </div>
+    <div class="form-group">
+        <label asp-for="id_equipo">Equipo</label>
+        <select asp-for="id_equipo" class="form-control" asp-items="ViewBag.Equipos"></select>
+        <span asp-validation-for="id_equipo" class="text-danger"></span>
+    </div> *@
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+</form>

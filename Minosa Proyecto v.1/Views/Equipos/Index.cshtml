@@ -1,5 +1,47 @@
 ﻿@model List<Minosa_Proyecto_v._1.Models.EquipoViewModel>
 
+
+<!-- Botones ajustados para que no ocupen espacio innecesario -->
+<div class="row mt-3">
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary btn-block"><i class="fa-solid fa-folder-plus"></i> Nuevo Equipo</a>
+
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Proveedores" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-truck-fast"></i> Proveedores</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="TipoEquipos" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-computer"></i> Tipos de Equipo</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="DireccionesIp" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-qrcode"></i> Direcciones IP</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Modelos" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-regular fa-clone"></i> Modelos</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Marcas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-tags"></i> Marcas</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Areas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-regular fa-building"></i> Áreas</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Zonas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-mountain-city"></i> Zonas</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Materiales" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-hammer"></i> Materiales</a>
+    </div>
+
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Vlans" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-wifi"></i> VLANs</a>
+    </div>
+    <div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Radio" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-tower-cell"></i> Radios</a>
+    </div>
+</div>
+
+
+
 <h2>Lista de Equipos</h2>
 
 <!-- Hacer la tabla full-width sin scroll horizontal -->
@@ -43,44 +85,6 @@
     </table>
 </div>
 
-<!-- Botones ajustados para que no ocupen espacio innecesario -->
-<div class="row mt-3">
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary btn-block"><i class="fa-solid fa-folder-plus"></i> Nuevo Equipo</a>
-
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Proveedores" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-truck-fast"></i> Proveedores</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="TipoEquipos" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-computer"></i> Tipos de Equipo</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="DireccionesIp" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-qrcode"></i> Direcciones IP</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Modelos" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-regular fa-clone"></i> Modelos</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Marcas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-tags"></i> Marcas</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Areas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-regular fa-building"></i> Áreas</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Zonas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-mountain-city"></i> Zonas</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Materiales" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-hammer"></i> Materiales</a>
-    </div>
-    
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Vlans" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-wifi"></i> VLANs</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Radios" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-tower-cell"></i> Radios</a>
-    </div>
-</div>
 
 @if (ViewBag.Error != null)
 {

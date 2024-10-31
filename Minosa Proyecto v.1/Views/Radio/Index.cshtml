@@ -1,0 +1,38 @@
+﻿@model List<Minosa_Proyecto_v._1.Models.Radio>
+
+<div class="col-md-3 col-12 mb-2">
+        <a asp-controller="Radio" asp-action="Crear" class="btn btn-secondary btn-block"><i class="fa-solid fa-tower-cell"></i> Agregar nuevo</a>
+    </div>
+<h2>Lista de Radios</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID Equipo</th>
+            <th>Número de Serie</th>
+            <th>Descripción</th>
+            <th>Estado</th>
+            <th>Frecuencia</th>
+            <th>Modulación</th>
+            <th>Potencia</th>
+            <th>Tx Power</th>
+            <th>Rx Level</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var radio in Model)
+        {
+                <tr>
+                    <td>@radio.ID_equipo</td>
+                    <td>@radio.NumeroSerie</td>
+                    <td>@radio.Descripcion</td>
+                    <td>@radio.Estado</td>
+                    <td>@radio.Frecuencia</td>
+                    <td>@radio.Modulacion</td>
+                    <td>@radio.Potencia</td>
+                    <td>@radio.Tx_Power</td>
+                    <td>@radio.Rx_Level</td>
+                </tr>
+        }
+    </tbody>
+
+</table>
