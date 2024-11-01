@@ -1,0 +1,195 @@
+﻿@model Minosa_Proyecto_v._1.Models.Radio
+
+<h2 class="text-center my-4">Detalles del Radio</h2>
+
+<div class="container">
+    <div class="text-center mt-3">
+        <a asp-action="Editar" asp-route-id="@Model.ID_equipo" class="btn btn-primary">Editar</a>
+        <a asp-action="Index" asp-controller="Radio" class="btn btn-secondary">Cancelar</a>
+        <a asp-action="Eliminar" asp-route-id="@Model.ID_Radio" class="btn btn-danger">Eliminar</a>
+    </div>
+    <div class="card mb-4">
+        <div class="card-header bg-primary text-white">
+            <h3>Datos Básicos del Radio</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><strong>Frecuencia:</strong></label>
+                        <p class="form-control-plaintext">@Model.Frecuencia</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Frecuencia Rango:</strong></label>
+                        <p class="form-control-plaintext">@Model.Frecuencia_Rango</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Modo:</strong></label>
+                        <p class="form-control-plaintext">@Model.Modo</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>SSID:</strong></label>
+                        <p class="form-control-plaintext">@Model.Ssid</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Modulación:</strong></label>
+                        <p class="form-control-plaintext">@Model.Modulacion</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Potencia:</strong></label>
+                        <p class="form-control-plaintext">@Model.Potencia</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Tx Power:</strong></label>
+                        <p class="form-control-plaintext">@Model.Tx_Power</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Rx Level:</strong></label>
+                        <p class="form-control-plaintext">@Model.Rx_Level</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Tx Freq:</strong></label>
+                        <p class="form-control-plaintext">@Model.Tx_Freq</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-secondary text-white">
+            <h3>Detalles del Equipo</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><strong>Tipo de Equipo:</strong></label>
+                        <p class="form-control-plaintext">@Model.Tipo_Equipo</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Proveedor:</strong></label>
+                        <p class="form-control-plaintext">@Model.Nombre_Proveedor</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Modelo:</strong></label>
+                        <p class="form-control-plaintext">@Model.Nombre_Modelo</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Área:</strong></label>
+                        <p class="form-control-plaintext">@Model.Nombre_Area</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Dirección IP:</strong></label>
+                        <p class="form-control-plaintext">@Model.Direccion_IP</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Número de Serie:</strong></label>
+                        <p class="form-control-plaintext">@Model.NumeroSerie</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Descripción:</strong></label>
+                        <p class="form-control-plaintext">@Model.Descripcion</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Estado:</strong></label>
+                        <p class="form-control-plaintext">@Model.Estado</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Activo:</strong></label>
+                        <p class="form-control-plaintext">@Model.Activo</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Respaldo:</strong></label>
+                        <p class="form-control-plaintext">@Model.Respaldo</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Observaciones:</strong></label>
+                        <p class="form-control-plaintext">@Model.Observaciones</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-info text-white">
+            <h3>Detalles Técnicos del Equipo</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><strong>Tipo de Voltaje:</strong></label>
+                        <p class="form-control-plaintext">@Model.Tipo_Voltaje</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Voltaje:</strong></label>
+                        <p class="form-control-plaintext">@Model.Voltaje</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Amperaje:</strong></label>
+                        <p class="form-control-plaintext">@Model.Amperaje</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Puertos RJ45:</strong></label>
+                        <p class="form-control-plaintext">@Model.Num_Puertos_RJ45</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Puertos SFP:</strong></label>
+                        <p class="form-control-plaintext">@Model.Num_Puertos_SFP</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label><strong>Fecha de Compra:</strong></label>
+                        <p class="form-control-plaintext">@Model.Fecha_Compra.ToString("yyyy-MM-dd")</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Fecha de Garantía:</strong></label>
+                        <p class="form-control-plaintext">@Model.Fecha_Garantia.ToString("yyyy-MM-dd")</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Tipo de Garantía:</strong></label>
+                        <p class="form-control-plaintext">@Model.Tipo_Garantia</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Firmware:</strong></label>
+                        <p class="form-control-plaintext">@Model.Firmware</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Usuario:</strong></label>
+                        <p class="form-control-plaintext">@Model.Usuario</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Contraseña:</strong></label>
+                        <p class="form-control-plaintext">@Model.Contracena</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>MAC Address:</strong></label>
+                        <p class="form-control-plaintext">@Model.MAC_Address</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Fecha de Instalación:</strong></label>
+                        <p class="form-control-plaintext">@Model.Fecha_Instalacion</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Última Actualización:</strong></label>
+                        <p class="form-control-plaintext">@Model.Ultima_Actualizacion</p>
+                    </div>
+                    <div class="form-group">
+                        <label><strong>Voltaje de Energía:</strong></label>
+                        <p class="form-control-plaintext">@Model.Voltaje_Energia</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+    }
+</div>

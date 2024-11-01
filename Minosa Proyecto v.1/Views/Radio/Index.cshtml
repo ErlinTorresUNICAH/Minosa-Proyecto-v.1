@@ -1,7 +1,7 @@
 ﻿@model List<Minosa_Proyecto_v._1.Models.Radio>
 
 <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Radio" asp-action="Crear" class="btn btn-secondary btn-block"><i class="fa-solid fa-tower-cell"></i> Agregar nuevo</a>
+        <a asp-controller="Radio" asp-action="Crear" class="btn btn-secondary btn-block"><i class="fa-solid fa-tower-cell"></i> Agregar Radio</a>
     </div>
 <h2>Lista de Radios</h2>
 <table class="table">
@@ -31,6 +31,9 @@
                     <td>@radio.Potencia</td>
                     <td>@radio.Tx_Power</td>
                     <td>@radio.Rx_Level</td>
+                <td>
+                    <a href="@Url.Action("Detalles", "Radio", new { id = radio.ID_equipo })" class="btn btn-info btn-sm">Ver Detalles</a>
+                </td>
                 </tr>
         }
     </tbody>

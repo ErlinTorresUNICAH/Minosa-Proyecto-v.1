@@ -3,57 +3,195 @@
 <h2>Editar Radio</h2>
 
 <form asp-action="Editar" method="post">
-    <input type="hidden" asp-for="ID_Radio" />
+    <input type="hidden" asp-for="ID_equipo" />
 
-    <div class="form-group">
-        <label asp-for="Frecuencia"></label>
-        <input asp-for="Frecuencia" class="form-control" />
-        <span asp-validation-for="Frecuencia" class="text-danger"></span>
+    <div class="container">
+
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3>Datos Básicos del Radio</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><strong>Frecuencia:</strong></label>
+                            <input asp-for="Frecuencia" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Frecuencia Rango:</strong></label>
+                            <input asp-for="Frecuencia_Rango" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Modo:</strong></label>
+                            <input asp-for="Modo" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>SSID:</strong></label>
+                            <input asp-for="Ssid" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Modulación:</strong></label>
+                            <input asp-for="Modulacion" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Potencia:</strong></label>
+                            <input asp-for="Potencia" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Tx Power:</strong></label>
+                            <input asp-for="Tx_Power" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Rx Level:</strong></label>
+                            <input asp-for="Rx_Level" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Tx Freq:</strong></label>
+                            <input asp-for="Tx_Freq" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h3>Detalles del Equipo</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><strong>Tipo de Equipo:</strong></label>
+                            <input asp-for="Tipo_Equipo" class="form-control" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Proveedor:</strong></label>
+                            <select asp-for="ID_proveedor" asp-items="Model.Proveedores" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Modelo:</strong></label>
+                            <select asp-for="ID_modelo" asp-items="Model.Modelos" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Área:</strong></label>
+                            <select asp-for="ID_area" asp-items="Model.Areas" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Dirección IP:</strong></label>
+                            <select asp-for="ID_ip" asp-items="Model.IPs" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Número de Serie:</strong></label>
+                            <input asp-for="NumeroSerie" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Descripción:</strong></label>
+                            <input asp-for="Descripcion" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Estado:</strong></label>
+                            <input asp-for="Estado" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Activo:</strong></label>
+                            <input asp-for="Activo" class="form-check-input" type="checkbox" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Respaldo:</strong></label>
+                            <input asp-for="Respaldo" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Observaciones:</strong></label>
+                            <textarea asp-for="Observaciones" class="form-control"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h3>Detalles Técnicos del Equipo</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><strong>Tipo de Voltaje:</strong></label>
+                            <input asp-for="Tipo_Voltaje" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Voltaje:</strong></label>
+                            <input asp-for="Voltaje" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Amperaje:</strong></label>
+                            <input asp-for="Amperaje" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Puertos RJ45:</strong></label>
+                            <input asp-for="Num_Puertos_RJ45" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Puertos SFP:</strong></label>
+                            <input asp-for="Num_Puertos_SFP" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label><strong>Fecha de Compra:</strong></label>
+                            <input asp-for="Fecha_Compra" type="date" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Fecha de Garantía:</strong></label>
+                            <input asp-for="Fecha_Garantia" type="date" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Tipo de Garantía:</strong></label>
+                            <input asp-for="Tipo_Garantia" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Firmware:</strong></label>
+                            <input asp-for="Firmware" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Usuario:</strong></label>
+                            <input asp-for="Usuario" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Contraseña:</strong></label>
+                            <input asp-for="Contracena" class="form-control"  />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>MAC Address:</strong></label>
+                            <input asp-for="MAC_Address" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Fecha de Instalación:</strong></label>
+                            <input asp-for="Fecha_Instalacion" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Última Actualización:</strong></label>
+                            <input asp-for="Ultima_Actualizacion" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label><strong>Voltaje de Energía:</strong></label>
+                            <input asp-for="Voltaje_Energia" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
     </div>
-    <div class="form-group">
-        <label asp-for="Frecuencia_Rango"></label>
-        <input asp-for="Frecuencia_Rango" class="form-control" />
-        <span asp-validation-for="Frecuencia_Rango" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Modo"></label>
-        <input asp-for="Modo" class="form-control" />
-        <span asp-validation-for="Modo" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Ssid"></label>
-        <input asp-for="Ssid" class="form-control" />
-        <span asp-validation-for="Ssid" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Modulacion"></label>
-        <input asp-for="Modulacion" class="form-control" />
-        <span asp-validation-for="Modulacion" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Potencia"></label>
-        <input asp-for="Potencia" class="form-control" />
-        <span asp-validation-for="Potencia" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Tx_Power"></label>
-        <input asp-for="Tx_Power" class="form-control" />
-        <span asp-validation-for="Tx_Power" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Rx_Level"></label>
-        <input asp-for="Rx_Level" class="form-control" />
-        <span asp-validation-for="Rx_Level" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Tx_Freq"></label>
-        <input asp-for="Tx_Freq" class="form-control" />
-        <span asp-validation-for="Tx_Freq" class="text-danger"></span>
-   @*  </div>
-    <div class="form-group">
-        <label asp-for="id_equipo">Equipo</label>
-        <select asp-for="id_equipo" class="form-control" asp-items="ViewBag.Equipos"></select>
-        <span asp-validation-for="id_equipo" class="text-danger"></span>
-    </div> *@
-    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
 </form>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+}

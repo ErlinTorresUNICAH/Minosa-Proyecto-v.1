@@ -175,8 +175,6 @@ namespace Minosa_Proyecto_v._1.Controllers
 
         }
 
-
-        [HttpGet]
         [HttpGet]
         public IActionResult Editar(int id)
         {
