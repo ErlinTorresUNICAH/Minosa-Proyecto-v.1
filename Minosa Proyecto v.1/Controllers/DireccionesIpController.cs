@@ -59,7 +59,8 @@ public class DireccionesIpController : Controller
                     IPV4 = reader["IPV4"].ToString(),
                     Estado = reader["Estado"].ToString(),
                     Nombre_Vlan = reader["Nombre_Vlan"].ToString(),
-                    Activa = (bool)reader["Activa"]
+                    Activa = (bool)reader["Activa"],
+                    ping = (bool)reader["ping"]
                 });
             }
         }

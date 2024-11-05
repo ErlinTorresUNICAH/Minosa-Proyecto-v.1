@@ -9,6 +9,8 @@ public class DireccionIp
 
     public string Estado { get; set; }
 
+    public bool ping { get; set; }
+
     [Required(ErrorMessage = "Debe seleccionar una VLAN.")]
     public int id_vlan { get; set; }
 

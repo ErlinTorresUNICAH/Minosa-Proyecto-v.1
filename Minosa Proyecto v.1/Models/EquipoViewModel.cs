@@ -13,5 +13,6 @@
         public bool Activo { get; set; }
         public string? Respaldo { get; set; }
         public string? Observaciones { get; set; }
+        public bool? ping { get; set; }
     }
 }

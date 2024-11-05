@@ -1,37 +1,69 @@
 ﻿@model Vlan
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    console.log("jQuery version:", $.fn.jquery);
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("input[name='ip'], input[name='subnetMask']").on("change", function () {
+            let ip = $("input[name='ip']").val();
+            let subnetMask = $("input[name='subnetMask']").val();
+            if (ip && subnetMask) {
+                $.ajax({
+                    url: '@Url.Action("CalculateVlanFields", "Vlans")',
+                    type: 'POST',
+                    data: { ip, subnetMask },
+                    success: function (data) {
+                        $("input[name='SubNet']").val(data.subNet);
+                        $("input[name='Gateway']").val(data.gateway);
+                        $("input[name='DhcpIni']").val(data.dhcpIni);
+                        $("input[name='DhcpFin']").val(data.dhcpFin);
+                    }
+                });
+            }
+        });
+    });
+    console.log('@Url.Action("CalculateVlanFields", "Vlans")');
+
+</script>
+
 <h2>Crear VLAN</h2>
 
-<form asp-action="Crear" method="post">
+<form asp-action="CrearVlanConIps" method="post">
     <div class="form-group">
-        <label asp-for="Nombre_Vlan"></label>
-        <input asp-for="Nombre_Vlan" class="form-control" />
-        <span asp-validation-for="Nombre_Vlan" class="text-danger"></span>
+        <label>IP Inicial</label>
+        <input type="text" name="ip" class="form-control" required />
     </div>
     <div class="form-group">
-        <label asp-for="SubNet"></label>
-        <input asp-for="SubNet" class="form-control" />
-        <span asp-validation-for="SubNet" class="text-danger"></span>
+        <label>Subnet Mask</label>
+        <input type="number" name="subnetMask" class="form-control" required />
     </div>
     <div class="form-group">
-        <label asp-for="Gateway"></label>
-        <input asp-for="Gateway" class="form-control" />
-        <span asp-validation-for="Gateway" class="text-danger"></span>
+        <label>SubNet</label>
+        <input type="text" name="SubNet" class="form-control" readonly />
     </div>
     <div class="form-group">
-        <label asp-for="DhcpIni"></label>
-        <input asp-for="DhcpIni" class="form-control" />
-        <span asp-validation-for="DhcpIni" class="text-danger"></span>
+        <label>Gateway</label>
+        <input type="text" name="Gateway" class="form-control" readonly />
     </div>
     <div class="form-group">
-        <label asp-for="DhcpFin"></label>
-        <input asp-for="DhcpFin" class="form-control" />
-        <span asp-validation-for="DhcpFin" class="text-danger"></span>
+        <label>DHCP Start</label>
+        <input type="text" name="DhcpIni" class="form-control" readonly />
     </div>
     <div class="form-group">
-        <label asp-for="Observaciones"></label>
-        <input asp-for="Observaciones" class="form-control" />
-        <span asp-validation-for="Observaciones" class="text-danger"></span>
+        <label>DHCP End</label>
+        <input type="text" name="DhcpFin" class="form-control" readonly />
     </div>
-    <button type="submit" class="btn btn-primary">Crear</button>
+    <div class="form-group">
+        <label>Nombre VLAN</label>
+        <input type="text" name="nombreVlan" class="form-control" required />
+    </div>
+    <div class="form-group">
+        <label>Observaciones</label>
+        <input type="text" name="observaciones" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar VLAN</button>
 </form>

@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Authorization;
 namespace Minosa_Proyecto_v._1.Controllers
 {
     [Authorize]
-    public class EquiposController : Controller
+    public class ActividadController : Controller
     {
         private readonly IConfiguration _configuration;
 
-        public EquiposController(IConfiguration configuration)
+        public ActividadController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
@@ -29,7 +29,7 @@ namespace Minosa_Proyecto_v._1.Controllers
                 return View();
             }
 
-            List<EquipoViewModel> equiposList = new List<EquipoViewModel>();
+            List<Actividad> equiposList = new List<Actividad>();
 
             try
             {
@@ -37,25 +37,20 @@ namespace Minosa_Proyecto_v._1.Controllers
                 {
                     connection.Open();
 
-                    var command = new SqlCommand("P_ObtenerDatosEquipos", connection);
+                    var command = new SqlCommand("P_ObtenerActividad", connection);
                     command.CommandType = CommandType.StoredProcedure;
 
                     SqlDataReader reader = command.ExecuteReader();
                     while (reader.Read())
                     {
-                        var equipo = new EquipoViewModel
+                        var equipo = new Actividad
                         {
-                            ID_equipo = reader.GetInt32(reader.GetOrdinal("ID_equipo")),
-                            NumeroSerie = reader.GetString(reader.GetOrdinal("NumeroSerie")),
-                            Descripcion = reader.GetString(reader.GetOrdinal("Descripcion")),
-                            Tipo_Equipo = reader.GetString(reader.GetOrdinal("Tipo_Equipo")),
-                            Modelo = reader.GetString(reader.GetOrdinal("Modelo")),
+                            ID_Equipo = reader.GetInt32(reader.GetOrdinal("ID_equipo")),
+                            DireccionIP = reader.GetString(reader.GetOrdinal("DireccionIP")),
                             Area = reader.GetString(reader.GetOrdinal("Area")),
-                            Direccion_IP = reader.GetString(reader.GetOrdinal("Direccion_IP")),
-                            Estado = reader.GetString(reader.GetOrdinal("Estado")),
-                            Activo = reader.GetBoolean(reader.GetOrdinal("Activo")),
-                            Respaldo = reader.IsDBNull(reader.GetOrdinal("Respaldo")) ? null : reader.GetString(reader.GetOrdinal("Respaldo")),
-                            Observaciones = reader.IsDBNull(reader.GetOrdinal("Observaciones")) ? null : reader.GetString(reader.GetOrdinal("Observaciones"))
+                            DescripcionEquipo = reader.GetString(reader.GetOrdinal("DescripcionEquipo")),
+                            TipoEquipo = reader.GetString(reader.GetOrdinal("TipoEquipo")),
+                            Ping = reader.GetBoolean(reader.GetOrdinal("Ping"))
                         };
 
                         equiposList.Add(equipo);
@@ -72,6 +67,6 @@ namespace Minosa_Proyecto_v._1.Controllers
         }
 
 
-        
+
     }
 }

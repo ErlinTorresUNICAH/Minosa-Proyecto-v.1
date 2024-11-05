@@ -7,20 +7,20 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Activa</th>
             <th>IPV4</th>
             <th>Estado</th>
             <th>VLAN</th>
-            <th>Activa</th>
+            <th>Ping</th>
+            
             <th>Acciones</th>
+            
         </tr>
     </thead>
     <tbody>
         @foreach (var ip in Model)
         {
             <tr>
-                <td>@ip.IPV4</td>
-                <td>@ip.Estado</td>
-                <td>@ip.Nombre_Vlan</td>
                 <td>
                     @if (ip.Activa)
                     {
@@ -31,6 +31,21 @@
                         <span class="text-danger"><i class="bi bi-x-circle-fill"></i></span>
                     }
                 </td>
+                <td>@ip.IPV4</td>
+                <td>@ip.Estado</td>
+                <td>@ip.Nombre_Vlan</td>
+                
+                <td>
+                    @if (ip.ping)
+                    {
+                        <span class="text-success"><i class="bi bi-reception-4"></i></span>
+                    }
+                    else
+                    {
+                        <span class="text-danger"><i class="bi bi-reception-0"></i></span>
+                    }
+                </td>
+                
                 <td>
                     <a asp-action="Editar" asp-route-id="@ip.ID_ip" class="btn btn-warning btn-sm">Editar</a>
                     <a asp-action="Eliminar" asp-route-id="@ip.ID_ip" class="btn btn-danger btn-sm">Eliminar</a>
