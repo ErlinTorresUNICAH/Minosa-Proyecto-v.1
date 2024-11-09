@@ -2,7 +2,14 @@
 
 <h2 class="text-center my-4"><i class="fas fa-edit"></i> Editar Equipo</h2>
 
-<form asp-action="Editar" method="post" class="container">
+<form asp-action="Editar" method="post" class="container text-start mt-2 needs-validation" novalidate style="max-width: 500px;">
+    <div class="text-center">
+        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar Cambios</button>
+        <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = Model.ID_equipo })" class="btn btn-outline-danger">
+            <i class="fa-solid fa-triangle-exclamation"></i> Cancelar
+        </a>
+    </div>
+
     <input type="hidden" asp-for="ID_equipo" />
 
     <div class="card mb-4">
@@ -11,156 +18,265 @@
         </div>
         <div class="card-body">
             <div class="form-group">
-                <label for="ID_tipo_equipo"><i class="fas fa-laptop"></i> Tipo de Equipo</label>
-                <select asp-for="ID_tipo_equipo" asp-items="Model.TiposEquipos" class="form-control"></select>
+                <label for="ID_tipo_equipo">Tipo de Equipo</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-laptop"></i></span>
+                    <select asp-for="ID_tipo_equipo" asp-items="Model.TiposEquipos" class="form-control"></select>
+                </div>
+                <span asp-validation-for="ID_tipo_equipo" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="ID_proveedor"><i class="fas fa-truck"></i> Proveedor</label>
-                <select asp-for="ID_proveedor" asp-items="Model.Proveedores" class="form-control"></select>
+                <label for="ID_proveedor">Proveedor</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-truck"></i></span>
+                    <select asp-for="ID_proveedor" asp-items="Model.Proveedores" class="form-control"></select>
+                </div>
+                <span asp-validation-for="ID_proveedor" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="ID_modelo"><i class="fas fa-cogs"></i> Modelo</label>
-                <select asp-for="ID_modelo" asp-items="Model.Modelos" class="form-control"></select>
+                <label for="ID_modelo">Modelo</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-cogs"></i></span>
+                    <select asp-for="ID_modelo" asp-items="Model.Modelos" class="form-control"></select>
+                </div>
+                <span asp-validation-for="ID_modelo" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="ID_area"><i class="fas fa-map-marker-alt"></i> Área</label>
-                <select asp-for="ID_area" asp-items="Model.Areas" class="form-control"></select>
+                <label for="ID_area">Área</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
+                    <select asp-for="ID_area" asp-items="Model.Areas" class="form-control"></select>
+                </div>
+                <span asp-validation-for="ID_area" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="ID_ip"><i class="fas fa-network-wired"></i> Dirección IP</label>
-                <select asp-for="ID_ip" asp-items="Model.IPs" class="form-control"></select>
+                <label for="ID_ip">Dirección IP</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-network-wired"></i></span>
+                    <select asp-for="ID_ip" asp-items="Model.IPs" class="form-control"></select>
+                </div>
+                <span asp-validation-for="ID_ip" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="NumeroSerie"><i class="fas fa-barcode"></i> Número de Serie</label>
-                <input type="text" asp-for="NumeroSerie" class="form-control" />
+                <label for="NumeroSerie">Número de Serie</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-barcode"></i></span>
+                    <input type="text" asp-for="NumeroSerie" class="form-control" />
+                </div>
+                <span asp-validation-for="NumeroSerie" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Descripcion"><i class="fas fa-align-left"></i> Descripción</label>
-                <input type="text" asp-for="Descripcion" class="form-control" />
+                <label for="Descripcion">Descripción</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-align-left"></i></span>
+                    <input type="text" asp-for="Descripcion" class="form-control" />
+                </div>
+                <span asp-validation-for="Descripcion" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Estado"><i class="fas fa-thermometer-half"></i> Estado</label>
-                <input type="text" asp-for="Estado" class="form-control" />
+                <label for="Estado">Estado</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-thermometer-half"></i></span>
+                    <input type="text" asp-for="Estado" class="form-control" />
+                </div>
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+
+            <div class="form-check form-switch">
+                <label for="Activo">Activo</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-toggle-on"></i></span>
+                    <input type="checkbox" asp-for="Activo" class="form-check-input" id="flexSwitchCheckDefault" />
+                </div>
+                <span asp-validation-for="Activo" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Activo"><i class="fas fa-toggle-on"></i> Activo</label>
-                <input type="checkbox" asp-for="Activo" class="form-check-input" />
+                <label for="Respaldo">Respaldo</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-cloud-upload-alt"></i></span>
+                    <textarea asp-for="Respaldo" class="form-control"></textarea>
+                </div>
+                <span asp-validation-for="Respaldo" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Respaldo"><i class="fas fa-cloud-upload-alt"></i> Respaldo</label>
-                <textarea asp-for="Respaldo" class="form-control"></textarea>
-            </div>
-
-            <div class="form-group">
-                <label for="Observaciones"><i class="fas fa-comment-dots"></i> Observaciones</label>
-                <textarea asp-for="Observaciones" class="form-control"></textarea>
+                <label for="Observaciones">Observaciones</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
+                    <textarea asp-for="Observaciones" class="form-control"></textarea>
+                </div>
+                <span asp-validation-for="Observaciones" class="text-danger"></span>
             </div>
         </div>
     </div>
 
+    <!-- Sección de detalles técnicos con la misma estructura -->
     <div class="card mb-4">
         <div class="card-header bg-secondary text-white">
             <h3><i class="fas fa-tools"></i> Detalles Técnicos</h3>
         </div>
         <div class="card-body">
             <div class="form-group">
-                <label for="Tipo_Voltaje"><i class="fas fa-bolt"></i> Tipo de Voltaje</label>
-                <input type="text" asp-for="Tipo_Voltaje" class="form-control" />
+                <label for="Tipo_Voltaje">Tipo de Voltaje</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-bolt"></i></span>
+                    <input type="text" asp-for="Tipo_Voltaje" class="form-control" />
+                </div>
+                <span asp-validation-for="Tipo_Voltaje" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Voltaje"><i class="fas fa-tachometer-alt"></i> Voltaje</label>
-                <input type="number" asp-for="Voltaje" class="form-control" />
+                <label for="Voltaje">Voltaje</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-tachometer-alt"></i></span>
+                    <input type="number" asp-for="Voltaje" class="form-control" />
+                </div>
+                <span asp-validation-for="Voltaje" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Amperaje"><i class="fas fa-battery-three-quarters"></i> Amperaje</label>
-                <input type="number" asp-for="Amperaje" class="form-control" />
+                <label for="Amperaje">Amperaje</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-battery-three-quarters"></i></span>
+                    <input type="number" asp-for="Amperaje" class="form-control" />
+                </div>
+                <span asp-validation-for="Amperaje" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Num_Puertos_RJ45"><i class="fas fa-plug"></i> Número de Puertos RJ45</label>
-                <input type="number" asp-for="Num_Puertos_RJ45" class="form-control" />
+                <label for="Num_Puertos_RJ45">Número de Puertos RJ45</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-plug"></i></span>
+                    <input type="number" asp-for="Num_Puertos_RJ45" class="form-control" />
+                </div>
+                <span asp-validation-for="Num_Puertos_RJ45" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Num_Puertos_SFP"><i class="fas fa-link"></i> Número de Puertos SFP</label>
-                <input type="number" asp-for="Num_Puertos_SFP" class="form-control" />
+                <label for="Num_Puertos_SFP">Número de Puertos SFP</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-link"></i></span>
+                    <input type="number" asp-for="Num_Puertos_SFP" class="form-control" />
+                </div>
+                <span asp-validation-for="Num_Puertos_SFP" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Fecha_Compra"><i class="fas fa-calendar-alt"></i> Fecha de Compra</label>
-                <input type="date" asp-for="Fecha_Compra" class="form-control" />
+                <label for="Fecha_Compra">Fecha de Compra</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                    <input type="date" asp-for="Fecha_Compra" class="form-control" />
+                </div>
+                <span asp-validation-for="Fecha_Compra" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Fecha_Garantia"><i class="fas fa-calendar-check"></i> Fecha de Garantía</label>
-                <input type="date" asp-for="Fecha_Garantia" class="form-control" />
+                <label for="Fecha_Garantia">Fecha de Garantía</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-calendar-check"></i></span>
+                    <input type="date" asp-for="Fecha_Garantia" class="form-control" />
+                </div>
+                <span asp-validation-for="Fecha_Garantia" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Tipo_Garantia"><i class="fas fa-shield-alt"></i> Tipo de Garantía</label>
-                <input type="text" asp-for="Tipo_Garantia" class="form-control" />
+                <label for="Tipo_Garantia">Tipo de Garantía</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-shield-alt"></i></span>
+                    <input type="text" asp-for="Tipo_Garantia" class="form-control" />
+                </div>
+                <span asp-validation-for="Tipo_Garantia" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Canal"><i class="fas fa-wifi"></i> Canal</label>
-                <input type="text" asp-for="Canal" class="form-control" />
+                <label for="Canal">Canal</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-wifi"></i></span>
+                    <input type="text" asp-for="Canal" class="form-control" />
+                </div>
+                <span asp-validation-for="Canal" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Firmware"><i class="fas fa-microchip"></i> Firmware</label>
-                <input type="text" asp-for="Firmware" class="form-control" />
+                <label for="Firmware">Firmware</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-microchip"></i></span>
+                    <input type="text" asp-for="Firmware" class="form-control" />
+                </div>
+                <span asp-validation-for="Firmware" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Usuario"><i class="fas fa-user"></i> Usuario</label>
-                <input type="text" asp-for="Usuario" class="form-control" />
+                <label for="Usuario">Usuario</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" asp-for="Usuario" class="form-control" />
+                </div>
+                <span asp-validation-for="Usuario" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Contracena"><i class="fas fa-key"></i> Contraseña</label>
-                <input type="text" asp-for="Contracena" class="form-control" />
+                <label for="Contracena">Contraseña</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-key"></i></span>
+                    <input type="text" asp-for="Contracena" class="form-control" />
+                </div>
+                <span asp-validation-for="Contracena" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="MAC_Address"><i class="fas fa-id-card"></i> MAC Address</label>
-                <input type="text" asp-for="MAC_Address" class="form-control" />
+                <label for="MAC_Address">MAC Address</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-id-card"></i></span>
+                    <input type="text" asp-for="MAC_Address" class="form-control" />
+                </div>
+                <span asp-validation-for="MAC_Address" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Fecha_Instalacion"><i class="fas fa-wrench"></i> Fecha de Instalación</label>
-                <input type="text" asp-for="Fecha_Instalacion" class="form-control" />
+                <label for="Fecha_Instalacion">Fecha de Instalación</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-wrench"></i></span>
+                    <input type="text" asp-for="Fecha_Instalacion" class="form-control" />
+                </div>
+                <span asp-validation-for="Fecha_Instalacion" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Ultima_Actualizacion"><i class="fas fa-sync"></i> Última Actualización</label>
-                <input type="text" asp-for="Ultima_Actualizacion" class="form-control" />
+                <label for="Ultima_Actualizacion">Última Actualización</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-sync"></i></span>
+                    <input type="text" asp-for="Ultima_Actualizacion" class="form-control" />
+                </div>
+                <span asp-validation-for="Ultima_Actualizacion" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <label for="Voltaje_Energia"><i class="fas fa-bolt"></i> Voltaje de Energía</label>
-                <input type="text" asp-for="Voltaje_Energia" class="form-control" />
+                <label for="Voltaje_Energia">Voltaje de Energía</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-bolt"></i></span>
+                    <input type="text" asp-for="Voltaje_Energia" class="form-control" />
+                </div>
+                <span asp-validation-for="Voltaje_Energia" class="text-danger"></span>
             </div>
         </div>
-    </div>
-
-    <div class="text-center">
-        <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar Cambios</button>
-        <a asp-action="Index" asp-controller="Equipos" class="btn btn-secondary"><i class="fas fa-times"></i> Cancelar</a>
     </div>
 </form>
 
 @if (ViewBag.Error != null)
 {
     <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+}
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

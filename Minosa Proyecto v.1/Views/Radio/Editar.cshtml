@@ -1,13 +1,14 @@
 ﻿@model Radio
 
 <h2>Editar Radio</h2>
-
+<button type="submit" class="btn btn-primary">Guardar Cambios</button>
+<a asp-action="Index" class="btn btn-outline-danger"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
 <form asp-action="Editar" method="post">
     <input type="hidden" asp-for="ID_equipo" />
 
     <div class="container">
 
-        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+       
 
         <div class="card mb-4">
             <div class="card-header bg-primary text-white">

@@ -7,7 +7,7 @@
 
     <!-- Bootstrap 4.0.0 CDN -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" />
     <!-- Otras Hojas de Estilo -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Minosa_Proyecto_v._1.styles.css" asp-append-version="true" />
@@ -24,6 +24,7 @@
 
 
     <style>
+        
         body {
             font-size: .875rem;
         }
@@ -69,26 +70,35 @@
         }
         /* Asegúrate de que el contenido esté debajo del navbar */
         .content-wrapper {
-            margin-left: 240px; /* Espacio para la barra lateral */
+            margin-left: 10px; /* Espacio para la barra lateral */
             margin-top: 85px; /* Ajuste para la barra de navegación fija */
             padding-top: 20px;
         }
 
         .main-content {
-            padding-left: 240px;
+            padding-left: 10px;
         }
 
         .footer {
-            margin-left: 200px; /* Ajustar al ancho de la barra lateral */
-            max-width: calc(100% - 200px); /* El footer ocupa el espacio restante */
+            /*margin-left: 200px;  Ajustar al ancho de la barra lateral
+                    max-width: calc(100% - 200px); /* El footer ocupa el espacio restante 
             padding: 10px 20px;
             background-color: #f8f9fa;
-            text-align: center;
+            text-align: center;*/
         }
 
         .main-content {
             padding-left: 40px; /* Ajuste de 240px a 40px */
         }
+
+        .nav-link.custom-link {
+            color: white !important; /* Cambia el color al que prefieras */
+            text-decoration: none; /* Elimina el subrayado, si es necesario */
+        }
+
+        .nav-link.custom-link:hover {
+                color: orange !important; /* Cambia el color cuando el enlace esté en hover */
+            }
 
 
     </style>
@@ -96,9 +106,52 @@
 <body>
 
     <!-- Navbar -->
-    <nav class="navbar navbar-dark bg-dark fixed-top">
+    <nav class="navbar navbar-dark bg-dark fixed-top custom-link">
 
         <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" asp-controller="Home" asp-action="Index">Minosa_Proyecto_v._1</a>
+
+        @* d *@
+       @*  <nav class="col-md-2 d-none d-md-block bg-light ">
+            <div class="sidebar-sticky"> *@
+                <ul class="nav justify-content-center">
+            <li class="nav-item">
+                <a class="nav-link active custom-link" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-house-door"></i> Inicio
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link custom-link" asp-controller="Equipos" asp-action="Index">
+                    <i class="bi bi-box"></i> Almacen
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link custom-link" asp-controller="Actividad" asp-action="Index">
+                    <i class="bi bi-activity"></i> Actividad
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link custom-link" asp-controller="Usuario" asp-action="Detalles" asp-route-id="1">
+                    <i class="bi bi-person-fill-gear"></i> Perfil
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link custom-link" asp-controller="Graficos" asp-action="Index">
+                    <i class="bi bi-graph-up-arrow"></i> Reportes
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link custom-link" asp-controller="Home" asp-action="Privacy">
+                    <i class="bi bi-file-earmark-bar-graph"></i> Reportes
+                </a>
+            </li>
+
+        </ul>
+       @*  </div>
+        </nav> *@
+
+
+
+
         <ul class="navbar-nav px-3">
             @if (User.Identity.IsAuthenticated)
             {
@@ -123,7 +176,7 @@
         </ul>
     </nav>
 
-    <!-- Sidebar -->
+    @* <!-- Sidebar -->
     <nav class="col-md-2 d-none d-md-block bg-light sidebar">
         <div class="sidebar-sticky">
             <ul class="nav flex-column">
@@ -160,7 +213,7 @@
                 
             </ul>
         </div>
-    </nav>
+    </nav> *@
 
     <!-- Main Content -->
     <div class="content-wrapper">

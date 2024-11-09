@@ -1,9 +1,10 @@
 ﻿@model Minosa_Proyecto_v._1.Models.UsuarioViewModel
 
-<h2>Detalles del Usuario</h2>
 
-<form method="post" asp-action="Editar">
-    <div class="form-group">
+
+<form method="post" asp-action="Editar" class="container align-content-center" style="max-width: 500px;">
+    <h2>Detalles del Usuario</h2>
+    <div class="form-group ">
         <label for="ID_usuario">ID de Usuario</label>
         <input type="text" class="form-control" id="ID_usuario" name="ID_usuario" value="@Model.ID_usuario" readonly />
     </div>

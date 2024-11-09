@@ -11,10 +11,13 @@
 <form asp-action="Eliminar" method="post">
     <input type="hidden" asp-for="ID_equipo" />
     <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Detalles" class="btn btn-secondary">Cancelar</a>
+    <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = Model.ID_equipo })" class="btn btn-outline-danger"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
+    
+
 </form>
 
 @if (TempData["Error"] != null)
+
 {
     <div class="alert alert-danger">@TempData["Error"]</div>
 }

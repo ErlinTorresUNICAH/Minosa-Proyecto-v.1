@@ -1,7 +1,14 @@
 ﻿@model Minosa_Proyecto_v._1.Models.EquipoDetalleViewModel
 
 <h2 class="text-center my-4">Detalles del Equipo</h2>
+<div class="text-center mt-3">
+    <a asp-action="Editar" asp-route-id="@Model.ID_equipo" class="btn btn-primary">Editar</a>
+    
+    <a asp-action="Eliminar" asp-route-id="@Model.ID_equipo" class="btn btn-danger">Eliminar</a>
 
+    
+    <a asp-controller="Equipos" asp-action="Index" class="btn btn-outline-danger"> <i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
+</div>
 <div class="container">
     <div class="card mb-4">
         <div class="card-header bg-primary text-white">
@@ -137,11 +144,7 @@
         </div>
     </div>
 
-    <div class="text-center mt-3">
-        <a asp-action="Editar" asp-route-id="@Model.ID_equipo" class="btn btn-primary">Editar</a>
-        <a asp-action="Index" asp-controller="Equipos" class="btn btn-secondary">Cancelar</a>
-        <a asp-action="Eliminar" asp-route-id="@Model.ID_equipo" class="btn btn-danger">Eliminar</a>
-    </div>
+    
 
     @if (ViewBag.Error != null)
     {

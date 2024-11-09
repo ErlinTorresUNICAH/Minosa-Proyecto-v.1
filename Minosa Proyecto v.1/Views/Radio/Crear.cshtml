@@ -2,6 +2,11 @@
 
 
 <h2>Agregar Nuevo Radio</h2>
+<a asp-action="Index" class="btn btn-outline-danger"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
+
+<button type="submit" class="btn btn-success">Guardar</button>
+
+
 <form asp-action="Crear" method="post">
     <h3>Datos Básicos del Equipo</h3>
 
@@ -196,7 +201,7 @@
         <input type="text" asp-for="Tx_Freq" class="form-control" value='e'/>
     </div>
 
-    <button type="submit" class="btn btn-success">Guardar</button>
+   
 </form>
 
 @if (ViewBag.Error != null)

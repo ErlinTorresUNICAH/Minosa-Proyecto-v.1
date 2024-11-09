@@ -1,7 +1,6 @@
 ﻿@model Vlan
 
 <h2>Editar VLAN</h2>
-
 <form asp-action="Editar" method="post">
     <input type="hidden" asp-for="ID_vlan" />
 
@@ -42,5 +41,6 @@
 
     </div>
     <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a asp-action="Index" class="btn btn-outline-danger"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
 </form>
 

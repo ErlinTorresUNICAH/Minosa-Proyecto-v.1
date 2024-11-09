@@ -177,11 +177,12 @@ public class VlansController : Controller
         }
         catch (SqlException ex)
         {
-            if (ex.Number == 50000)  // Captura el error lanzado por RAISERROR
+            if (ex.Number >= 50000)  // Captura el error lanzado por RAISERROR
             {
                 ViewBag.Error = ex.Message;
                 return View(vlan);
             }
+            throw;
         }
 
         return RedirectToAction("Index");
