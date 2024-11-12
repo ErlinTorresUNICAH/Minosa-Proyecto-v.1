@@ -1,5 +1,6 @@
 ﻿
 
+
 namespace Minosa_Proyecto_v._1.Models
 {
     public class Actividad
@@ -10,8 +11,7 @@ namespace Minosa_Proyecto_v._1.Models
         public string DescripcionEquipo { get; set; }
         public string TipoEquipo { get; set; }
         public bool Ping { get; set; }
-
-        
+        public DateTime UltimaHoraPing { get; internal set; }
     }
 
 }

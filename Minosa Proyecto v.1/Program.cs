@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -12,6 +13,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Login/Index";  // Ruta de tu acción de login
         options.AccessDeniedPath = "/Login/AccessDenied"; // Página de acceso denegado (opcional)
     });
+builder.Services.AddHostedService<ActividadBackgroundService>();
 
 var app = builder.Build();
 

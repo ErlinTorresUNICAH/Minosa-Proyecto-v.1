@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*
+
+
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Minosa_Proyecto_v._1.Models;
 using Microsoft.Extensions.Configuration;
@@ -70,3 +73,4 @@ namespace Minosa_Proyecto_v._1.Controllers
 
     }
 }
+*/
