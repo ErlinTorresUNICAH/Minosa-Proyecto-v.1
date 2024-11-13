@@ -1,10 +1,4 @@
-﻿@model List<Minosa_Proyecto_v._1.Models.Actividad>
-
-
-<!-- Botones ajustados para que no ocupen espacio innecesario -->
-
-
-
+﻿
 
 <h2>Actividad</h2>
 
@@ -17,19 +11,23 @@
                 <th>Tipo de Equipo</th>
                 <th>Área</th>
                 <th>Dirección IP</th>
+                <th>Última Hora de Ping</th>
                 <th>Ping</th>
                 <th>Acciones</th>
+                
             </tr>
         </thead>
-        <tbody> 
+        <tbody>
             @foreach (var actividad in Model)
             {
                 <tr>
-                    <td>@actividad.DescripcionEquipo</td>
-                    <td>@actividad.TipoEquipo</td>
-                    <td>@actividad.Area</td>
-                    <td>@actividad.DireccionIP</td>
-                    
+                    <td>@(actividad.DescripcionEquipo ?? "N/A")</td> <!-- Display "N/A" if null -->
+                    <td>@(actividad.TipoEquipo ?? "N/A")</td>
+                    <td>@(actividad.Area ?? "N/A")</td>
+                    <td>@(actividad.DireccionIP ?? "N/A")</td>
+                    <td>@actividad.UltimaHoraPing</td>
+
+
                     <td>
                         @if (actividad.Ping)
                         {
@@ -40,13 +38,28 @@
                             <span class="text-danger"><i class="bi bi-reception-0"></i></span>
                         }
                     </td>
-                    
-                     <td>
-                        <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = actividad.ID_Equipo })" class="btn btn-info btn-sm">Ver Detalles</a>
-                    </td> 
+
+                    <td>
+                        @if (!string.IsNullOrEmpty(actividad.DescripcionEquipo))
+                        {
+                            <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = actividad.ID_Equipo })" class="btn btn-info btn-sm">Ver Detalles</a>
+                            @* <a asp-action="VerDetalles" asp-route-id="@ip.ID_ip" class="btn btn-info btn-sm">Ver Detalles</a> *@
+                        }
+                        else
+                        {
+                            @* <a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary btn-block"><i class="fa-solid fa-folder-plus"></i> Nuevo Equipo</a> *@
+                            <a asp-controller="EquiposDetalles" asp-action="CrearActividad" asp-route-direccionIP="@actividad.DireccionIP" class="btn btn-primary btn-block">
+                                <i class="fa-solid fa-folder-plus"></i> Asinar Equipo
+                            </a>
+                           @*  <a href="@Url.Action("Crear", "EquiposDetalles", new { id = actividad.DireccionIP })" class="btn btn-info btn-sm">Agregar</a> *@
+                            @* <a asp-action="AsignarDispositivo" asp-route-id="@ip.ID_ip" class="btn btn-primary btn-sm">Asignar Dispositivo</a> *@
+                        }
+                    </td>
+                  
                 </tr>
             }
         </tbody>
+
     </table>
 </div>
 

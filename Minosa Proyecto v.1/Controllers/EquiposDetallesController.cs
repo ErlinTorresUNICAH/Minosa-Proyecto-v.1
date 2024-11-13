@@ -175,6 +175,9 @@ namespace Minosa_Proyecto_v._1.Controllers
 
         }
 
+
+
+
         [HttpGet]
         public IActionResult Editar(int id)
         {
@@ -399,6 +402,100 @@ namespace Minosa_Proyecto_v._1.Controllers
             {
                 ViewBag.Error = $"Error al eliminar el equipo: {ex.Message}";
                 return View();
+            }
+        }
+
+
+
+        // CREAR PERO PARA ACTIVIDAD
+        //Crear select box
+        [HttpGet]
+        public IActionResult CrearActividad(string direccionIP)
+        {
+            var model = new EquipoDetalleViewModel();
+            model.DireccionIP = direccionIP; // Optionally set this if you need it for other purposes
+
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Load other data as needed
+                model.Proveedores = ObtenerSelectList(connection, "P_ObtenerProveedores", "ID_proveedor", "Nombre");
+                model.Modelos = ObtenerSelectList(connection, "P_ObtenerModelos", "ID_modelo", "Nombre_Modelo");
+                model.TiposEquipos = ObtenerSelectList(connection, "P_ObtenerTiposEquipos", "ID_tipo_equipo", "Tipo_Equipo");
+                model.Areas = ObtenerSelectList(connection, "P_ObtenerAreas", "ID_area", "Nombre_Area");
+
+                // Load IPs and set the default value
+                var allIPs = ObtenerSelectList(connection, "P_ObtenerIPs", "ID_ip", "IPV4");
+                if (!string.IsNullOrEmpty(direccionIP))
+                {
+                    // Find the matching item by Text (assuming Text is the actual IP value)
+                    var selectedIpItem = allIPs.FirstOrDefault(ip => string.Equals(ip.Text, direccionIP, StringComparison.OrdinalIgnoreCase));
+                    if (selectedIpItem != null)
+                    {
+                        model.ID_ip = int.Parse(selectedIpItem.Value); // Set the default selected value
+                    }
+                }
+                model.IPs = allIPs;
+            }
+
+            return View("Crear", model);
+        }
+
+
+        //Crear
+        [HttpPost]
+        public IActionResult CrearActividad(EquipoDetalleViewModel model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            try
+            {
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    var command = new SqlCommand("P_InsertarEquipoCompleto", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    // Add parameters
+                    command.Parameters.AddWithValue("@NumeroSerie", model.NumeroSerie);
+                    command.Parameters.AddWithValue("@Descripcion", model.Descripcion);
+                    command.Parameters.AddWithValue("@id_tipo_equipo", model.ID_tipo_equipo);
+                    command.Parameters.AddWithValue("@id_modelo", model.ID_modelo);
+                    command.Parameters.AddWithValue("@id_area", model.ID_area);
+                    command.Parameters.AddWithValue("@id_ip", model.ID_ip);
+                    command.Parameters.AddWithValue("@Estado", model.Estado);
+                    command.Parameters.AddWithValue("@Activo", model.Activo);
+                    command.Parameters.AddWithValue("@Respaldo", model.Respaldo);
+                    command.Parameters.AddWithValue("@Observaciones", model.Observaciones);
+                    command.Parameters.AddWithValue("@Tipo_Voltaje", model.Tipo_Voltaje);
+                    command.Parameters.AddWithValue("@Voltaje", model.Voltaje);
+                    command.Parameters.AddWithValue("@Amperaje", model.Amperaje);
+                    command.Parameters.AddWithValue("@Num_Puertos_RJ45", model.Num_Puertos_RJ45);
+                    command.Parameters.AddWithValue("@Num_Puertos_SFP", model.Num_Puertos_SFP);
+                    command.Parameters.AddWithValue("@Fecha_Compra", model.Fecha_Compra);
+                    command.Parameters.AddWithValue("@Fecha_Garantia", model.Fecha_Garantia);
+                    command.Parameters.AddWithValue("@Tipo_Garantia", model.Tipo_Garantia);
+                    command.Parameters.AddWithValue("@Canal", model.Canal);
+                    command.Parameters.AddWithValue("@Firmware", model.Firmware);
+                    command.Parameters.AddWithValue("@Usuario", model.Usuario);
+                    command.Parameters.AddWithValue("@Contracena", model.Contracena);
+                    command.Parameters.AddWithValue("@MAC_Address", model.MAC_Address);
+                    command.Parameters.AddWithValue("@Fecha_Instalacion", model.Fecha_Instalacion);
+                    command.Parameters.AddWithValue("@Ultima_Actualizacion", model.Ultima_Actualizacion);
+                    command.Parameters.AddWithValue("@Voltaje_Energia", model.Voltaje_Energia);
+                    command.Parameters.AddWithValue("@id_proveedor", model.ID_proveedor);
+
+                    command.ExecuteNonQuery();
+                    return RedirectToAction("Index", "Equipos");
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = $"Error: {ex.Message}";
+                return View("Crear", model); // This will render the existing Crear view in case of an error
             }
         }
 

@@ -1,57 +1,94 @@
-﻿@model IEnumerable<DireccionIp>
-
-<h2>Lista de Direcciones IP</h2>
-
-<a asp-action="Crear" class="btn btn-primary">Crear Nueva Dirección IP</a>
-<a asp-action="Index" asp-controller="Equipos" class="btn btn-secondary">Cancelar</a>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Activa</th>
-            <th>IPV4</th>
-            <th>Estado</th>
-            <th>VLAN</th>
-            <th>Ping</th>
-            
-            <th>Acciones</th>
-            
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ip in Model)
-        {
+﻿<form asp-action="EliminarMultiples" method="post">
+    <button type="submit" class="btn btn-danger" id="deleteSelectedBtn" style="display: none;">Eliminar Seleccionados</button>
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @if (ip.Activa)
-                    {
-                        <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
-                    }
-                    else
-                    {
-                        <span class="text-danger"><i class="bi bi-x-circle-fill"></i></span>
-                    }
-                </td>
-                <td>@ip.IPV4</td>
-                <td>@ip.Estado</td>
-                <td>@ip.Nombre_Vlan</td>
-                
-                <td>
-                    @if (ip.ping)
-                    {
-                        <span class="text-success"><i class="bi bi-reception-4"></i></span>
-                    }
-                    else
-                    {
-                        <span class="text-danger"><i class="bi bi-reception-0"></i></span>
-                    }
-                </td>
-                
-                <td>
-                    <a asp-action="Editar" asp-route-id="@ip.ID_ip" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Eliminar" asp-route-id="@ip.ID_ip" class="btn btn-danger btn-sm">Eliminar</a>
-                </td>
+                <th>Activa</th>
+                <th>IPV4</th>
+                <th>Estado</th>
+                <th>VLAN</th>
+                <th>Ping</th>
+                <th>Acciones</th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach (var ip in Model)
+            {
+                <tr class="selectable-row" data-id="@ip.ID_ip">
+                    <td>
+                        @if (ip.Activa)
+                        {
+                            <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
+                        }
+                        else
+                        {
+                            <span class="text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                        }
+                    </td>
+                    <td>@ip.IPV4</td>
+                    <td>@ip.Estado</td>
+                    <td>@ip.Nombre_Vlan</td>
+                    <td>
+                        @if (ip.ping)
+                        {
+                            <span class="text-success"><i class="bi bi-reception-4"></i></span>
+                        }
+                        else
+                        {
+                            <span class="text-danger"><i class="bi bi-reception-0"></i></span>
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Editar" asp-route-id="@ip.ID_ip" class="btn btn-warning btn-sm">Editar</a>
+                        <a asp-action="Eliminar" asp-route-id="@ip.ID_ip" class="btn btn-danger btn-sm">Eliminar</a>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <input type="hidden" id="selectedIds" name="selectedIds" />
+    
+</form>
+
+@section Scripts {
+    <script>
+        const selectedIds = new Set();
+        const deleteButton = document.getElementById('deleteSelectedBtn');
+        const selectedIdsInput = document.getElementById('selectedIds');
+
+        // Event delegation: attach listener to the parent element (tbody)
+        document.querySelector('tbody').addEventListener('click', function (event) {
+            const row = event.target.closest('.selectable-row'); // Check if a selectable row was clicked
+            if (row) {
+                const id = row.getAttribute('data-id');
+                if (selectedIds.has(id)) {
+                    selectedIds.delete(id);
+                    row.classList.remove('selected-row');
+                } else {
+                    selectedIds.add(id);
+                    row.classList.add('selected-row');
+                }
+                toggleDeleteButton();
+            }
+        });
+
+        function toggleDeleteButton() {
+            deleteButton.style.display = selectedIds.size > 0 ? 'inline-block' : 'none';
+            selectedIdsInput.value = Array.from(selectedIds).join(',');
         }
-    </tbody>
-</table>
+
+        // Optional CSS for visual feedback
+        const style = document.createElement('style');
+        style.innerHTML = `
+                    .selectable-row.selected-row {
+                        background-color: #f0f8ff;
+                    }
+                    .selectable-row {
+                        cursor: pointer;
+                    }
+                `;
+        document.head.appendChild(style);
+    </script>
+}

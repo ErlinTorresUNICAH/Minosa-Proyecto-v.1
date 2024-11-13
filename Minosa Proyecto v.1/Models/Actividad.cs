@@ -12,6 +12,9 @@ namespace Minosa_Proyecto_v._1.Models
         public string TipoEquipo { get; set; }
         public bool Ping { get; set; }
         public DateTime UltimaHoraPing { get; internal set; }
+
+        /*public List<Actividad> Dispositivos { get; set; }
+        public List<DireccionIp> DireccionesIp { get; set; }*/
     }
 
 }

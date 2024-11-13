@@ -31,9 +31,10 @@
 </script>
 
 <h2>Crear VLAN</h2>
-<button type="submit" class="btn btn-primary">Guardar VLAN</button>
+
 <a asp-action="Index" class="btn btn-outline-danger"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
 <form asp-action="CrearVlanConIps" method="post">
+    <button type="submit" class="btn btn-primary">Guardar VLAN</button>
     <div class="form-group">
         <label>IP Inicial</label>
         <input type="text" name="ip" class="form-control" required />

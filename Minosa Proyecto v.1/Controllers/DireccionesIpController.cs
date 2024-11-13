@@ -203,4 +203,62 @@ public class DireccionesIpController : Controller
 
         return RedirectToAction("Index");
     }
+
+    [HttpPost]
+    public IActionResult EliminarMultiples(string selectedIds)
+    {
+        if (!string.IsNullOrEmpty(selectedIds))
+        {
+            // Convert comma-separated string to an array of integers
+            int[] idsToDelete = selectedIds.Split(',').Select(int.Parse).ToArray();
+
+            string connectionString = _configuration.GetConnectionString("DefaultConnection");
+            List<string> errorMessages = new List<string>();
+
+            try
+            {
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    foreach (var id in idsToDelete)
+                    {
+                        using (var command = new SqlCommand("P_GRUD_EliminarDireccionIp", connection))
+                        {
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("@ID_ip", id);
+
+                            try
+                            {
+                                command.ExecuteNonQuery();
+                            }
+                            catch (SqlException ex)
+                            {
+                                // Capture specific SQL errors
+                                errorMessages.Add($"Error deleting IP with ID {id}: {ex.Message}");
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle general exceptions
+                ViewBag.Error = $"An error occurred: {ex.Message}";
+                return RedirectToAction("Index");
+            }
+
+            // Display accumulated error messages if any
+            if (errorMessages.Any())
+            {
+                ViewBag.Error = string.Join("<br/>", errorMessages);
+            }
+        }
+
+        return RedirectToAction("Index");
+    }
+
+
+
+
 }

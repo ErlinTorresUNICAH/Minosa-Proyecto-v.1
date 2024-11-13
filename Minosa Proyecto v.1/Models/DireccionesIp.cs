@@ -17,4 +17,7 @@ public class DireccionIp
     public string Nombre_Vlan { get; set; }  // Este campo es para almacenar el nombre de la VLAN
 
     public bool Activa { get; set; }
+
+    /*public string NombreVlan { get; set; }
+    public bool Ping { get; set; }*/
 }

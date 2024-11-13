@@ -29,7 +29,7 @@ public class ActividadBackgroundService : BackgroundService
             await EscanearDispositivosConNmapAsync(dispositivos);
             ActualizarEstadoPing(dispositivos);
 
-            await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(6), stoppingToken);
         }
     }
 
@@ -50,12 +50,12 @@ public class ActividadBackgroundService : BackgroundService
                     {
                         dispositivos.Add(new Actividad
                         {
-                            ID_Equipo = Convert.ToInt32(reader["ID_equipo"]),
-                            DireccionIP = reader["DireccionIP"].ToString(),
-                            Area = reader["Area"].ToString(),
-                            DescripcionEquipo = reader["DescripcionEquipo"].ToString(),
-                            TipoEquipo = reader["TipoEquipo"].ToString(),
-                            Ping = Convert.ToBoolean(reader["Ping"])
+                            ID_Equipo = reader["ID_equipo"] != DBNull.Value ? Convert.ToInt32(reader["ID_equipo"]) : 0, // Default to 0 if null
+                            DireccionIP = reader["DireccionIP"] != DBNull.Value ? reader["DireccionIP"].ToString() : string.Empty, // Default to empty string if null
+                            Area = reader["Area"] != DBNull.Value ? reader["Area"].ToString() : string.Empty,
+                            DescripcionEquipo = reader["DescripcionEquipo"] != DBNull.Value ? reader["DescripcionEquipo"].ToString() : string.Empty,
+                            TipoEquipo = reader["TipoEquipo"] != DBNull.Value ? reader["TipoEquipo"].ToString() : string.Empty,
+                            Ping = reader["Ping"] != DBNull.Value && Convert.ToBoolean(reader["Ping"]) // Default to false if null
                         });
                     }
                 }
@@ -65,7 +65,23 @@ public class ActividadBackgroundService : BackgroundService
         return dispositivos;
     }
 
-    private async Task EscanearDispositivosConNmapAsync(List<Actividad> dispositivos)
+     private async Task EscanearDispositivosConNmapAsync(List<Actividad> dispositivos)
+     {
+         foreach (var dispositivo in dispositivos)
+         {
+             Console.WriteLine($"Pinging {dispositivo.DireccionIP} at {DateTime.Now}...");
+             var stopwatch = Stopwatch.StartNew();
+             dispositivo.Ping = await EjecutarNmapPingAsync(dispositivo.DireccionIP) == "Activo";
+             stopwatch.Stop();
+             Console.WriteLine($"Ping to {dispositivo.DireccionIP} {(dispositivo.Ping ? "succeeded" : "failed")} in {stopwatch.Elapsed.TotalSeconds} seconds");
+
+             // Guardar la hora del último ping
+             dispositivo.UltimaHoraPing = DateTime.Now;
+
+         }
+         CuentaRegresivaCincoMinutosAsync();
+     }
+    /*private async Task EscanearDispositivosConNmapAsync(List<Actividad> dispositivos)
     {
         foreach (var dispositivo in dispositivos)
         {
@@ -77,10 +93,14 @@ public class ActividadBackgroundService : BackgroundService
 
             // Guardar la hora del último ping
             dispositivo.UltimaHoraPing = DateTime.Now;
-            
+
+            // Actualizar el estado del ping en la base de datos de inmediato
+            ActualizarEstadoPing(new List<Actividad> { dispositivo });
+
+            // Aquí puedes agregar una forma de comunicarte con el controlador o actualizar una fuente de datos compartida si necesitas reflejarlo en la vista.
         }
-        CuentaRegresivaCincoMinutosAsync();
-    }
+    }*/
+
 
     // Contador para verificar si han pasado 5 minutos desde el último ping
     private async Task CuentaRegresivaCincoMinutosAsync()

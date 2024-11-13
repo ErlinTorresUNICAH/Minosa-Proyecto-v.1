@@ -117,5 +117,6 @@ namespace Minosa_Proyecto_v._1.Models
         public string Nombre_Modelo { get; set; }
         public string? Direccion_IP { get; internal set; }
         public string? Tipo_Equipo { get; internal set; }
+        public string DireccionIP { get; internal set; }
     }
 }
