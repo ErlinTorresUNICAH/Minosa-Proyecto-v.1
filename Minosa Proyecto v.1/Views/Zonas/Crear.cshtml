@@ -1,7 +1,12 @@
 ﻿@model Zona
 
 <h2>Crear Zona</h2>
-
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
 <form asp-action="Crear" method="post">
     <div class="form-group">
         <label asp-for="Nombre_Zona"></label>

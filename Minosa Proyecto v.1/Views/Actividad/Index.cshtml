@@ -1,33 +1,28 @@
-﻿
+﻿@model List<Actividad>
 
-<h2>Actividad</h2>
-
-<!-- Hacer la tabla full-width sin scroll horizontal -->
 <div class="table-responsive">
     <table class="table table-striped table-bordered" style="table-layout: auto; width: 100%;">
         <thead>
-            <tr>  
-                <th>Descripción</th>
-                <th>Tipo de Equipo</th>
-                <th>Área</th>
+            <tr>
+                <th>ID Equipo</th>
                 <th>Dirección IP</th>
-                <th>Última Hora de Ping</th>
+                <th>Área</th>
+                <th>Descripción Equipo</th>
+                <th>Tipo Equipo</th>
                 <th>Ping</th>
+                <th>Última Hora Ping</th>
                 <th>Acciones</th>
-                
             </tr>
         </thead>
         <tbody>
             @foreach (var actividad in Model)
             {
                 <tr>
-                    <td>@(actividad.DescripcionEquipo ?? "N/A")</td> <!-- Display "N/A" if null -->
-                    <td>@(actividad.TipoEquipo ?? "N/A")</td>
-                    <td>@(actividad.Area ?? "N/A")</td>
-                    <td>@(actividad.DireccionIP ?? "N/A")</td>
-                    <td>@actividad.UltimaHoraPing</td>
-
-
+                    <td>@actividad.ID_Equipo</td>
+                    <td>@actividad.DireccionIP</td>
+                    <td>@actividad.Area</td>
+                    <td>@actividad.DescripcionEquipo</td>
+                    <td>@actividad.TipoEquipo</td>
                     <td>
                         @if (actividad.Ping)
                         {
@@ -38,31 +33,68 @@
                             <span class="text-danger"><i class="bi bi-reception-0"></i></span>
                         }
                     </td>
-
+                    <td>@(actividad.UltimaHoraPing?.ToString("dd/MM/yyyy HH:mm:ss") ?? "No disponible")</td>
                     <td>
                         @if (!string.IsNullOrEmpty(actividad.DescripcionEquipo))
                         {
                             <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = actividad.ID_Equipo })" class="btn btn-info btn-sm">Ver Detalles</a>
-                            @* <a asp-action="VerDetalles" asp-route-id="@ip.ID_ip" class="btn btn-info btn-sm">Ver Detalles</a> *@
                         }
                         else
                         {
-                            @* <a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary btn-block"><i class="fa-solid fa-folder-plus"></i> Nuevo Equipo</a> *@
                             <a asp-controller="EquiposDetalles" asp-action="CrearActividad" asp-route-direccionIP="@actividad.DireccionIP" class="btn btn-primary btn-block">
-                                <i class="fa-solid fa-folder-plus"></i> Asinar Equipo
+                                <i class="fa-solid fa-folder-plus"></i> Asignar Equipo
                             </a>
-                           @*  <a href="@Url.Action("Crear", "EquiposDetalles", new { id = actividad.DireccionIP })" class="btn btn-info btn-sm">Agregar</a> *@
-                            @* <a asp-action="AsignarDispositivo" asp-route-id="@ip.ID_ip" class="btn btn-primary btn-sm">Asignar Dispositivo</a> *@
                         }
                     </td>
-                  
                 </tr>
             }
         </tbody>
-
     </table>
 </div>
 
+<!-- Nueva sección para mostrar el historial de pings -->
+<div class="mt-4">
+    <h4>Historial de Pings</h4>
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered" style="table-layout: auto; width: 100%;">
+            <thead>
+                <tr>
+                    <th>Hora del Ping</th>
+                    <th>Dirección IP</th>
+                    <th>Resultado del Ping</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.HistorialPings != null)
+                {
+                    foreach (var ping in ViewBag.HistorialPings)
+                    {
+                        <tr>
+                            <td>@ping.HoraPing.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            <td>@ping.DireccionIP</td>
+                            <td>
+                                @if (ping.ResultadoPing)
+                                {
+                                    <span class="text-success">Éxito</span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger">Fallo</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="text-center">No hay historial de pings disponible.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
 
 @if (ViewBag.Error != null)
 {

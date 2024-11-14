@@ -1,5 +1,11 @@
 ﻿@model TipoEquipo
 
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
 <h2>Eliminar Tipo de Equipo</h2>
 
 <p>¿Está seguro de que desea eliminar este tipo de equipo?</p>
