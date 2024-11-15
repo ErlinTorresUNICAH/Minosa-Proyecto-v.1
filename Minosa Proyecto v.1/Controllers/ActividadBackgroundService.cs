@@ -31,24 +31,28 @@ public class ActividadBackgroundService : BackgroundService
             _logger.LogInformation("Starting activity device scan at: {time}", DateTimeOffset.Now);
 
             var dispositivos = await ObtenerActividadDispositivosAsync();
+           /* var dispositivosHistory = await ObtenerHistorialDispositivosAsync();*/
             await EscanearDispositivosConNmapAsync(dispositivos);
             await ActualizarEstadoPingAsync(dispositivos);
 
+
+
+
+            _logger.LogInformation("Iniciando inserción de historial de ping...");
+            await InsertarHistorialPingAsync(dispositivos);
+            _logger.LogInformation("Finalizada inserción de historial de ping.");
+
+
+
             _logger.LogInformation("Completed activity device scan at: {time}", DateTimeOffset.Now);
 
-            await Task.Delay(TimeSpan.FromMinutes(2), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(20), stoppingToken);
 
         }
 
     }
-    /// <summary>
-    /// Obtiene una lista de dispositivos de actividad desde la base de datos.
-    /// </summary>
-    /// <remarks>
-    /// Este método realiza una consulta a la base de datos mediante un procedimiento almacenado llamado '[dbo].[P_ObtenerActividadConTiempo]'.
-    /// Devuelve una lista de dispositivos con detalles como ID de equipo, dirección IP, área, descripción del equipo, tipo de equipo, estado de ping, y la última hora de ping.
-    /// </remarks>
 
+    /// Obtiene una lista de dispositivos de actividad desde la base de datos.
     private async Task<List<Actividad>> ObtenerActividadDispositivosAsync()
     {
         List<Actividad> dispositivos = new List<Actividad>();
@@ -82,6 +86,7 @@ public class ActividadBackgroundService : BackgroundService
         return dispositivos;
     }
 
+    // scanner de las Ip
     private async Task EscanearDispositivosConNmapAsync(List<Actividad> dispositivos)
     {
         foreach (var dispositivo in dispositivos)
@@ -112,6 +117,7 @@ public class ActividadBackgroundService : BackgroundService
         
     }
 
+    // Ejecutor del programa nmap
     private async Task<string> EjecutarNmapPingAsync(string direccionIP)
     {
         return await Task.Run(() =>
@@ -131,7 +137,7 @@ public class ActividadBackgroundService : BackgroundService
         });
     }
 
-    private async Task ActualizarEstadoPingAsync(List<Actividad> dispositivos)
+    /*private async Task ActualizarEstadoPingAsync(List<Actividad> dispositivos)
     {
         using (SqlConnection conn = new SqlConnection(_connectionString))
         {
@@ -166,7 +172,107 @@ public class ActividadBackgroundService : BackgroundService
         }
         //await CuentaRegresivaCincoMinutosAsync();
     }
+*/
 
+    //actualiza la actividad del ping
+    private async Task ActualizarEstadoPingAsync(List<Actividad> dispositivos)
+    {
+        using (SqlConnection conn = new SqlConnection(_connectionString))
+        {
+            await conn.OpenAsync();
+            foreach (var dispositivo in dispositivos)
+            {
+                // Actualizar el estado del ping en la tabla principal
+                string updateQuery = "UPDATE DireccionesIp SET ping = @Ping, UltimaHoraPing = @UltimaHoraPing WHERE IPV4 = @DireccionIP";
+                using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
+                {
+                    updateCmd.Parameters.AddWithValue("@Ping", dispositivo.Ping ? 1 : 0);
+                    updateCmd.Parameters.AddWithValue("@UltimaHoraPing", dispositivo.UltimaHoraPing ?? (object)DBNull.Value);
+                    updateCmd.Parameters.AddWithValue("@DireccionIP", dispositivo.DireccionIP);
+
+                    try
+                    {
+                        int rowsAffected = await updateCmd.ExecuteNonQueryAsync();
+                        if (rowsAffected > 0)
+                        {
+                            _logger.LogInformation("Updated {rowsAffected} rows for IP: {DireccionIP}", rowsAffected, dispositivo.DireccionIP);
+                        }
+                        else
+                        {
+                            _logger.LogWarning("No rows were updated for IP: {DireccionIP}", dispositivo.DireccionIP);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error updating database for IP: {DireccionIP}", dispositivo.DireccionIP);
+                    }
+                }
+            }
+        }
+    }
+
+
+    private async Task InsertarHistorialPingAsync(List<Actividad> dispositivos)
+    {
+        using (SqlConnection conn = new SqlConnection(_connectionString))
+        {
+            await conn.OpenAsync();
+            foreach (var dispositivo in dispositivos)
+            {
+                // Insertar el historial de ping en la tabla de historial
+                using (SqlCommand insertCmd = new SqlCommand("[dbo].[P_InsertarHistorialPing]", conn))
+                {
+                    insertCmd.CommandType = CommandType.StoredProcedure;
+                    insertCmd.Parameters.AddWithValue("@ip", dispositivo.DireccionIP); // Asegúrate de que esto corresponda con el ID correcto de la dirección IP
+                    insertCmd.Parameters.AddWithValue("@HoraPing", dispositivo.UltimaHoraPing);
+                    insertCmd.Parameters.AddWithValue("@ResultadoPing", dispositivo.Ping ? 1 : 0);
+                    
+
+                    try
+                    {
+                        await insertCmd.ExecuteNonQueryAsync();
+                        _logger.LogInformation("Historial de ping insertado para IP: {DireccionIP}", dispositivo.DireccionIP);
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error inserting ping history for IP: {DireccionIP}", dispositivo.DireccionIP);
+                    }
+                }
+            }
+        }
+    }
+    private async Task<List<Actividad>> ObtenerHistorialDispositivosAsync()
+    {
+        List<Actividad> dispositivosHistory = new List<Actividad>();
+
+        using (SqlConnection conn = new SqlConnection(_connectionString))
+        {
+            await conn.OpenAsync();
+            using (SqlCommand cmd = new SqlCommand("[dbo].[P_ObtenerHistorialPings]", conn)) // Ajusta el nombre del procedimiento almacenado si es necesario
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
+                        dispositivosHistory.Add(new Actividad
+                        {
+                            ID_HistorialPing = reader["ID_HistorialPing"] != DBNull.Value ? Convert.ToInt32(reader["ID_HistorialPing"]) : 0,
+                            DireccionIP = reader["ip"] != DBNull.Value ? reader["ip"].ToString() : string.Empty,
+                            UltimaHoraPing = reader["HoraPing"] != DBNull.Value ? Convert.ToDateTime(reader["HoraPing"]) : DateTime.MinValue,
+                            Ping = reader["ResultadoPing"] != DBNull.Value && Convert.ToBoolean(reader["ResultadoPing"])
+                        });
+                    }
+                }
+            }
+        }
+
+        return dispositivosHistory;
+    }
+
+
+    //cuenta regresiva para control en el cmd
     private async Task CuentaRegresivaCincoMinutosAsync()
     {
         int totalSegundos = 2 * 60; // 5 minutes in seconds

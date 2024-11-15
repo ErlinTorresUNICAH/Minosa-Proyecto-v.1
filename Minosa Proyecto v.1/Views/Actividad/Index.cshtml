@@ -59,29 +59,40 @@
         <table class="table table-sm table-bordered" style="table-layout: auto; width: 100%;">
             <thead>
                 <tr>
-                    <th>Hora del Ping</th>
                     <th>Dirección IP</th>
                     <th>Resultado del Ping</th>
+                    <th>Día del Ping</th>
+                    <th>Fecha del Ping</th>
+                    <th>Hora del Ping</th>
+                    
+                    
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="historialPings">
                 @if (ViewBag.HistorialPings != null)
                 {
                     foreach (var ping in ViewBag.HistorialPings)
                     {
-                        <tr>
-                            <td>@ping.HoraPing.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                        <tr style="@(ping.Ping ? "background-color: #d4edda;" : "background-color: #f8d7da;")">
+
                             <td>@ping.DireccionIP</td>
                             <td>
-                                @if (ping.ResultadoPing)
+                                @if (ping.Ping)
                                 {
-                                    <span class="text-success">Éxito</span>
+                                    <span class="text-success"><i class="bi bi-reception-4"></i></span>
                                 }
                                 else
                                 {
-                                    <span class="text-danger">Fallo</span>
+                                    <span class="text-danger"><i class="bi bi-reception-0"></i></span>
                                 }
                             </td>
+                            <td>@ping.UltimaHoraPing.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                            @* <td>
+                                @ping.UltimaHoraPing.ToString("dddd", new System.Globalization.CultureInfo("es-ES")) <!-- Muestra el día de la semana en español -->
+                            </td>
+                            <td>@ping.UltimaHoraPing.ToString("dd/MM/yyyy")</td> <!-- Muestra solo la fecha -->
+                            <td>@ping.UltimaHoraPing.ToString("HH:mm:ss")</td> <!-- Muestra solo la hora --> *@
+
                         </tr>
                     }
                 }
@@ -92,6 +103,7 @@
                     </tr>
                 }
             </tbody>
+
         </table>
     </div>
 </div>
@@ -102,3 +114,41 @@
         @ViewBag.Error
     </div>
 }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        function actualizarHistorialPings() {
+            $.ajax({
+                url: '@Url.Action("ObtenerHistorialPingsAJAX", "Actividad")',
+                type: 'GET',
+                success: function (data) {
+                    console.log("Datos recibidos:", data);
+                    let historialTableBody = $("#historialPings"); // Accediendo directamente al tbody con id="historialPings"
+                    historialTableBody.empty(); // Vaciar el contenido actual de la tabla
+                    if (Array.isArray(data) && data.length > 0) {
+                        data.forEach(function (ping) {
+                            let row = `
+                                <tr>
+                                    <td>${ping.direccionIP}</td>
+                                    <td>${ping.ping ? <span class="text-success"><i class="bi bi-reception-4"></i></span> : <span class="text-danger"><i class="bi bi-reception-0"></i></span>}</td>
+                                    <td>${ping.ultimaHoraPing}</td>
+                                </tr>
+                            `;
+                            
+                        });
+                    } else {
+                        historialTableBody.append('<tr><td colspan="5" class="text-center">No hay historial de pings disponible.</td></tr>');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al obtener el historial de pings:", error);
+                    console.log("Detalles:", xhr.responseText);
+                }
+            });
+        }
+
+        // Llama a la función cada 10 segundos (ajusta según lo necesario)
+        setInterval(actualizarHistorialPings, 10000);
+    });
+
+</script>
