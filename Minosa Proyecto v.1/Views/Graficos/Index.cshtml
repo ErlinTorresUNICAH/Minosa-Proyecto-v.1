@@ -1,55 +1,187 @@
-﻿@model List<dynamic>
+﻿@model dynamic
 
 <h2>Equipos por Tipo</h2>
-
 <div id="equipmentChartContainer" style="width:100%; height:400px;"></div>
+
+<h2>Equipos por Área</h2>
+<div id="areaChartContainer" style="width:100%; height:400px;"></div>
+
+<h2>Equipos por Zona</h2>
+<div id="zoneChartContainer" style="width:100%; height:400px;"></div>
+
+
+<h2>Equipos por Área con Tipos</h2>
+<div id="areaChartContainerBasic" style="width:100%; height:400px;"></div>
+
+
 <button id="generateReportButton" class="btn btn-primary">Generar Reporte PDF</button>
+
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
-    // Prepare the data for the pie chart
-    var data = [];
+    // Data for Equipos por Tipo
+    var dataEquiposPorTipo = [];
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.EquiposPorTipo)
     {
         <text>
-                data.push(['@item.TipoEquipo', @item.Cantidad]);
+                dataEquiposPorTipo.push(['@item.TipoEquipo', @item.Cantidad]);
         </text>
     }
 
-        // Initialize the Highcharts pie chart
-        Highcharts.chart('equipmentChartContainer', {
-            chart: {
-                type: 'pie'
-            },
-            title: {
-                text: 'Cantidad de Equipos por Tipo'
-            },
-            series: [{
-                name: 'Cantidad',
-                colorByPoint: true,
-                data: data
-            }],
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.y}</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true,
-                        format: '<b>{point.name}</b>'
-                    }
+    Highcharts.chart('equipmentChartContainer', {
+        chart: {
+            type: 'pie'
+        },
+        title: {
+            text: 'Cantidad de Equipos por Tipo'
+        },
+        series: [{
+            name: 'Cantidad',
+            colorByPoint: true,
+            data: dataEquiposPorTipo
+        }],
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.y}</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>'
                 }
             }
+        }
+    });
+
+    // Data for Equipos por Área
+    var dataEquiposPorArea = [];
+
+    @foreach (var item in Model.EquiposPorArea)
+    {
+        <text>
+                dataEquiposPorArea.push(['@item.Area', @item.Cantidad]);
+        </text>
+    }
+
+    Highcharts.chart('areaChartContainerBasic', {
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Cantidad de Equipos por Área'
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Cantidad'
+            }
+        },
+        series: [{
+            name: 'Cantidad',
+            data: dataEquiposPorArea
+        }]
+    });
+
+    // Data for Equipos por Zona
+    var dataEquiposPorZona = [];
+
+    @foreach (var item in Model.EquiposPorZona)
+    {
+        <text>
+                dataEquiposPorZona.push(['@item.Zona', @item.Cantidad]);
+        </text>
+    }
+
+    Highcharts.chart('zoneChartContainer', {
+        chart: {
+            type: 'pie'
+        },
+        title: {
+            text: 'Cantidad de Equipos por Zona'
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Cantidad'
+            }
+        },
+        series: [{
+            name: 'Cantidad',
+            data: dataEquiposPorZona
+        }]
+    });
+
+    // Data for Equipos por Área con Tipos
+    var dataByArea = {};
+
+    @foreach (var item in Model.EquiposPorAreaConTipo)
+    {
+        <text>
+                if (!dataByArea['@item.Area']) {
+                    dataByArea['@item.Area'] = [];
+                }
+                dataByArea['@item.Area'].push({
+                    name: '@item.TipoEquipo',
+                    y: @item.Cantidad
+                });
+        </text>
+    }
+
+    // Transform data into Highcharts series format
+    var seriesData = [];
+    for (var area in dataByArea) {
+        seriesData.push({
+            name: area,
+            data: dataByArea[area]
         });
+    }
 
-        // : { point.y }
-
-
-        // Handle button click event to generate the PDF report
-    
+    //Initialize the Highcharts grouped bar chart
+    Highcharts.chart('areaChartContainer', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: 'Cantidad de Equipos por Área y Tipo'
+        },
+        xAxis: {
+            type: 'category',
+            title: {
+                text: 'Área'
+            }
+        },
+        yAxis: {
+            title: {
+                text: 'Cantidad'
+            }
+        },
+        series: seriesData,
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y}</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        }
+    });
+    // Add logic for generating PDF report if needed
 </script>
+
 @* <script>
     document.getElementById('generateReportButton').addEventListener('click', function () {
     window.location.href = '/Graficos/GenerarReporte'; // Llama a tu función del controlador

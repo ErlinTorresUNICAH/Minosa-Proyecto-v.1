@@ -21,12 +21,32 @@ namespace Minosa_Proyecto_v._1.Controllers
         {
             _configuration = configuration;
         }
-    
+
         public IActionResult Index()
+        {
+            var equiposPorTipo = ObtenerEquiposPorTipo();
+            var equiposPorArea = ObtenerEquiposPorArea();
+            var equiposPorZona = ObtenerEquiposPorZona();
+            var equiposPorAreaConTipo = ObtenerEquiposPorAreaConTipo();
+            
+
+
+            var data = new
+            {
+                EquiposPorTipo = equiposPorTipo,
+                EquiposPorArea = equiposPorArea,
+                EquiposPorZona = equiposPorZona,
+                EquiposPorAreaConTipo = equiposPorAreaConTipo
+            };
+
+            return View(data);
+        }
+        private List<dynamic> ObtenerEquiposPorTipo()
         {
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
             var data = new List<dynamic>();
-            using (var connection = new SqlConnection (connectionString))
+
+            using (var connection = new SqlConnection(connectionString))
             {
                 var command = new SqlCommand("P_GetEquiposPorTipo_G", connection)
                 {
@@ -46,10 +66,96 @@ namespace Minosa_Proyecto_v._1.Controllers
                     }
                 }
             }
-            return View(data);
-            /*return Json(data);*/
-            /*ViewData["DataJson"] = System.Text.Json.JsonSerializer.Serialize(data); // Convertimos a JSON
-            return View();*/
+
+            return data;
+        }
+
+        private List<dynamic> ObtenerEquiposPorArea()
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var data = new List<dynamic>();
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var command = new SqlCommand("P_GetEquiposPorArea_G", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        data.Add(new
+                        {
+                            Area = reader["Nombre_Area"].ToString(),
+                            Cantidad = Convert.ToInt32(reader["Cantidad"])
+                        });
+                    }
+                }
+            }
+
+            return data;
+        }
+
+        private List<dynamic> ObtenerEquiposPorZona()
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var data = new List<dynamic>();
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var command = new SqlCommand("P_GetEquiposPorZona_G", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        data.Add(new
+                        {
+                            Zona = reader["Nombre_Zona"].ToString(),
+                            Cantidad = Convert.ToInt32(reader["Cantidad"])
+                        });
+                    }
+                }
+            }
+
+            return data;
+        }
+
+        private List<dynamic> ObtenerEquiposPorAreaConTipo()
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var data = new List<dynamic>();
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var command = new SqlCommand("P_GetEquiposPorAreaConTipo", connection) // Asegúrate de tener el procedimiento almacenado adecuado.
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        data.Add(new
+                        {
+                            Area = reader["Area"].ToString(),
+                            TipoEquipo = reader["TipoEquipo"].ToString(),
+                            Cantidad = Convert.ToInt32(reader["Cantidad"])
+                        });
+                    }
+                }
+            }
+
+            return data;
         }
 
         /*public ActionResult GenerarReporte()
