@@ -1,0 +1,149 @@
+﻿@model List<Actividad>
+<a asp-action="Index" asp-controller="Actividad" class="btn btn-outline-secondary">Historial</a>
+<div class="table-responsive">
+    <table class="table  table-bordered" style="table-layout: auto; width: 100%;">
+        <thead>
+            <tr>
+                <th>ID Equipo</th>
+                <th>Dirección IP</th>
+                <th>Área</th>
+                <th>Descripción Equipo</th>
+                <th>Tipo Equipo</th>
+                <th>Ping</th>
+                <th>Última Hora Ping</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var actividad in Model)
+            {
+                <tr data-ip="@actividad.DireccionIP">
+                    <td>@actividad.ID_Equipo</td>
+                    <td>@actividad.DireccionIP</td>
+                    <td>@actividad.Area</td>
+                    <td>@actividad.DescripcionEquipo</td>
+                    <td>@actividad.TipoEquipo</td>
+                    <td>
+                        @if (actividad.Ping)
+                        {
+                            <span class="text-success"><i class="bi bi-reception-4"></i></span>
+                        }
+                        else
+                        {
+                            <span class="text-danger"><i class="bi bi-reception-0"></i></span>
+                        }
+                    </td>
+                    <td>@(actividad.UltimaHoraPing?.ToString("dd/MM/yyyy HH:mm:ss") ?? "No disponible")</td>
+                    <td>
+                        @if (!string.IsNullOrEmpty(actividad.DescripcionEquipo))
+                        {
+                            <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = actividad.ID_Equipo })" class="btn btn-info btn-sm">Ver Detalles</a>
+                        }
+                        else
+                        {
+                            <a asp-controller="EquiposDetalles" asp-action="CrearActividad" asp-route-direccionIP="@actividad.DireccionIP" class="btn btn-primary btn-block">
+                                <i class="fa-solid fa-folder-plus"></i> Asignar Equipo
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<style>
+    .fila-seleccionada {
+        background-color: #d3e2f1; /* Cambia este color según prefieras */
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        // Captura el clic en las filas para seleccionar la IP y cambiar el color
+        $('tr[data-ip]').on('click', function () {
+            // Remueve la clase de cualquier otra fila seleccionada
+            $('tr[data-ip]').removeClass('fila-seleccionada');
+            // Agrega la clase a la fila clickeada
+            $(this).addClass('fila-seleccionada');
+
+            // Obtener la IP seleccionada
+            const ipSeleccionada = $(this).data('ip');
+            actualizarGraficoHistorialPings(ipSeleccionada);
+        });
+
+        function actualizarGraficoHistorialPings(ip) {
+            $.ajax({
+                url: '@Url.Action("ObtenerHistorialPingsAJAX", "Actividad")',
+                type: 'GET',
+                data: { direccionIP: ip }, // Enviar la IP seleccionada al servidor
+                success: function (data) {
+                    if (Array.isArray(data) && data.length > 0) {
+                        const filteredData = data.filter(ping => ping.direccionIP === ip);
+                        const limitedData = filteredData.slice(-10);
+
+                        const seriesData = limitedData.map(ping => {
+                            const fecha = new Date(ping.ultimaHoraPing).getTime(); // Timestamp for Highcharts
+                            return [fecha, ping.ping ? 1 : 0]; // Represent ping status as 1 or 0
+                        });
+
+                        Highcharts.chart('container', {
+                            chart: {
+                                type: 'line'
+                            },
+                            title: {
+                                text: `Historial de Pings para la IP ${ip} (Últimos 10 Datos)`
+                            },
+                            xAxis: {
+                                type: 'datetime',
+                                title: {
+                                    text: 'Fecha y Hora'
+                                }
+                            },
+                            yAxis: {
+                                title: {
+                                    text: 'Estado de Ping'
+                                },
+                                labels: {
+                                    formatter: function () {
+                                        return this.value === 1 ? 'Activo' : 'Inactivo';
+                                    }
+                                },
+                                min: 0,
+                                max: 1,
+                                tickInterval: 1
+                            },
+                            series: [{
+                                name: 'Ping',
+                                data: seriesData,
+                                tooltip: {
+                                    pointFormatter: function () {
+                                        return `Estado: ${this.y === 1 ? 'Activo' : 'Inactivo'}`;
+                                    }
+                                }
+                            }]
+                        });
+                    } else {
+                        $('#container').html('<p class="text-center">No hay historial de pings disponible para la IP seleccionada.</p>');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al obtener el historial de pings:", error);
+                }
+            });
+        }
+    });
+</script>
+
+
+<!-- Contenedor para la gráfica -->
+<div id="container"></div>

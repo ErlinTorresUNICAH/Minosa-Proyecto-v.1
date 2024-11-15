@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="~/Minosa_Proyecto_v._1.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="icon" href="https://www.auraminerals.com/wp-content/themes/mziq_aura-minerals_hibr/assets/img/favicon/favicon.ico" type="image/x-icon">
+    @* <script src="https://code.highcharts.com/highcharts.js"></script> *@
 
     <!-- Iconos de Font Awesome para el icono de escaneo -->
    
@@ -135,7 +136,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link custom-link" asp-controller="Actividad" asp-action="Index">
+                <a class="nav-link custom-link" asp-controller="Actividad" asp-action="IndexGraficos">
                     <i class="bi bi-activity"></i> Actividad
                 </a>
             </li>
@@ -240,7 +241,7 @@
 
     <!-- Bootstrap 4.0.0 Scripts -->
     @* <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> *@
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    @* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -250,7 +251,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script> *@
     
 
-
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

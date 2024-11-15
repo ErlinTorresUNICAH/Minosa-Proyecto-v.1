@@ -100,6 +100,15 @@ namespace Minosa_Proyecto_v._1.Controllers
             ViewBag.HistorialPings = historialPings; // Pasar historial a la vista
             return View(dispositivos); // Pasar datos a la vista
         }
+
+        public IActionResult IndexGraficos()
+        {
+            var dispositivos = ObtenerActividadDispositivos(); // Obtener datos iniciales
+            var historialPings = ObtenerHistorialPings(); // Obtener historial de pings
+            ViewBag.HistorialPings = historialPings; // Pasar historial a la vista
+            return View("IndexGraficos", dispositivos); // Pasar datos a la vista
+        }
+
         public JsonResult ObtenerHistorialPingsAJAX()
         {
             var historialPings = ObtenerHistorialPings(); // Obtener el historial actualizado de pings
