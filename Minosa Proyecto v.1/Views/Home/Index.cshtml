@@ -1,18 +1,39 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-<style>
-    /* html,
-    body{
-        background-color: #273970;
-    } */
-</style>
+
 <div class="text-center">
-    <h2>
-        <img src="~/img/mandala-es.png" alt="Logo" style="width: 400px; height: auto; " />
-    </h2>
-    @* <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> 
-    "
-    *@
+    <h1 id="netGuardian" class="animated-text">NetGuardião</h1>
+    <div class="bg">
+        <img src="~/img/network.jpg" alt="Logo" />
+    </div>
+    
 </div>
+<style>
+    .animated-text {
+        font-size: 4rem; /* Ajusta el tamaño según tus necesidades */
+        font-weight: bold;
+        color: #273970;
+        animation: fadeInUp 2s ease-in-out;
+    }
+    .bg{
+        width:max-content;
+        margin: 0 auto;
+        padding : 0;
+    }
+    @@keyframes fadeInUp {
+        0%
+    {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    }
+</style>
+
+@* style="width: 400px; height: auto; " *@

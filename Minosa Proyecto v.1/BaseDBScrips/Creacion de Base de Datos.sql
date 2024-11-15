@@ -167,6 +167,15 @@ CREATE TABLE [Tipo_Alerta] (
 )
 GO
 
+CREATE TABLE [HistorialPings] (
+    [ID_HistorialPing] INTEGER PRIMARY KEY IDENTITY(1, 1),
+    [ip] NVARCHAR(50), -- ID de la dirección IP asociada
+    [HoraPing] DATETIME NOT NULL DEFAULT GETDATE(), -- Fecha y hora del ping
+    [ResultadoPing] BIT -- 1 si el ping fue exitoso, 0 si falló
+
+)
+GO
+
 ALTER TABLE [Equipos] ADD FOREIGN KEY ([id_tipo_equipo]) REFERENCES [Tipo_Equipos] ([ID_tipo_equipo])
 GO
 
