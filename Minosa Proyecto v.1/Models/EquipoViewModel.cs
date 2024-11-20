@@ -9,7 +9,7 @@
         public string Modelo { get; set; } = string.Empty;
         public string Area { get; set; } = string.Empty;
         public string Direccion_IP { get; set; } = string.Empty;
-        public string Estado { get; set; } = string.Empty; // Fix: Initialize with a default value
+        public string Estado { get; set; } = string.Empty;
         public bool Activo { get; set; }
         public string? Respaldo { get; set; }
         public string? Observaciones { get; set; }

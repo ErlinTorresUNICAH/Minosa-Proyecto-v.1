@@ -4,9 +4,11 @@ using System.Data;
 using Minosa_Proyecto_v._1.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Minosa_Proyecto_v._1.Controllers
-{   //CRUD - READ - CREATE - UPDATE - DELETE
+{
+    [Authorize]
     public class EquiposDetallesController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -16,10 +18,31 @@ namespace Minosa_Proyecto_v._1.Controllers
             _configuration = configuration;
         }
 
-        //Detalles
+        private List<SelectListItem> ObtenerSelectList(SqlConnection connection, string storedProcedure, string valueField, string textField)
+        {
+            var selectList = new List<SelectListItem>();
+            using (var command = new SqlCommand(storedProcedure, connection))
+            {
+                command.CommandType = CommandType.StoredProcedure;
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        selectList.Add(new SelectListItem
+                        {
+                            Value = reader[valueField].ToString(),
+                            Text = reader[textField].ToString()
+                        });
+                    }
+                }
+            }
+            return selectList;
+        }
 
 
-        //Crear select box
+        //CRUD DETALLES EQUIPOS
+
+        // Funcion Crear (GET)
         [HttpGet]
         public IActionResult Crear()
         {
@@ -29,19 +52,15 @@ namespace Minosa_Proyecto_v._1.Controllers
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
-                // Cargar Proveedores, Modelos, Tipos de Equipos, Áreas e IPs
                 model.Proveedores = ObtenerSelectList(connection, "P_ObtenerProveedores", "ID_proveedor", "Nombre");
                 model.Modelos = ObtenerSelectList(connection, "P_ObtenerModelos", "ID_modelo", "Nombre_Modelo");
                 model.TiposEquipos = ObtenerSelectList(connection, "P_ObtenerTiposEquipos", "ID_tipo_equipo", "Tipo_Equipo");
                 model.Areas = ObtenerSelectList(connection, "P_ObtenerAreas", "ID_area", "Nombre_Area");
                 model.IPs = ObtenerSelectList(connection, "P_ObtenerIPs", "ID_ip", "IPV4");
             }
-
             return View(model);
         }
-
-        //Crear
+        // Funcion Crear (POST)
         [HttpPost]
         public IActionResult Crear(EquipoDetalleViewModel model)
         {
@@ -54,8 +73,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                     connection.Open();
                     var command = new SqlCommand("P_InsertarEquipoCompleto", connection);
                     command.CommandType = CommandType.StoredProcedure;
-
-                    // Agregar los parámetros
                     command.Parameters.AddWithValue("@NumeroSerie", model.NumeroSerie);
                     command.Parameters.AddWithValue("@Descripcion", model.Descripcion);
                     command.Parameters.AddWithValue("@id_tipo_equipo", model.ID_tipo_equipo);
@@ -83,7 +100,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                     command.Parameters.AddWithValue("@Ultima_Actualizacion", model.Ultima_Actualizacion);
                     command.Parameters.AddWithValue("@Voltaje_Energia", model.Voltaje_Energia);
                     command.Parameters.AddWithValue("@id_proveedor", model.ID_proveedor);
-
                     command.ExecuteNonQuery();
                     return RedirectToAction("Index", "Equipos");
                 }
@@ -95,28 +111,9 @@ namespace Minosa_Proyecto_v._1.Controllers
             }
         }
 
-        private List<SelectListItem> ObtenerSelectList(SqlConnection connection, string storedProcedure, string valueField, string textField)
-        {
-            var selectList = new List<SelectListItem>();
-            using (var command = new SqlCommand(storedProcedure, connection))
-            {
-                command.CommandType = CommandType.StoredProcedure;
-                using (var reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        selectList.Add(new SelectListItem
-                        {
-                            Value = reader[valueField].ToString(),
-                            Text = reader[textField].ToString()
-                        });
-                    }
-                }
-            }
-            return selectList;
-        }
 
 
+        // Funcion Editar (Post)
         [HttpPost]
         public IActionResult Editar(EquipoDetalleViewModel model)
         {
@@ -131,8 +128,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                     {
                         CommandType = CommandType.StoredProcedure
                     };
-
-                    // Add parameters
                     command.Parameters.AddWithValue("@ID_equipo", model.ID_equipo);
                     command.Parameters.AddWithValue("@NumeroSerie", model.NumeroSerie);
                     command.Parameters.AddWithValue("@Descripcion", model.Descripcion);
@@ -161,7 +156,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                     command.Parameters.AddWithValue("@Ultima_Actualizacion", model.Ultima_Actualizacion);
                     command.Parameters.AddWithValue("@Voltaje_Energia", model.Voltaje_Energia);
                     command.Parameters.AddWithValue("@id_proveedor", model.ID_proveedor);
-
                     command.ExecuteNonQuery();
                     return RedirectToAction("Detalles", new { id = model.ID_equipo });
                 }
@@ -174,10 +168,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
 
         }
-
-
-
-
+        // Funcion Editar (GET)
         [HttpGet]
         public IActionResult Editar(int id)
         {
@@ -187,8 +178,6 @@ namespace Minosa_Proyecto_v._1.Controllers
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
-                // Llamada al procedimiento almacenado para obtener los detalles del equipo
                 var command = new SqlCommand("P_ObtenerEquipoDetalle", connection)
                 {
                     CommandType = CommandType.StoredProcedure
@@ -199,7 +188,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                 {
                     if (reader.Read())
                     {
-                        // Asignación de los datos del equipo al modelo
                         model.ID_equipo = id;
                         model.NumeroSerie = reader["NumeroSerie"]?.ToString();
                         model.Descripcion = reader["Descripcion"]?.ToString();
@@ -238,8 +226,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                         model.Tipo_Equipo = reader["Tipo_Equipo"]?.ToString();
                     }
                 }
-
-                // Cargar los SelectList para la vista de edición
                 model.Proveedores = ObtenerSelectList(connection, "P_ObtenerProveedores", "ID_proveedor", "Nombre");
                 model.Modelos = ObtenerSelectList(connection, "P_ObtenerModelos", "ID_modelo", "Nombre_Modelo");
                 model.TiposEquipos = ObtenerSelectList(connection, "P_ObtenerTiposEquipos", "ID_tipo_equipo", "Tipo_Equipo");
@@ -253,7 +239,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
 
 
-        //Read
+        // Funcion Leer (GET)
         [HttpGet]
         public IActionResult Detalles(int id)
         {
@@ -319,7 +305,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
 
 
-
+        // Funcion Eliminr (GET)
         [HttpGet]
         public IActionResult Eliminar(int id)
         {
@@ -329,8 +315,6 @@ namespace Minosa_Proyecto_v._1.Controllers
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
-                // Obtener los detalles del equipo para mostrar en la vista
                 var command = new SqlCommand("P_ObtenerEquipoDetalle", connection)
                 {
                     CommandType = CommandType.StoredProcedure
@@ -350,7 +334,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                     }
                     else
                     {
-                        // Si el equipo no existe, redirige al índice con un mensaje de error.
                         TempData["Error"] = "El equipo no existe o ya fue eliminado.";
                         return RedirectToAction("Index", "Equipos");
                     }
@@ -359,7 +342,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             return View(model);
         }
-
+        // Funcion Eliminar (POST)
         [HttpPost]
         [ActionName("Eliminar")]
         public IActionResult ConfirmarEliminacion(int id)
@@ -375,20 +358,16 @@ namespace Minosa_Proyecto_v._1.Controllers
                     {
                         try
                         {
-                            // Llamar al procedimiento almacenado para eliminar equipo y sus detalles
                             var deleteCommand = new SqlCommand("P_EliminarEquipoCompleto", connection, transaction)
                             {
                                 CommandType = CommandType.StoredProcedure
                             };
                             deleteCommand.Parameters.AddWithValue("@ID_equipo", id);
                             deleteCommand.ExecuteNonQuery();
-
-                            // Confirmar la transacción
                             transaction.Commit();
                         }
                         catch
                         {
-                            // Revertir en caso de error
                             transaction.Rollback();
                             throw;
                         }
@@ -407,35 +386,31 @@ namespace Minosa_Proyecto_v._1.Controllers
 
 
 
+
         // CREAR PERO PARA ACTIVIDAD
-        //Crear select box
+        // Funcion Crear Actividad (GET)
         [HttpGet]
         public IActionResult CrearActividad(string direccionIP)
         {
             var model = new EquipoDetalleViewModel();
-            model.DireccionIP = direccionIP; // Optionally set this if you need it for other purposes
+            model.DireccionIP = direccionIP;
 
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
 
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
-                // Load other data as needed
                 model.Proveedores = ObtenerSelectList(connection, "P_ObtenerProveedores", "ID_proveedor", "Nombre");
                 model.Modelos = ObtenerSelectList(connection, "P_ObtenerModelos", "ID_modelo", "Nombre_Modelo");
                 model.TiposEquipos = ObtenerSelectList(connection, "P_ObtenerTiposEquipos", "ID_tipo_equipo", "Tipo_Equipo");
                 model.Areas = ObtenerSelectList(connection, "P_ObtenerAreas", "ID_area", "Nombre_Area");
-
-                // Load IPs and set the default value
                 var allIPs = ObtenerSelectList(connection, "P_ObtenerIPs", "ID_ip", "IPV4");
                 if (!string.IsNullOrEmpty(direccionIP))
                 {
-                    // Find the matching item by Text (assuming Text is the actual IP value)
                     var selectedIpItem = allIPs.FirstOrDefault(ip => string.Equals(ip.Text, direccionIP, StringComparison.OrdinalIgnoreCase));
                     if (selectedIpItem != null)
                     {
-                        model.ID_ip = int.Parse(selectedIpItem.Value); // Set the default selected value
+                        model.ID_ip = int.Parse(selectedIpItem.Value);
                     }
                 }
                 model.IPs = allIPs;
@@ -443,9 +418,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             return View("Crear", model);
         }
-
-
-        //Crear
+        // Funcion Crear Actividad (GET)
         [HttpPost]
         public IActionResult CrearActividad(EquipoDetalleViewModel model)
         {
@@ -458,8 +431,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                     connection.Open();
                     var command = new SqlCommand("P_InsertarEquipoCompleto", connection);
                     command.CommandType = CommandType.StoredProcedure;
-
-                    // Add parameters
                     command.Parameters.AddWithValue("@NumeroSerie", model.NumeroSerie);
                     command.Parameters.AddWithValue("@Descripcion", model.Descripcion);
                     command.Parameters.AddWithValue("@id_tipo_equipo", model.ID_tipo_equipo);
@@ -487,7 +458,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                     command.Parameters.AddWithValue("@Ultima_Actualizacion", model.Ultima_Actualizacion);
                     command.Parameters.AddWithValue("@Voltaje_Energia", model.Voltaje_Energia);
                     command.Parameters.AddWithValue("@id_proveedor", model.ID_proveedor);
-
                     command.ExecuteNonQuery();
                     return RedirectToAction("Index", "Equipos");
                 }
@@ -495,7 +465,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             catch (Exception ex)
             {
                 ViewBag.Error = $"Error: {ex.Message}";
-                return View("Crear", model); // This will render the existing Crear view in case of an error
+                return View("Crear", model);
             }
         }
 

@@ -18,6 +18,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             _configuration = configuration;
         }
 
+        // Leer Equipo, Para la visualiacion de los equipos se creo un controllador y una vista.
         [HttpGet]
         public IActionResult Index()
         {
@@ -25,7 +26,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             if (string.IsNullOrEmpty(connectionString))
             {
-                ViewBag.Error = "Connection string is not configured properly.";
+                ViewBag.Error = "La conexion no esta configurada correctamente";
                 return View();
             }
 

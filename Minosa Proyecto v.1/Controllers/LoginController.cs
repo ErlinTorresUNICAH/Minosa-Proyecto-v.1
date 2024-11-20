@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Minosa_Proyecto_v._1.Controllers
 {
-    
+    //Controler de login
 public class LoginController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -41,24 +41,18 @@ public class LoginController : Controller
                 using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-
-                    // Usamos un procedimiento almacenado en lugar de una consulta directa
                     var command = new SqlCommand("P_ObtenerUsuarioPorNombreYContrasena", connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
-
-                    // Agregar parámetros de forma adecuada
                     command.Parameters.Add(new SqlParameter("@Nombre_Usuario", Nombre_Usuario));
                     command.Parameters.Add(new SqlParameter("@Contrasena", Contrasena));
 
                     SqlDataReader reader = command.ExecuteReader();
                     if (reader.Read())
                     {
-                        // Crear la identidad del usuario y establecer los claims
                         var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name, Nombre_Usuario),
                             new Claim(ClaimTypes.NameIdentifier, reader["ID_usuario"].ToString())
-                            // Agrega más claims según sea necesario (por ejemplo, el rol del usuario)
                         };
 
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

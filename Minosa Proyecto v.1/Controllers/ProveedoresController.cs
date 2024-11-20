@@ -41,13 +41,20 @@ public class ProveedoresController : Controller
         return View(proveedores);
     }
 
-    // Crear nuevo proveedor
+    // CRUD Proveedores
+
+    // Funcion Leer proveedor
+    // El Index es la funcion
+
+
+
+    // Funcion Crear (GET)
     [HttpGet]
     public IActionResult Crear()
     {
         return View();
     }
-
+    // Funcion Crear (POST)
     [HttpPost]
     public IActionResult Crear(Proveedor proveedor)
     {
@@ -67,9 +74,10 @@ public class ProveedoresController : Controller
         return RedirectToAction("Index");
     }
 
-    // Editar proveedor
-    [HttpGet]
-    // Editar proveedor (GET)
+
+
+
+    // Funcion Editar (GET)
     [HttpGet]
     public IActionResult Editar(int id)
     {
@@ -95,8 +103,7 @@ public class ProveedoresController : Controller
         }
         return View(proveedor);
     }
-
-
+    // Funcion Editar (POST)
     [HttpPost]
     public IActionResult Editar(Proveedor proveedor)
     {
@@ -117,8 +124,9 @@ public class ProveedoresController : Controller
         return RedirectToAction("Index");
     }
 
-    // Eliminar proveedor
-    // Confirmación de eliminación (GET)
+
+
+    // Funcion Eliminar (GET)
     [HttpGet]
     public IActionResult Eliminar(int id)
     {
@@ -144,8 +152,7 @@ public class ProveedoresController : Controller
         }
         return View(proveedor);
     }
-
-    // Eliminar proveedor (POST)
+    // Funcion Eliminar (POST)
     [HttpPost]
     public IActionResult Eliminar(Proveedor proveedor)
     {

@@ -6,9 +6,12 @@ using System.Data;
 using Minosa_Proyecto_v._1.Models;
 using System.Security.Cryptography.X509Certificates;
 using System.Reflection;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Minosa_Proyecto_v._1.Controllers
 {
+    [Authorize]
     public class RadioController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -18,9 +21,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             _configuration = configuration;
         }
 
-
-
-        // GET : LISTA *
+        // Seleciona la lista de elementos de la base de datos
         private List<SelectListItem> ObtenerSelectList(SqlConnection connection, string storedProcedure, string valueField, string textField)
         {
             var selectList = new List<SelectListItem>();
@@ -42,155 +43,30 @@ namespace Minosa_Proyecto_v._1.Controllers
             return selectList;
         }
 
-
+        // Escucha los mensajes de SQL Server
         private static void Connection_InfoMessage(object sender, SqlInfoMessageEventArgs e)
         {
-            // Mostrar cada mensaje enviado por SQL Server
             foreach (SqlError info in e.Errors)
             {
                 Console.WriteLine("Mensaje de SQL Server: " + info.Message);
             }
         }
-
-
-
-
-
-        // GET: RadioController/Crear
-        [HttpGet]
-        public IActionResult Crear()
+        
+        // Método auxiliar para cargar listas desplegables
+        private void CargarListasDesplegables(SqlConnection connection, Radio model)
         {
-            var model = new Radio();
-            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-
-                model.Proveedores = ObtenerSelectList(connection, "P_ObtenerProveedores", "ID_proveedor", "Nombre");
-                model.Modelos = ObtenerSelectList(connection, "P_ObtenerModelos", "ID_modelo", "Nombre_Modelo");
-                model.TiposEquipos = ObtenerSelectList(connection, "P_ObtenerTiposEquipos", "ID_tipo_equipo", "Tipo_Equipo");
-                model.Areas = ObtenerSelectList(connection, "P_ObtenerAreas", "ID_area", "Nombre_Area");
-                model.IPs = ObtenerSelectList(connection, "P_ObtenerIPs", "ID_ip", "IPV4");
-            }
-
-            return View(model);
-        }
-
-        // POST: RadioController/Crear
-        [HttpPost]
-        public IActionResult Crear(Radio model)
-        {
-            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
-            try
-            {
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    connection.InfoMessage += Connection_InfoMessage;  // Escuchar mensajes
-                    connection.Open();
-
-                    // Obtener dinámicamente el ID del tipo de equipo 'Radio'
-                    var tipoEquipoCommand = new SqlCommand("SELECT ID_tipo_equipo FROM Tipo_Equipos WHERE UPPER(Tipo_Equipo) = 'RADIO'", connection);
-                    object? tipoEquipoRadioIdObj = tipoEquipoCommand.ExecuteScalar();
-
-                    try
-                    {
-
-                        if (tipoEquipoRadioIdObj == null)
-                        {
-                            // No existe el tipo de equipo "Radio" en la base de datos
-                            ModelState.AddModelError("", "Error: El tipo de equipo 'Radio' no está disponible.");
-
-
-                        }
-                    }
-                    catch (Exception ef)
-                    {
-                        ViewBag.Error = ef.Message;
-                        return View(model);
-                    }
-                    int tipoEquipoRadioId = (int)tipoEquipoRadioIdObj;
-
-                    // Asegurar que el id_tipo_equipo proporcionado es de tipo 'Radio'
-                    if (model.ID_tipo_equipo != tipoEquipoRadioId)
-                    {
-                        ModelState.AddModelError("", "Error: Solo se pueden crear dispositivos de tipo 'Radio'.");
-
-                    }
-
-
-                    var command = new SqlCommand("P_InsertarEquipoYRadio", connection);
-
-
-                    command.CommandType = CommandType.StoredProcedure;
-
-                    Console.WriteLine("hola");
-                    // Parametros de equipo y detalles equipo
-                    command.Parameters.AddWithValue("@NumeroSerie", model.NumeroSerie);
-                    command.Parameters.AddWithValue("@Descripcion", model.Descripcion);
-                    command.Parameters.AddWithValue("@id_tipo_equipo", tipoEquipoRadioId); // ID dinámico para Radio
-                    command.Parameters.AddWithValue("@id_modelo", model.ID_modelo);
-                    command.Parameters.AddWithValue("@id_area", model.ID_area);
-                    command.Parameters.AddWithValue("@id_ip", model.ID_ip);
-                    command.Parameters.AddWithValue("@Estado", model.Estado);
-                    command.Parameters.AddWithValue("@Activo", model.Activo);
-                    command.Parameters.AddWithValue("@Respaldo", model.Respaldo);
-                    command.Parameters.AddWithValue("@Observaciones", model.Observaciones);
-                    command.Parameters.AddWithValue("@Tipo_Voltaje", model.Tipo_Voltaje);
-                    command.Parameters.AddWithValue("@Voltaje", model.Voltaje);
-                    command.Parameters.AddWithValue("@Amperaje", model.Amperaje);
-                    command.Parameters.AddWithValue("@Num_Puertos_RJ45", model.Num_Puertos_RJ45);
-                    command.Parameters.AddWithValue("@Num_Puertos_SFP", model.Num_Puertos_SFP);
-                    command.Parameters.AddWithValue("@Fecha_Compra", model.Fecha_Compra);
-                    command.Parameters.AddWithValue("@Fecha_Garantia", model.Fecha_Garantia);
-                    command.Parameters.AddWithValue("@Tipo_Garantia", model.Tipo_Garantia);
-                    command.Parameters.AddWithValue("@Canal", model.Canal);
-                    command.Parameters.AddWithValue("@Firmware", model.Firmware);
-                    command.Parameters.AddWithValue("@Usuario", model.Usuario);
-                    command.Parameters.AddWithValue("@Contracena", model.Contracena);
-                    command.Parameters.AddWithValue("@MAC_Address", model.MAC_Address);
-                    command.Parameters.AddWithValue("@Fecha_Instalacion", model.Fecha_Instalacion);
-                    command.Parameters.AddWithValue("@Ultima_Actualizacion", model.Ultima_Actualizacion);
-                    command.Parameters.AddWithValue("@Voltaje_Energia", model.Voltaje_Energia);
-                    command.Parameters.AddWithValue("@id_proveedor", model.ID_proveedor);
-
-                    // Parametros de radio
-                    command.Parameters.AddWithValue("@Frecuencia", model.Frecuencia);
-                    command.Parameters.AddWithValue("@Frecuencia_Rango", model.Frecuencia_Rango);
-                    command.Parameters.AddWithValue("@Modo", model.Modo);
-                    command.Parameters.AddWithValue("@Ssid", model.Ssid);
-                    command.Parameters.AddWithValue("@Modulacion", model.Modulacion);
-                    command.Parameters.AddWithValue("@Potencia", model.Potencia);
-                    command.Parameters.AddWithValue("@Tx_Power", model.Tx_Power);
-                    command.Parameters.AddWithValue("@Rx_Level", model.Rx_Level);
-                    command.Parameters.AddWithValue("@Tx_Freq", model.Tx_Freq);
-
-
-                    Console.WriteLine("holafinal" + model.Descripcion);
-                    Console.WriteLine("holafinal" + tipoEquipoRadioId);
-
-                    connection.InfoMessage += Connection_InfoMessage;  // Escuchar mensajes
-                    command.ExecuteNonQuery();
-                    return RedirectToAction("Index", "Radio");
-                }
-            }
-
-            catch (Exception ex)
-            {
-                // Capturar el mensaje de error y mostrarlo en la vista
-                ViewBag.Error = $"Error: {ex.Message}";
-                return View(model);
-            }
-
+            model.Proveedores = ObtenerSelectList(connection, "P_ObtenerProveedores", "ID_proveedor", "Nombre");
+            model.Modelos = ObtenerSelectList(connection, "P_ObtenerModelos", "ID_modelo", "Nombre_Modelo");
+            model.TiposEquipos = ObtenerSelectList(connection, "P_ObtenerTiposEquipos", "ID_tipo_equipo", "Tipo_Equipo");
+            model.Areas = ObtenerSelectList(connection, "P_ObtenerAreas", "ID_area", "Nombre_Area");
+            model.IPs = ObtenerSelectList(connection, "P_ObtenerIPs", "ID_ip", "IPV4");
         }
 
 
 
+        // CRUD Radio
 
-
-
-
-        // GET: RadioController/Index *
+        // Funcion Leer Radio
         [HttpGet]
         public IActionResult Index()
         {
@@ -232,12 +108,129 @@ namespace Minosa_Proyecto_v._1.Controllers
                 }
                 connection.Close();
             }
-            
-            return View(radioList); // Pasar la lista a la vista
-            
+
+            return View(radioList);
+
         }
 
-        // GET: RadioController/Detalles *
+
+
+
+        // Funcion Crear (GET)
+        [HttpGet]
+        public IActionResult Crear()
+        {
+            var model = new Radio();
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                model.Proveedores = ObtenerSelectList(connection, "P_ObtenerProveedores", "ID_proveedor", "Nombre");
+                model.Modelos = ObtenerSelectList(connection, "P_ObtenerModelos", "ID_modelo", "Nombre_Modelo");
+                model.TiposEquipos = ObtenerSelectList(connection, "P_ObtenerTiposEquipos", "ID_tipo_equipo", "Tipo_Equipo");
+                model.Areas = ObtenerSelectList(connection, "P_ObtenerAreas", "ID_area", "Nombre_Area");
+                model.IPs = ObtenerSelectList(connection, "P_ObtenerIPs", "ID_ip", "IPV4");
+            }
+
+            return View(model);
+        }
+
+        // Funcion Crear (POST)
+        [HttpPost]
+        public IActionResult Crear(Radio model)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            try
+            {
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.InfoMessage += Connection_InfoMessage;
+                    connection.Open();
+                    var tipoEquipoCommand = new SqlCommand("SELECT ID_tipo_equipo FROM Tipo_Equipos WHERE UPPER(Tipo_Equipo) = 'RADIO'", connection);
+                    object? tipoEquipoRadioIdObj = tipoEquipoCommand.ExecuteScalar();
+
+                    try
+                    {
+
+                        if (tipoEquipoRadioIdObj == null)
+                        {
+                            ModelState.AddModelError("", "Error: El tipo de equipo 'Radio' no está disponible.");
+
+
+                        }
+                    }
+                    catch (Exception ef)
+                    {
+                        ViewBag.Error = ef.Message;
+                        return View(model);
+                    }
+                    int tipoEquipoRadioId = (int)tipoEquipoRadioIdObj;
+                    if (model.ID_tipo_equipo != tipoEquipoRadioId)
+                    {
+                        ModelState.AddModelError("", "Error: Solo se pueden crear dispositivos de tipo 'Radio'.");
+
+                    }
+                    var command = new SqlCommand("P_InsertarEquipoYRadio", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@NumeroSerie", model.NumeroSerie);
+                    command.Parameters.AddWithValue("@Descripcion", model.Descripcion);
+                    command.Parameters.AddWithValue("@id_tipo_equipo", tipoEquipoRadioId); // ID dinámico para Radio
+                    command.Parameters.AddWithValue("@id_modelo", model.ID_modelo);
+                    command.Parameters.AddWithValue("@id_area", model.ID_area);
+                    command.Parameters.AddWithValue("@id_ip", model.ID_ip);
+                    command.Parameters.AddWithValue("@Estado", model.Estado);
+                    command.Parameters.AddWithValue("@Activo", model.Activo);
+                    command.Parameters.AddWithValue("@Respaldo", model.Respaldo);
+                    command.Parameters.AddWithValue("@Observaciones", model.Observaciones);
+                    command.Parameters.AddWithValue("@Tipo_Voltaje", model.Tipo_Voltaje);
+                    command.Parameters.AddWithValue("@Voltaje", model.Voltaje);
+                    command.Parameters.AddWithValue("@Amperaje", model.Amperaje);
+                    command.Parameters.AddWithValue("@Num_Puertos_RJ45", model.Num_Puertos_RJ45);
+                    command.Parameters.AddWithValue("@Num_Puertos_SFP", model.Num_Puertos_SFP);
+                    command.Parameters.AddWithValue("@Fecha_Compra", model.Fecha_Compra);
+                    command.Parameters.AddWithValue("@Fecha_Garantia", model.Fecha_Garantia);
+                    command.Parameters.AddWithValue("@Tipo_Garantia", model.Tipo_Garantia);
+                    command.Parameters.AddWithValue("@Canal", model.Canal);
+                    command.Parameters.AddWithValue("@Firmware", model.Firmware);
+                    command.Parameters.AddWithValue("@Usuario", model.Usuario);
+                    command.Parameters.AddWithValue("@Contracena", model.Contracena);
+                    command.Parameters.AddWithValue("@MAC_Address", model.MAC_Address);
+                    command.Parameters.AddWithValue("@Fecha_Instalacion", model.Fecha_Instalacion);
+                    command.Parameters.AddWithValue("@Ultima_Actualizacion", model.Ultima_Actualizacion);
+                    command.Parameters.AddWithValue("@Voltaje_Energia", model.Voltaje_Energia);
+                    command.Parameters.AddWithValue("@id_proveedor", model.ID_proveedor);
+
+                    // Parametros de radio
+                    command.Parameters.AddWithValue("@Frecuencia", model.Frecuencia);
+                    command.Parameters.AddWithValue("@Frecuencia_Rango", model.Frecuencia_Rango);
+                    command.Parameters.AddWithValue("@Modo", model.Modo);
+                    command.Parameters.AddWithValue("@Ssid", model.Ssid);
+                    command.Parameters.AddWithValue("@Modulacion", model.Modulacion);
+                    command.Parameters.AddWithValue("@Potencia", model.Potencia);
+                    command.Parameters.AddWithValue("@Tx_Power", model.Tx_Power);
+                    command.Parameters.AddWithValue("@Rx_Level", model.Rx_Level);
+                    command.Parameters.AddWithValue("@Tx_Freq", model.Tx_Freq);
+                    connection.InfoMessage += Connection_InfoMessage;
+                    command.ExecuteNonQuery();
+                    return RedirectToAction("Index", "Radio");
+                }
+            }
+
+            catch (Exception ex)
+            {
+                // Capturar el mensaje de error y mostrarlo en la vista
+                ViewBag.Error = $"Error: {ex.Message}";
+                return View(model);
+            }
+
+        }
+
+
+
+
+        // Funcion Detalles (GET) | Esta funcion es especial porque es necesario mandar a otra vista, esta es similar a la de equipo.
         [HttpGet]
         public IActionResult Detalles(int id)
         {
@@ -330,7 +323,10 @@ namespace Minosa_Proyecto_v._1.Controllers
             return View(model);
         }
 
-        // GET: RadioController/Editar *
+
+
+
+        // Funcion Editar (GET)
         [HttpGet]
         public IActionResult Editar(int id)
         {
@@ -340,20 +336,10 @@ namespace Minosa_Proyecto_v._1.Controllers
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
-                // Consulta preliminar para obtener el ID_Radio basado en el ID_equipo
                 var getRadioIdCommand = new SqlCommand("SELECT ID_Radio FROM Radio WHERE id_equipo = @ID_equipo", connection);
                 getRadioIdCommand.Parameters.AddWithValue("@ID_equipo", id);
 
                 var radioId = (int?)getRadioIdCommand.ExecuteScalar();
-
-                /*if (radioId == null)
-                {
-                    Console.WriteLine("No se encontró un Radio para el ID de equipo proporcionado");
-                    return NotFound("No se encontró un Radio para el ID de equipo proporcionado.");
-                }*/
-
-                // Procedimiento almacenado usando el ID_Radio encontrado
                 var command = new SqlCommand("P_CRUD_ObtenerRadioDetalle", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@ID_Radio", radioId);
@@ -420,8 +406,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             }
             return View(model);
         }
-
-        // POST: RadioController/Editar  *
+        // Funcion Editar (POST)
         [HttpPost]
         public IActionResult Editar(Radio model)
 {
@@ -522,17 +507,8 @@ namespace Minosa_Proyecto_v._1.Controllers
 
 
 
-        // Método auxiliar para cargar listas desplegables
-        private void CargarListasDesplegables(SqlConnection connection, Radio model)
-        {
-            model.Proveedores = ObtenerSelectList(connection, "P_ObtenerProveedores", "ID_proveedor", "Nombre");
-            model.Modelos = ObtenerSelectList(connection, "P_ObtenerModelos", "ID_modelo", "Nombre_Modelo");
-            model.TiposEquipos = ObtenerSelectList(connection, "P_ObtenerTiposEquipos", "ID_tipo_equipo", "Tipo_Equipo");
-            model.Areas = ObtenerSelectList(connection, "P_ObtenerAreas", "ID_area", "Nombre_Area");
-            model.IPs = ObtenerSelectList(connection, "P_ObtenerIPs", "ID_ip", "IPV4");
-        }
 
-        // GET: RadioController/Eliminar
+        // Funcion Eliminar (GET)
         [HttpGet]
         public IActionResult Eliminar(int id)
         {
@@ -542,8 +518,6 @@ namespace Minosa_Proyecto_v._1.Controllers
             using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
-
-                // Query to get the radio details for confirmation
                 var command = new SqlCommand("P_CRUD_ObtenerRadioDetalle", connection);
                 command.CommandType = CommandType.StoredProcedure;
                 command.Parameters.AddWithValue("@ID_Radio", id);
@@ -566,7 +540,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             return View(model);
         }
 
-        // POST: RadioController/Eliminar
+        // Funcion Eliminar (POST)
         [HttpPost]
         public IActionResult Eliminar(Radio model)
         {

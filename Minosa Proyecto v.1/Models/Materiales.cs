@@ -14,5 +14,5 @@ public class Material
     [Required(ErrorMessage = "El área es obligatoria.")]
     public int id_area { get; set; }
 
-    public string Nombre_Area { get; set; }  // Este campo es para almacenar el nombre del área
+    public string Nombre_Area { get; set; }
 }

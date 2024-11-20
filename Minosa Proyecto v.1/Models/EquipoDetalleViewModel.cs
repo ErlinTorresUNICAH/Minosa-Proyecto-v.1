@@ -12,8 +12,10 @@ namespace Minosa_Proyecto_v._1.Models
         [Required(ErrorMessage = "El campo Número de Serie es obligatorio.")]
         public string NumeroSerie { get; set; } = string.Empty;
 
+
         [Required(ErrorMessage = "El campo Descripción es obligatorio.")]
         public string Descripcion { get; set; } = string.Empty;
+
 
         [Required(ErrorMessage = "El campo Estado es obligatorio.")]
         public string Estado { get; set; } = string.Empty;
@@ -23,6 +25,7 @@ namespace Minosa_Proyecto_v._1.Models
         [Required(ErrorMessage = "El campo Respaldo es obligatorio.")]
         public string Respaldo { get; set; } = string.Empty;
 
+
         [Required(ErrorMessage = "El campo Observaciones es obligatorio.")]
         public string Observaciones { get; set; } = string.Empty;
 
@@ -31,6 +34,7 @@ namespace Minosa_Proyecto_v._1.Models
 
         [Required(ErrorMessage = "El campo Tipo de Voltaje es obligatorio.")]
         public string Tipo_Voltaje { get; set; } = string.Empty;
+
 
         [Required(ErrorMessage = "El campo Voltaje es obligatorio.")]
         [Range(0, int.MaxValue, ErrorMessage = "El valor del Voltaje debe ser un número positivo.")]

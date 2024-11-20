@@ -18,6 +18,10 @@ namespace Minosa_Proyecto_v._1.Controllers
             _configuration = configuration;
         }
 
+        // CRUD Usuario
+
+
+        // Funcion Leer (GET)
         [HttpGet]
         public IActionResult Detalles()
         {
@@ -33,7 +37,6 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             UsuarioViewModel usuario = null;
 
-            // Obtener el ID del usuario logueado desde las claims
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdClaim == null)
             {
@@ -41,18 +44,16 @@ namespace Minosa_Proyecto_v._1.Controllers
                 return View();
             }
 
-            int userId = int.Parse(userIdClaim.Value); // Convierte el ID del usuario a entero
+            int userId = int.Parse(userIdClaim.Value);
 
             try
             {
                 using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-
-                    // Usamos el procedimiento almacenado P_ObtenerUsuarioPorID
                     var command = new SqlCommand("P_ObtenerUsuarioPorID", connection);
                     command.CommandType = CommandType.StoredProcedure;
-                    command.Parameters.Add(new SqlParameter("@ID_usuario", userId)); // Pasamos el ID del usuario
+                    command.Parameters.Add(new SqlParameter("@ID_usuario", userId));
 
                     SqlDataReader reader = command.ExecuteReader();
                     if (reader.Read())
@@ -77,6 +78,9 @@ namespace Minosa_Proyecto_v._1.Controllers
             return View(usuario);
         }
 
+
+
+        // Funcion Editar (GET)
         [HttpPost]
         public IActionResult Editar(UsuarioViewModel model)
         {
@@ -87,7 +91,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                 ViewBag.Error = "La cadena de conexión no está configurada correctamente.";
                 return View(model);
             }
-
             try
             {
                 using (var connection = new SqlConnection(connectionString))
@@ -104,8 +107,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
                     command.ExecuteNonQuery();
                 }
-
-                return RedirectToAction("Detalles"); // Regresar a la página de detalles después de la edición
+                return RedirectToAction("Detalles");
             }
             catch (Exception ex)
             {
@@ -113,5 +115,8 @@ namespace Minosa_Proyecto_v._1.Controllers
                 return View(model);
             }
         }
+
+        // Funcion Eliminar (GET)
+        // Funcion Crear (GET)
     }
 }

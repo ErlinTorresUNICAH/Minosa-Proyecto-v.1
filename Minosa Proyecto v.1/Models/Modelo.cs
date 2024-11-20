@@ -10,7 +10,7 @@ public class Modelo
     [Required(ErrorMessage = "Debe seleccionar una marca.")]
     public int id_Marca { get; set; }
 
-    public string Marca { get; set; } = string.Empty;  // Aquí se almacena el nombre de la marca
+    public string Marca { get; set; } = string.Empty;  
 
     public bool Activo { get; set; } = true;
 }

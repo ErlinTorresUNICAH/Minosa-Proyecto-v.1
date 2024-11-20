@@ -2,17 +2,16 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
-
-
 //librerias para reportes
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace Minosa_Proyecto_v._1.Controllers
 {
-
+    [Authorize]
     public class GraficosController : Controller { 
 
         private readonly IConfiguration _configuration;
@@ -22,15 +21,13 @@ namespace Minosa_Proyecto_v._1.Controllers
             _configuration = configuration;
         }
 
+        //Index para controlar todas las funciones
         public IActionResult Index()
         {
             var equiposPorTipo = ObtenerEquiposPorTipo();
             var equiposPorArea = ObtenerEquiposPorArea();
             var equiposPorZona = ObtenerEquiposPorZona();
             var equiposPorAreaConTipo = ObtenerEquiposPorAreaConTipo();
-            
-
-
             var data = new
             {
                 EquiposPorTipo = equiposPorTipo,
@@ -41,6 +38,8 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             return View(data);
         }
+
+        // Lista con todos los equipos por tipo para su uso en grafico
         private List<dynamic> ObtenerEquiposPorTipo()
         {
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -70,6 +69,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             return data;
         }
 
+        // Lista con todos los equipos por area para su uso en grafico
         private List<dynamic> ObtenerEquiposPorArea()
         {
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -99,6 +99,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             return data;
         }
 
+        // Lista con todos los equipos por zona para su uso en grafico
         private List<dynamic> ObtenerEquiposPorZona()
         {
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -128,6 +129,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             return data;
         }
 
+        // Lista con todos los equipos por area con tipo para su uso en grafico
         private List<dynamic> ObtenerEquiposPorAreaConTipo()
         {
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -135,7 +137,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             using (var connection = new SqlConnection(connectionString))
             {
-                var command = new SqlCommand("P_GetEquiposPorAreaConTipo", connection) // Asegúrate de tener el procedimiento almacenado adecuado.
+                var command = new SqlCommand("P_GetEquiposPorAreaConTipo", connection)
                 {
                     CommandType = CommandType.StoredProcedure
                 };
@@ -158,23 +160,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             return data;
         }
 
-        /*public ActionResult GenerarReporte()
-        {
-            MemoryStream ms = new MemoryStream();
-            Document doc = new Document();
-            PdfWriter.GetInstance(doc, ms);
-            doc.Open();
-            doc.Add(new Paragraph("Reporte de Equipos por Tipo"));
-
-            // Aquí puedes agregar más contenido al PDF, como tablas, gráficos, etc.
-            
-            doc.Close();
-            byte[] byteArray = ms.ToArray();
-            ms.Close();
-            
-            return File(byteArray, "application/pdf", "ReporteEquipos.pdf");
-        }*/
-
+        //Generar reporte de equipos por tipo solamente Tabla en PDF
         public ActionResult GenerarReporte()
         {
             MemoryStream ms = new MemoryStream();
@@ -183,8 +169,6 @@ namespace Minosa_Proyecto_v._1.Controllers
             doc.Open();
             doc.Add(new Paragraph("Reporte de Equipos por Tipo"));
             doc.Add(new Paragraph(" ")); // Espacio en blanco para separación
-
-            // Conexión a la base de datos para recuperar los datos
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
             using (var connection = new SqlConnection(connectionString))
             {
@@ -218,7 +202,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             return File(byteArray, "application/pdf", "ReporteEquipos.pdf");
         }
 
-
+        //Generar reporte de equipos por tipo solamente grafico en PDF
         public ActionResult GenerarReporteConGrafico()
         {
             MemoryStream ms = new MemoryStream();
@@ -227,8 +211,6 @@ namespace Minosa_Proyecto_v._1.Controllers
             doc.Open();
             doc.Add(new Paragraph("Reporte de Equipos con Gráfico"));
             doc.Add(new Paragraph(" ")); // Espacio en blanco para separación
-
-            // Conexión a la base de datos para recuperar los datos
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
             using (var connection = new SqlConnection(connectionString))
             {
@@ -277,6 +259,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             return File(byteArray, "application/pdf", "ReporteConGrafico.pdf");
         }
 
+        //Generar grafico de equipos por tipo en PDF
         private void GenerateBarChart(PdfContentByte cb, List<string> labels, List<int> values)
         {
             // Variables básicas de gráficos

@@ -1,3 +1,6 @@
+#Este scrip en python te permite extraer todos los procedures almacenados de una base de datos SQL Server y guardarlos en un archivo .sql
+#Configuras la conexion a tu base y ejecutas, recuerda tener instalado pyodbc y python.
+# Para ejecutar solamente ve a la carpeta donde se encuentra el archivo y ejecuta el comando | python scripToDbProcedure.py | o | python3 scripToDbProcedure.py |
 import pyodbc
 
 # Configura tu conexión a la base de datos
@@ -17,17 +20,28 @@ WHERE OBJECTPROPERTY(object_id, 'IsProcedure') = 1
 cursor.execute(query)
 procedures = cursor.fetchall()
 
-# Guarda cada procedimiento en un archivo o uno solo como prefieras
-with open("procedimientos.sql", "w", encoding="utf-8") as file:
+# Conjunto para rastrear nombres únicos de procedimientos
+procedures_seen = set()
+
+with open("ProcedimientosAlmacenados.sql", "w", encoding="utf-8") as file:
     for row in procedures:
         schema_name = row.SchemaName
         procedure_name = row.ProcedureName
-        definition = row.definition
+        definition = row.definition.strip()  # Remueve espacios innecesarios
 
-        # Manejar posibles ALTER PROCEDURE y convertirlo a CREATE PROCEDURE
-        definition = definition.replace("ALTER PROCEDURE", "CREATE PROCEDURE")
+        # Construye el identificador completo del procedimiento
+        full_procedure_name = f"{schema_name}.{procedure_name}"
 
-        file.write(f"CREATE PROCEDURE [{schema_name}].[{procedure_name}]\n{definition}\nGO\n\n")
+        # Verifica si el procedimiento ya ha sido visto
+        if full_procedure_name not in procedures_seen:
+            file.write(f"-- PROCEDIMIENTO: [{schema_name}].[{procedure_name}]\n")
+            file.write(f"{definition}\n")  # Escribe solo la definición tal como está
+            file.write("GO\n\n")
+            file.write("\n\n")
+            file.write("\n\n")
+            file.write("\n\n")
+            # Añade el nombre del procedimiento al conjunto para evitar repeticiones
+            procedures_seen.add(full_procedure_name)
 
 cursor.close()
 conn.close()

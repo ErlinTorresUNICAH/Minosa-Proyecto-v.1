@@ -15,8 +15,10 @@ using System.Data;
 /// </summary>
 public class ActividadBackgroundService : BackgroundService
 {
+
     private readonly string _connectionString;
     private readonly ILogger<ActividadBackgroundService> _logger;
+
 
     public ActividadBackgroundService(IConfiguration configuration, ILogger<ActividadBackgroundService> logger)
     {
@@ -24,6 +26,7 @@ public class ActividadBackgroundService : BackgroundService
         _logger = logger;
     }
 
+    //Llama a todas las funcion en orden para su control
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         while (!stoppingToken.IsCancellationRequested)
@@ -32,20 +35,17 @@ public class ActividadBackgroundService : BackgroundService
 
             var dispositivos = await ObtenerActividadDispositivosAsync();
            /* var dispositivosHistory = await ObtenerHistorialDispositivosAsync();*/
+
             await EscanearDispositivosConNmapAsync(dispositivos);
             await ActualizarEstadoPingAsync(dispositivos);
-
-
-
 
             _logger.LogInformation("Iniciando inserción de historial de ping...");
             await InsertarHistorialPingAsync(dispositivos);
             _logger.LogInformation("Finalizada inserción de historial de ping.");
 
-
-
             _logger.LogInformation("Completed activity device scan at: {time}", DateTimeOffset.Now);
 
+            //cambiar este parametro en base del tiempo que se quiere que se ejecute los pings en minutos
             await Task.Delay(TimeSpan.FromMinutes(20), stoppingToken);
 
         }
@@ -137,43 +137,6 @@ public class ActividadBackgroundService : BackgroundService
         });
     }
 
-    /*private async Task ActualizarEstadoPingAsync(List<Actividad> dispositivos)
-    {
-        using (SqlConnection conn = new SqlConnection(_connectionString))
-        {
-            await conn.OpenAsync();
-            foreach (var dispositivo in dispositivos)
-            {
-                string query = "UPDATE DireccionesIp SET ping = @Ping, UltimaHoraPing = @UltimaHoraPing WHERE IPV4 = @DireccionIP";
-                using (SqlCommand cmd = new SqlCommand(query, conn))
-                {
-                    cmd.Parameters.AddWithValue("@Ping", dispositivo.Ping ? 1 : 0);
-                    cmd.Parameters.AddWithValue("@UltimaHoraPing", dispositivo.UltimaHoraPing ?? (object)DBNull.Value);
-                    cmd.Parameters.AddWithValue("@DireccionIP", dispositivo.DireccionIP);
-
-                    try
-                    {
-                        int rowsAffected = await cmd.ExecuteNonQueryAsync();
-                        if (rowsAffected == 0)
-                        {
-                            _logger.LogWarning("No rows were updated for IP: {DireccionIP}", dispositivo.DireccionIP);
-                        }
-                        else
-                        {
-                            _logger.LogInformation("Updated {rowsAffected} rows for IP: {DireccionIP}", rowsAffected, dispositivo.DireccionIP);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        _logger.LogError(ex, "Error updating database for IP: {DireccionIP}", dispositivo.DireccionIP);
-                    }
-                }
-            }
-        }
-        //await CuentaRegresivaCincoMinutosAsync();
-    }
-*/
-
     //actualiza la actividad del ping
     private async Task ActualizarEstadoPingAsync(List<Actividad> dispositivos)
     {
@@ -211,7 +174,7 @@ public class ActividadBackgroundService : BackgroundService
         }
     }
 
-
+    //actualiza la historial del ping esto para la vista se actualice automaticamente
     private async Task InsertarHistorialPingAsync(List<Actividad> dispositivos)
     {
         using (SqlConnection conn = new SqlConnection(_connectionString))
@@ -241,6 +204,13 @@ public class ActividadBackgroundService : BackgroundService
             }
         }
     }
+
+
+
+
+
+
+
     private async Task<List<Actividad>> ObtenerHistorialDispositivosAsync()
     {
         List<Actividad> dispositivosHistory = new List<Actividad>();
@@ -270,8 +240,6 @@ public class ActividadBackgroundService : BackgroundService
 
         return dispositivosHistory;
     }
-
-
     //cuenta regresiva para control en el cmd
     private async Task CuentaRegresivaCincoMinutosAsync()
     {

@@ -5,6 +5,7 @@ using System.Diagnostics;
 
 namespace Minosa_Proyecto_v._1.Controllers
 {
+    // Home Controller se utukuza para poder redirigir a la vista principal de la aplicacion
     [Authorize]
     public class HomeController : Controller
     {
