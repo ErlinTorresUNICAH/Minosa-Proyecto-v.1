@@ -83,6 +83,7 @@
 
         function actualizarGraficoHistorialPings(ip) {
             $.ajax({
+                // ObtenerHistorialPingsAJAX es la funcion que tiene los datos
                 url: '@Url.Action("ObtenerHistorialPingsAJAX", "Actividad")',
                 type: 'GET',
                 data: { direccionIP: ip }, // Enviar la IP seleccionada al servidor
@@ -92,8 +93,8 @@
                         const limitedData = filteredData.slice(-10);
 
                         const seriesData = limitedData.map(ping => {
-                            const fecha = new Date(ping.ultimaHoraPing).getTime(); // Timestamp for Highcharts
-                            return [fecha, ping.ping ? 1 : 0]; // Represent ping status as 1 or 0
+                            const fecha = new Date(ping.ultimaHoraPing).getTime(); // Marca de tiempo para las Highcharts
+                            return [fecha, ping.ping ? 1 : 0]; // Representar el estado de ping como 1 o 0
                         });
 
                         Highcharts.chart('container', {

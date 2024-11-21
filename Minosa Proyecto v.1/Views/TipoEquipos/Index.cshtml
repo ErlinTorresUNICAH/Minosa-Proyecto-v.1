@@ -20,7 +20,7 @@
             <tr>
                 <td>@item.ID_tipo_equipo</td>
                 <td>@item.Tipo_Equipo</td>
-                <td>@item.Creacion_Tipo_Equipo</td> <!-- Formato de fecha -->
+                <td>@item.Creacion_Tipo_Equipo</td>
                 <td>
                     <a asp-action="Editar" asp-route-id="@item.ID_tipo_equipo" class="btn btn-outline-warning"><i class="bi bi-pencil-square"></i> Editar</a>
                     <a asp-action="Eliminar" asp-route-id="@item.ID_tipo_equipo" class="btn btn-outline-danger"><i class="bi bi-trash"></i> Eliminar</a>
@@ -29,4 +29,3 @@
         }
     </tbody>
 </table>
- @* ?.ToString("dd/MM/yyyy") *@

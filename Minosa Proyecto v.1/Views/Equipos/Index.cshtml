@@ -1,7 +1,4 @@
 ﻿@model List<Minosa_Proyecto_v._1.Models.EquipoViewModel>
-
-
-<!-- Botones ajustados para que no ocupen espacio innecesario -->
 <div class="row mt-3">
     <div class="col-md-3 col-12 mb-2">
         <a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary btn-block"><i class="fa-solid fa-folder-plus"></i> Nuevo Equipo</a>
@@ -42,13 +39,10 @@
 
 
 <h2>Lista de Equipos</h2>
-
-<!-- Table with filters for each column -->
 <div class="table-responsive">
     <table class="table table-striped table-bordered" style="table-layout: auto; width: 100%;" id="equiposTable">
         <thead>
             <tr>
-                <!-- Search inputs for each column -->
                 <th><input type="text" id="serialFilter" placeholder="Buscar Nº Serie" class="form-control" /></th>
                 <th><input type="text" id="descripcionFilter" placeholder="Buscar Descripción" class="form-control" /></th>
                 <th><input type="text" id="tipoEquipoFilter" placeholder="Buscar Tipo de Equipo" class="form-control" /></th>
@@ -61,14 +55,11 @@
                 <th><input type="text" id="observacionesFilter" placeholder="Buscar Observaciones" class="form-control" /></th>
                 <th>
                     <div>
-                        <!-- Button to clear filters -->
                         <button id="clearFiltersButton" class="btn btn-secondary">
                             <i class="fas fa-times-circle"></i> Borrar Filtros
                         </button>
                     </div>
                 </th>
-                
-
             </tr>
             <tr>
                 <th>Número de Serie</th>
@@ -113,46 +104,9 @@
         @ViewBag.Error
     </div>
 }
-
-@* <!-- JavaScript to filter table -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Function to filter table rows based on input field values
-        function filterTable(inputId, columnIndex) {
-            let input = document.getElementById(inputId);
-            input.addEventListener('keyup', function() {
-                let filter = input.value.toLowerCase();
-                let table = document.getElementById("equiposTable");
-                let rows = table.getElementsByTagName("tr");
-
-                for (let i = 2; i < rows.length; i++) { // Start from 2 to skip the search inputs and headers
-                    let cell = rows[i].getElementsByTagName("td")[columnIndex];
-                    if (cell) {
-                        let txtValue = cell.textContent || cell.innerText;
-                        rows[i].style.display = txtValue.toLowerCase().indexOf(filter) > -1 ? "" : "none";
-                    }
-                }
-            });
-        }
-
-        // Attach filters to columns
-        filterTable("serialFilter", 0);
-        filterTable("descripcionFilter", 1);
-        filterTable("tipoEquipoFilter", 2);
-        filterTable("modeloFilter", 3);
-        filterTable("areaFilter", 4);
-        filterTable("direccionIpFilter", 5);
-        filterTable("estadoFilter", 6);
-        filterTable("activoFilter", 7);
-        filterTable("respaldoFilter", 8);
-        filterTable("observacionesFilter", 9);
-    });
-</script> *@
-
-@* 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // Function to filter table rows based on all input field values
+        // Función para filtrar filas de tabla en base a todos los valores del campo de entrada
         function applyFilters() {
             let filters = [
                 { inputId: "serialFilter", columnIndex: 0 },
@@ -170,11 +124,11 @@
             let table = document.getElementById("equiposTable");
             let rows = table.getElementsByTagName("tr");
 
-            for (let i = 2; i < rows.length; i++) { // Start from 2 to skip the search inputs and headers
+            for (let i = 2; i < rows.length; i++) { // Empezar desde 2 para saltarse las entradas de búsqueda y los encabezados
                 let row = rows[i];
                 let visible = true;
 
-                // Check all filters
+                // Check all Filtros
                 for (let filter of filters) {
                     let input = document.getElementById(filter.inputId);
                     let filterValue = input.value.toLowerCase();
@@ -184,77 +138,17 @@
                         let cellValue = cell.textContent || cell.innerText;
                         if (cellValue.toLowerCase().indexOf(filterValue) === -1) {
                             visible = false;
-                            break; // No need to check further filters if one fails
+                            break; // No hay necesidad de comprobar más filtros si uno falla
                         }
                     }
                 }
 
-                // Show or hide the row based on the filter checks
+                // Mostrar u ocultar la fila en función de las comprobaciones del filtro
                 row.style.display = visible ? "" : "none";
             }
         }
 
-        // Attach event listeners to each filter input
-        let filterInputs = [
-            "serialFilter", "descripcionFilter", "tipoEquipoFilter",
-            "modeloFilter", "areaFilter", "direccionIpFilter",
-            "estadoFilter", "activoFilter", "respaldoFilter",
-            "observacionesFilter"
-        ];
-
-        for (let inputId of filterInputs) {
-            let input = document.getElementById(inputId);
-            input.addEventListener('keyup', applyFilters);
-        }
-    });
-</script>
- *@
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        // Function to filter table rows based on all input field values
-        function applyFilters() {
-            let filters = [
-                { inputId: "serialFilter", columnIndex: 0 },
-                { inputId: "descripcionFilter", columnIndex: 1 },
-                { inputId: "tipoEquipoFilter", columnIndex: 2 },
-                { inputId: "modeloFilter", columnIndex: 3 },
-                { inputId: "areaFilter", columnIndex: 4 },
-                { inputId: "direccionIpFilter", columnIndex: 5 },
-                { inputId: "estadoFilter", columnIndex: 6 },
-                { inputId: "activoFilter", columnIndex: 7 },
-                { inputId: "respaldoFilter", columnIndex: 8 },
-                { inputId: "observacionesFilter", columnIndex: 9 }
-            ];
-
-            let table = document.getElementById("equiposTable");
-            let rows = table.getElementsByTagName("tr");
-
-            for (let i = 2; i < rows.length; i++) { // Start from 2 to skip the search inputs and headers
-                let row = rows[i];
-                let visible = true;
-
-                // Check all filters
-                for (let filter of filters) {
-                    let input = document.getElementById(filter.inputId);
-                    let filterValue = input.value.toLowerCase();
-                    let cell = row.getElementsByTagName("td")[filter.columnIndex];
-
-                    if (cell && filterValue) {
-                        let cellValue = cell.textContent || cell.innerText;
-                        if (cellValue.toLowerCase().indexOf(filterValue) === -1) {
-                            visible = false;
-                            break; // No need to check further filters if one fails
-                        }
-                    }
-                }
-
-                // Show or hide the row based on the filter checks
-                row.style.display = visible ? "" : "none";
-            }
-        }
-
-        // Attach event listeners to each filter input
+        // Adjuntar los listeners de eventos a cada entrada del filtro
         let filterInputs = [
             "serialFilter", "descripcionFilter", "tipoEquipoFilter",
             "modeloFilter", "areaFilter", "direccionIpFilter",
@@ -267,13 +161,13 @@
             input.addEventListener('keyup', applyFilters);
         }
 
-        // Clear filters function
+        // Función de limpiar filtros
         document.getElementById('clearFiltersButton').addEventListener('click', function () {
-            // Clear all input fields
+            // Borrar todos los campos de entrada
             for (let inputId of filterInputs) {
                 document.getElementById(inputId).value = '';
             }
-            // Reapply filters to show all rows
+            // Volver a aplicar los filtros para mostrar todas las filas
             applyFilters();
         });
     });

@@ -58,9 +58,10 @@
         const deleteButton = document.getElementById('deleteSelectedBtn');
         const selectedIdsInput = document.getElementById('selectedIds');
 
-        // Event delegation: attach listener to the parent element (tbody)
+        // adjuntar el listener al elemento padre (tbody)
         document.querySelector('tbody').addEventListener('click', function (event) {
-            const row = event.target.closest('.selectable-row'); // Check if a selectable row was clicked
+            // Comprobar si se ha hecho clic en una fila seleccionable
+            const row = event.target.closest('.selectable-row'); 
             if (row) {
                 const id = row.getAttribute('data-id');
                 if (selectedIds.has(id)) {
@@ -79,7 +80,7 @@
             selectedIdsInput.value = Array.from(selectedIds).join(',');
         }
 
-        // Optional CSS for visual feedback
+        // CSS opcional para feedback
         const style = document.createElement('style');
         style.innerHTML = `
                     .selectable-row.selected-row {

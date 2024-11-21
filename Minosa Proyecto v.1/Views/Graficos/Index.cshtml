@@ -18,7 +18,7 @@
 
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script>
-    // Data for Equipos por Tipo
+    // Datos de Equipos por Tipo
     var dataEquiposPorTipo = [];
 
     @foreach (var item in Model.EquiposPorTipo)
@@ -55,7 +55,7 @@
         }
     });
 
-    // Data for Equipos por Área
+    // Datos de Equipos por Área
     var dataEquiposPorArea = [];
 
     @foreach (var item in Model.EquiposPorArea)
@@ -86,7 +86,7 @@
         }]
     });
 
-    // Data for Equipos por Zona
+    // Datos de Equipos por Zona
     var dataEquiposPorZona = [];
 
     @foreach (var item in Model.EquiposPorZona)
@@ -117,7 +117,7 @@
         }]
     });
 
-    // Data for Equipos por Área con Tipos
+    // Datos de Equipos por Área con Tipos
     var dataByArea = {};
 
     @foreach (var item in Model.EquiposPorAreaConTipo)
@@ -133,7 +133,7 @@
         </text>
     }
 
-    // Transform data into Highcharts series format
+    // Transformar la informacion a Highcharts
     var seriesData = [];
     for (var area in dataByArea) {
         seriesData.push({
@@ -142,7 +142,7 @@
         });
     }
 
-    //Initialize the Highcharts grouped bar chart
+    //Inicializar el gráfico de barras agrupadas Highcharts
     Highcharts.chart('areaChartContainer', {
         chart: {
             type: 'column'
@@ -179,75 +179,15 @@
             useHTML: true
         }
     });
-    // Add logic for generating PDF report if needed
 </script>
 
-@* <script>
-    document.getElementById('generateReportButton').addEventListener('click', function () {
-    window.location.href = '/Graficos/GenerarReporte'; // Llama a tu función del controlador
-    console.log("Reporte generado");
-    });
-</script> *@
 <script src="https://code.highcharts.com/highcharts.js"></script>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/canvg/3.0.7/umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/svg2pdf.js/2.3.7/svg2pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-
-
-@* <script>
-    document.getElementById('generateReportButton').addEventListener('click', function () {
-        // Capturar el gráfico como imagen base64
-        var chart = Highcharts.charts[0]; // Obtiene la instancia del gráfico
-        if (!chart) {
-        console.error('No se encontró ningún gráfico de Highcharts en la página.');
-        return;
-    }
-        console.log("estos son los datos",chart);
-        chart.exportChartLocal({
-            type: 'image/png',
-            filename: 'highchart-image',
-            scale:2
-            
-        }, function (dataUrl) {
-            // Enviar la imagen al servidor
-            fetch('/Graficos/GenerarReporteConGrafico', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ base64Image: dataUrl })
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.blob();
-                }
-                throw new Error('Error al generar el reporte');
-            })
-            .then(blob => {
-                // Crear un enlace temporal para descargar el PDF con la tabla y el gráfico
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.style.display = 'none';
-                a.href = url;
-                a.download = 'ReporteConGrafico.pdf'; // Nombre del archivo
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-            })
-            .catch(error => console.error('Error al enviar la imagen al servidor:', error));
-        });
-
-        // También llamar a tu función de generar reporte con la tabla sin el gráfico
-       /*  window.location.href = '/Graficos/GenerarReporte';  */// Llama a la otra función del controlador
-        console.log("Reporte generado");
-    });
-</script>
- *@
-
 <script>
     document.getElementById('generateReportButton').addEventListener('click', function () {
         window.location.href = '/Graficos/GenerarReporteConGrafico'; // Redirige a la función que genera el reporte con gráficos
