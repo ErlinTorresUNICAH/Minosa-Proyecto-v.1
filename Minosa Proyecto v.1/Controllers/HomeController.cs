@@ -20,6 +20,10 @@ namespace Minosa_Proyecto_v._1.Controllers
         {
             return View();
         }
+        public IActionResult Index1()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
