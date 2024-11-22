@@ -3860,3 +3860,9 @@ BEGIN
     SELECT ID_marca, Marca FROM Marcas
 END
 GO
+CREATE PROCEDURE P_ListaDeCorreosAlertas
+AS
+BEGIN
+SELECT Nombre_Destinatario, Correo_Destinatario FROM Destinatarios
+END
+GO
