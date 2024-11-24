@@ -1,0 +1,293 @@
+﻿@model List<Actividad>
+<a asp-action="IndexGraficos" asp-controller="Actividad" class="btn btn-outline-secondary">Actividad Dispositivos</a>
+<div class="mt-4">
+    <h4>Historial de Pings</h4>
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered" style="table-layout: auto; width: 100%;">
+            <thead>
+                <tr>
+                    <th>Dirección IP</th>
+                    <th>Resultado del Ping</th>
+                    <th>Ping</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+
+
+
+                </tr>
+            </thead>
+            <tbody id="historialPings">
+                @if (ViewBag.HistorialPings != null)
+                {
+                    foreach (var ping in ViewBag.HistorialPings)
+                    {
+                        <tr style="@(ping.Ping ? "background-color: #d4edda;" : "background-color: #f8d7da;")">
+
+                            <td>@ping.DireccionIP</td>
+                            <td>
+                                @if (ping.Ping)
+                                {
+                                    <span class="text-success"><i class="bi bi-reception-4"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger"><i class="bi bi-reception-0"></i></span>
+                                }
+                            </td>
+                            @* <td>@ping.UltimaHoraPing.ToString("dd/MM/yyyy HH:mm:ss")</td> *@
+                            <td>
+                                @ping.UltimaHoraPing.ToString("dddd", new System.Globalization.CultureInfo("es-ES")) <!-- Muestra el día de la semana en español -->
+                            </td>
+                            <td>@ping.UltimaHoraPing.ToString("dd/MM/yyyy")</td> <!-- Muestra solo la fecha -->
+                            <td>@ping.UltimaHoraPing.ToString("HH:mm:ss")</td> <!-- Muestra solo la hora -->
+
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="text-center">No hay historial de pings disponible.</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+    <nav>
+        <ul class="pagination">
+            @{
+                int totalPages = (int)Math.Ceiling((double)ViewBag.TotalRecords / ViewBag.PageSize);
+
+                for (int i = 1; i <= totalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.PageNumber ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("IndexHistorial", new { pageNumber = i, pageSize = ViewBag.PageSize })">@i</a>
+                    </li>
+                }
+            }
+        </ul>
+    </nav>
+
+</div>
+
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger">
+        @ViewBag.Error
+    </div>
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+        $(document).ready(function () {
+        function cargarPagina(pageNumber) {
+            $.ajax({
+                url: '@Url.Action("Index", "Actividad")',
+                type: 'GET',
+                data: { pageNumber: pageNumber, pageSize: @ViewBag.PageSize },
+                success: function (data) {
+                    // Aquí renderiza la tabla nuevamente con los datos obtenidos
+                    const historialTableBody = $("#historialPings");
+                    historialTableBody.empty();
+
+                    if (data && data.length > 0) {
+                        data.forEach(function (ping) {
+                            const fechaFormateada = formatearFecha(ping.ultimaHoraPing);
+                            let row = `
+                                <tr style="${ping.ping ? 'background-color: #d4edda;' : 'background-color: #f8d7da;'}">
+                                    <td>${ping.direccionIP}</td>
+                                    <td>${ping.ping ? '<span class="text-success"><i class="bi bi-reception-4"></i></span>' : '<span class="text-danger"><i class="bi bi-reception-0"></i></span>'}</td>
+                                    <td>${fechaFormateada.dia}</td>
+                                    <td>${fechaFormateada.fecha}</td>
+                                    <td>${fechaFormateada.hora}</td>
+                                </tr>`;
+                            historialTableBody.append(row);
+                        });
+                    } else {
+                        historialTableBody.append('<tr><td colspan="5" class="text-center">No hay historial de pings disponible.</td></tr>');
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error al cargar la página:", error);
+                }
+            });
+        }
+
+        function actualizarHistorialPings() {
+            cargarPagina(@ViewBag.PageNumber);
+        }
+
+        // Listener para la paginación
+        $(document).on("click", ".pagination a", function (e) {
+            e.preventDefault();
+            const pageNumber = $(this).text();
+            cargarPagina(pageNumber);
+        });
+
+        // Configuración de los intervalos de actualización
+        setInterval(actualizarHistorialPings, 100000);
+
+        // Llamada inicial
+        actualizarHistorialPings();
+    });
+
+</script>
+@* <script>
+    function formatearFecha(fechaISO) {
+        const fecha = new Date(fechaISO);
+        const opcionesDia = { weekday: 'long' };
+        const opcionesFecha = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const opcionesHora = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
+
+        const dia = new Intl.DateTimeFormat('es-ES', opcionesDia).format(fecha);
+        const fechaFormateada = new Intl.DateTimeFormat('es-ES', opcionesFecha).format(fecha);
+        const horaFormateada = new Intl.DateTimeFormat('es-ES', opcionesHora).format(fecha);
+
+        return { dia, fecha: fechaFormateada, hora: horaFormateada };
+    }
+
+    $(document).ready(function () {
+        function actualizarHistorialPings() {
+                $.ajax({
+                    url: '@Url.Action("ObtenerHistorialPingsAJAX", "Actividad")',
+                    type: 'GET',
+                    success: function (data) {
+                        let historialTableBody = $("#historialPings");
+                        historialTableBody.empty();
+
+                        if (Array.isArray(data) && data.length > 0) {
+                            data.forEach(function (ping) {
+                                const fechaFormateada = formatearFecha(ping.ultimaHoraPing);
+                                    let row = `
+                                        <tr style="${ping.ping ? 'background-color: #d4edda;' : 'background-color: #f8d7da;'}">
+                                            <td>${ping.direccionIP}</td>
+                                            <td>${ping.ping ? '<span class="text-success"><i class="bi bi-reception-4"></i></span>' : '<span class="text-danger"><i class="bi bi-reception-0"></i></span>'}</td>
+                                            <td>${fechaFormateada.dia}</td>
+                                            <td>${fechaFormateada.fecha}</td>
+                                            <td>${fechaFormateada.hora}</td>
+                                        </tr>
+                                    `;
+                                historialTableBody.append(row);
+                            });
+                        } else {
+                            historialTableBody.append('<tr><td colspan="3" class="text-center">No hay historial de pings disponible.</td></tr>');
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("Error al obtener el historial de pings:", error);
+                    }
+                });
+        }
+
+        function actualizarPingYHora()
+    {
+        $.ajax({
+            url: '@Url.Action("ObtenerHistorialPingsAJAX", "Actividad")', // Ruta para obtener los datos actualizados
+            type: 'GET',
+            success: function (data) {
+                  console.log("Datos recibidos:", data);
+                if (Array.isArray(data) && data.length > 0) {
+                    data.forEach(function (actividad) {
+                        // Busca la fila correspondiente por la IP de dirección
+                        let fila = $(`#tablaActividades tr[data-ip="${actividad.DireccionIP}"]`);
+                        if (fila.length > 0) {
+                            // Actualiza el valor del Ping
+                            let celdaPing = fila.find('td[data-columna="Ping"]');
+                            if (actividad.Ping) {
+                                celdaPing.html('<span class="text-success"><i class="bi bi-reception-4"></i></span>');
+                            } else {
+                                celdaPing.html('<span class="text-danger"><i class="bi bi-reception-0"></i></span>');
+                            }
+
+                            // Actualiza el valor de la Última Hora Ping
+                            let celdaHoraPing = fila.find('td[data-columna="UltimaHoraPing"]');
+                            celdaHoraPing.text(actividad.UltimaHoraPing ? new Date(actividad.UltimaHoraPing).toLocaleString('es-ES') : 'No disponible');
+                        }
+                    });
+                } else {
+                    console.error("No se encontraron datos de actividades actualizados.");
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error al obtener el estado actualizado de Ping y Hora:", error);
+            }
+        });
+    }
+
+
+                // Llama a la función cada cierto tiempo para actualizar solo los campos de Ping y Hora
+                setInterval(actualizarPingYHora, 100000);
+                setInterval(actualizarHistorialPings, 100000); // Cambia a 15 segundos si quieres un desfase 
+
+                // Llamadas iniciales para no esperar el primer intervalo
+                actualizarHistorialPings();
+                actualizarPingYHora();
+    });
+</script> *@
+@* 
+<div class="mt-4">
+    <h4>Historial de Pings</h4>
+    <div class="table-responsive">
+        <table class="table table-sm table-bordered" style="table-layout: auto; width: 100%;">
+            <thead>
+                <tr>
+                    <th>Dirección IP</th>
+                    <th>Resultado del Ping</th>
+                    <th>Ping</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                </tr>
+            </thead>
+            <tbody id="historialPings">
+                @if (ViewBag.HistorialPings != null && ((List<Actividad>)ViewBag.HistorialPings).Count > 0)
+                {
+                    foreach (var ping in ViewBag.HistorialPings)
+                    {
+                        <tr style="@(ping.Ping ? "background-color: #d4edda;" : "background-color: #f8d7da;")">
+                            <td>@ping.DireccionIP</td>
+                            <td>
+                                @if (ping.Ping)
+                                {
+                                    <span class="text-success"><i class="bi bi-reception-4"></i></span>
+                                }
+                                else
+                                {
+                                    <span class="text-danger"><i class="bi bi-reception-0"></i></span>
+                                }
+                            </td>
+                            <td>@ping.UltimaHoraPing.ToString("dddd", new System.Globalization.CultureInfo("es-ES"))</td>
+                            <td>@ping.UltimaHoraPing.ToString("dd/MM/yyyy")</td>
+                            <td>@ping.UltimaHoraPing.ToString("HH:mm:ss")</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center">No hay historial de pings disponible.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Controles de paginación -->
+    <nav aria-label="Paginación">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(ViewBag.PageNumber <= 1 ? "disabled" : "")">
+                <a class="page-link" href="?pageNumber=@(ViewBag.PageNumber - 1)&pageSize=@ViewBag.PageSize">Anterior</a>
+            </li>
+            @for (int i = 1; i <= Math.Ceiling((double)ViewBag.TotalRecords / ViewBag.PageSize); i++)
+            {
+                <li class="page-item @(i == ViewBag.PageNumber ? "active" : "")">
+                    <a class="page-link" href="?pageNumber=@i&pageSize=@ViewBag.PageSize">@i</a>
+                </li>
+            }
+            <li class="page-item @(ViewBag.HasNextPage ? "" : "disabled")">
+                <a class="page-link" href="?pageNumber=@(ViewBag.PageNumber + 1)&pageSize=@ViewBag.PageSize">Siguiente</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+ *@
