@@ -90,10 +90,13 @@
                 success: function (data) {
                     if (Array.isArray(data) && data.length > 0) {
                         const filteredData = data.filter(ping => ping.direccionIP === ip);
-                        const limitedData = filteredData.slice(-10);
+                        var cantidadDatos = -10;
+                        const limitedData = filteredData.slice(cantidadDatos);// datos a mostrar
 
                         const seriesData = limitedData.map(ping => {
+                            console.log('asi se ve el la hora antes de formato',ping.ultimaHoraPing);
                             const fecha = new Date(ping.ultimaHoraPing).getTime(); // Marca de tiempo para las Highcharts
+                            console.log('asi se ve la fecha',fecha);
                             return [fecha, ping.ping ? 1 : 0]; // Representar el estado de ping como 1 o 0
                         });
 
@@ -102,7 +105,7 @@
                                 type: 'line'
                             },
                             title: {
-                                text: `Historial de Pings para la IP ${ip} (Últimos 10 Datos)`
+                                text: `Historial de Pings para la IP ${ip} (Últimos ${cantidadDatos} Datos)`
                             },
                             xAxis: {
                                 type: 'datetime',
@@ -123,9 +126,18 @@
                                 max: 1,
                                 tickInterval: 1
                             },
+                            
+                            tooltip: {
+                                formatter: function () {
+                                    const fecha = Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x); // Formato de la fecha
+                                    const estado = this.y === 1 ? 'Activo' : 'Inactivo'; // Estado del ping
+                                    return `<b>Fecha y Hora:</b> ${fecha}<br><b>Estado:</b> ${estado}`;
+                                }
+                            },
                             series: [{
                                 name: 'Ping',
                                 data: seriesData,
+                                step: 'left',
                                 tooltip: {
                                     pointFormatter: function () {
                                         return `Estado: ${this.y === 1 ? 'Activo' : 'Inactivo'}`;

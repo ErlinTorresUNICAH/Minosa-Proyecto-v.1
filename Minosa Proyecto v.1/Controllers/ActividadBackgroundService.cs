@@ -66,7 +66,7 @@ public class ActividadBackgroundService : BackgroundService
 
             _logger.LogInformation("Completed activity device scan at: {time}", DateTimeOffset.Now);
 
-            await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
+            //await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);s
 
 
             //cambiar este parametro en base del tiempo que se quiere que se ejecute los pings en minutos
