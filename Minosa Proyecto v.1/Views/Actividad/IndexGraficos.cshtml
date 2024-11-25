@@ -38,6 +38,17 @@
                         @if (!string.IsNullOrEmpty(actividad.DescripcionEquipo))
                         {
                             <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = actividad.ID_Equipo })" class="btn btn-info btn-sm">Ver Detalles</a>
+
+                            @* <button class="btn btn-warning btn-sm" onclick="predecir('@actividad.DireccionIP', '@actividad.UltimaHoraPing')">
+                                Predecir Estado
+                            </button> *@
+                            <a href="@Url.Action("PredecirEstado", "Predicciones", new { ip = actividad.DireccionIP, hora = actividad.UltimaHoraPing?.ToString("dd/MM/yyyy HH:mm:ss") })"
+                               class="btn btn-warning btn-sm">
+                                Predecir Estado
+                            </a>
+
+
+
                         }
                         else
                         {
@@ -156,6 +167,83 @@
         }
     });
 </script>
+
+@* <script>
+    function predecir(ip, ultimaHoraPing) {
+        // Crear un formulario oculto para enviar los datos al servidor
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/Predicciones/PredecirEstado';
+
+        // Crear campos ocultos para los datos
+        const inputIp = document.createElement('input');
+        inputIp.type = 'hidden';
+        inputIp.name = 'ip';
+        inputIp.value = ip;
+
+        const inputHoraPing = document.createElement('input');
+        inputHoraPing.type = 'hidden';
+        inputHoraPing.name = 'ultimaHoraPing';
+        inputHoraPing.value = ultimaHoraPing;
+
+        // Agregar los campos al formulario
+        form.appendChild(inputIp);
+        form.appendChild(inputHoraPing);
+        console.log('esta es la informacion:',form);
+        console.log('esta es la informacion:',form.get('ip'));
+        console.log('esta es la informacion:',form.get('ultimaHoraPing'));
+
+
+        // Agregar el formulario al documento y enviarlo
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script> *@
+@* 
+<script>
+    function predecir(ip, ultimaHoraPing) {
+        // URL del método en el controlador
+        const url = '/Predicciones/PredecirEstado';
+
+        // Construcción de datos para enviar
+        const formData = new FormData();
+        formData.append("ip", ip);
+        formData.append("ultimaHoraPing", ultimaHoraPing);
+        console.log('esta es la informacion:',formData);
+        console.log('esta es la informacion:',formData.get('ip'));
+        console.log('esta es la informacion:',formData.get('ultimaHoraPing'));
+        // Envío de la solicitud al controlador
+        fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+        // .then(response => {
+        //     if (response.ok) {
+        //         return response.text(); Recibe el HTML de la vista de resultados
+        //     } else {
+        //         throw new Error('Error al realizar la predicción');
+        //     }
+        // })
+        .then(response => {
+            return response.text().then(text => {
+            console.log('Respuesta del servidor completa:', response); // Muestra la respuesta completa
+            console.log('Texto de la respuesta:', text); // Muestra el cuerpo de la respuesta
+            if (!response.ok) {
+                throw new Error(`Error del servidor: ${text}`);
+            }
+            return text;
+            });
+        })
+        .then(html => {
+            // Mostrar los resultados en un contenedor dinámico
+            document.getElementById("resultados").innerHTML = html;
+        })
+        // .catch(error => {
+        //     console.error('Error:', error);
+        //     alert('Ocurrió un error al predecir el estado.');
+        // });
+    }
+</script> *@
 
 
 <!-- Contenedor para la gráfica -->
