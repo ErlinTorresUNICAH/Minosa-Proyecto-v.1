@@ -150,6 +150,21 @@
                     <i class="bi bi-graph-up-arrow"></i> Reportes
                 </a>
             </li>
+            @if (User.IsInRole("Admin")){
+                <li class="nav-item">
+                    <a class="nav-link custom-link" asp-controller="Usuarios" asp-action="Index">
+                        <i class="bi bi-unlock-fill"></i> Roles y Usuario
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link custom-link" asp-controller="Destinatarios" asp-action="Index">
+                        <i class="bi bi-envelope-at-fill"></i> Destinatarios
+                    </a>
+                </li>
+            }
             @* <li class="nav-item">
                 <a class="nav-link custom-link" asp-controller="Home" asp-action="Index1">
                     <i class="bi bi-graph-up-arrow"></i> Homeee

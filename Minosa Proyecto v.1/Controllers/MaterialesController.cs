@@ -8,6 +8,7 @@ using System.Data;
 namespace Minosa_Proyecto_v._1.Controllers
 {
     [Authorize]
+    //[Authorize(Roles = "Supervisor, Admin")]
     public class MaterialesController : Controller
     {
         private readonly IConfiguration _configuration;

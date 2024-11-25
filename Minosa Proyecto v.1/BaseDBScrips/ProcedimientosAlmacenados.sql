@@ -3866,3 +3866,114 @@ BEGIN
 SELECT Nombre_Destinatario, Correo_Destinatario FROM Destinatarios
 END
 GO
+
+--CRUD DE USUARIOS
+CREATE PROCEDURE P_GRUD_CrearUsuario
+    @Nombre_Usuario NVARCHAR(50),
+    @Contrasena NVARCHAR(255),
+    @id_rol INT
+AS
+BEGIN
+    INSERT INTO Usuarios (Nombre_Usuario, Contrasena, id_rol)
+    VALUES (@Nombre_Usuario, @Contrasena, @id_rol)
+END
+GO
+CREATE PROCEDURE P_GRUD_ObtenerUsuarios
+AS
+BEGIN
+    SELECT u.ID_usuario, u.Nombre_Usuario, r.Nombre_Rol
+    FROM Usuarios u
+    INNER JOIN Roles r ON u.id_rol = r.ID_rol
+END
+GO
+CREATE PROCEDURE P_GRUD_ObtenerUsuarioPorID
+    @ID_usuario INT
+AS
+BEGIN
+    SELECT u.ID_usuario, u.Nombre_Usuario, u.Contrasena, u.id_rol
+    FROM Usuarios u
+    WHERE u.ID_usuario = @ID_usuario
+END
+GO
+CREATE PROCEDURE P_GRUD_ActualizarUsuario
+    @ID_usuario INT,
+    @Nombre_Usuario NVARCHAR(50),
+    @Contrasena NVARCHAR(255),
+    @id_rol INT
+AS
+BEGIN
+    UPDATE Usuarios
+    SET Nombre_Usuario = @Nombre_Usuario,
+        Contrasena = @Contrasena,
+        id_rol = @id_rol
+    WHERE ID_usuario = @ID_usuario
+END
+GO
+CREATE PROCEDURE P_GRUD_EliminarUsuario
+    @ID_usuario INT
+AS
+BEGIN
+    DELETE FROM Usuarios WHERE ID_usuario = @ID_usuario
+END
+GO
+--CRUD DE DESTINATARIOS
+CREATE PROCEDURE P_GRUD_CrearDestinatario
+    @Nombre_Destinatario NVARCHAR(255),
+    @Correo_Destinatario NVARCHAR(255),
+    @Descripcion_Destinatario NVARCHAR(255),
+    @id_alerta INT
+AS
+BEGIN
+    INSERT INTO Destinatarios (Nombre_Destinatario, Correo_Destinatario, Descripcion_Destinatario, id_alerta)
+    VALUES (@Nombre_Destinatario, @Correo_Destinatario, @Descripcion_Destinatario, @id_alerta)
+END
+GO
+CREATE PROCEDURE P_GRUD_ObtenerDestinatarios
+AS
+BEGIN
+    SELECT 
+        d.ID_destinatario, 
+        d.Nombre_Destinatario, 
+        d.Correo_Destinatario, 
+        d.Descripcion_Destinatario, 
+        t.Nombre_Alerta
+    FROM Destinatarios d
+    INNER JOIN Tipo_Alerta t ON d.id_alerta = t.ID_alerta
+END
+GO
+CREATE PROCEDURE P_GRUD_ObtenerDestinatarioPorID
+    @ID_destinatario INT
+AS
+BEGIN
+    SELECT 
+        d.ID_destinatario, 
+        d.Nombre_Destinatario, 
+        d.Correo_Destinatario, 
+        d.Descripcion_Destinatario, 
+        d.id_alerta
+    FROM Destinatarios d
+    WHERE d.ID_destinatario = @ID_destinatario
+END
+GO
+CREATE PROCEDURE P_GRUD_ActualizarDestinatario
+    @ID_destinatario INT,
+    @Nombre_Destinatario NVARCHAR(255),
+    @Correo_Destinatario NVARCHAR(255),
+    @Descripcion_Destinatario NVARCHAR(255),
+    @id_alerta INT
+AS
+BEGIN
+    UPDATE Destinatarios
+    SET Nombre_Destinatario = @Nombre_Destinatario,
+        Correo_Destinatario = @Correo_Destinatario,
+        Descripcion_Destinatario = @Descripcion_Destinatario,
+        id_alerta = @id_alerta
+    WHERE ID_destinatario = @ID_destinatario
+END
+GO
+CREATE PROCEDURE P_GRUD_EliminarDestinatario
+    @ID_destinatario INT
+AS
+BEGIN
+    DELETE FROM Destinatarios WHERE ID_destinatario = @ID_destinatario
+END

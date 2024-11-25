@@ -1,0 +1,28 @@
+﻿@model Destinatario
+
+<h2>Eliminar Destinatario</h2>
+
+<p>¿Está seguro que desea eliminar el siguiente destinatario?</p>
+
+<div class="form-group">
+    <label>Nombre:</label>
+    <input asp-for="Nombre_Destinatario" class="form-control" readonly />
+</div>
+<div class="form-group">
+    <label>Correo:</label>
+    <input asp-for="Correo_Destinatario" class="form-control" readonly />
+</div>
+<div class="form-group">
+    <label>Descripción:</label>
+    <input asp-for="Descripcion_Destinatario" class="form-control" readonly />
+</div>
+<div class="form-group">
+    <label>Alerta:</label>
+    <input asp-for="Nombre_Alerta" class="form-control" readonly />
+</div>
+
+<form asp-action="Eliminar" method="post">
+    <input type="hidden" asp-for="ID_destinatario" />
+    <button type="submit" class="btn btn-danger">Eliminar</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

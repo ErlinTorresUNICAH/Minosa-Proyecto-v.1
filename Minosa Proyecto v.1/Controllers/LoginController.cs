@@ -41,7 +41,7 @@ public class LoginController : Controller
                 using (var connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    var command = new SqlCommand("P_ObtenerUsuarioPorNombreYContrasena", connection);
+                    var command = new SqlCommand("P_ObtenerUsuarioRol", connection);
                     command.CommandType = System.Data.CommandType.StoredProcedure;
                     command.Parameters.Add(new SqlParameter("@Nombre_Usuario", Nombre_Usuario));
                     command.Parameters.Add(new SqlParameter("@Contrasena", Contrasena));
@@ -52,7 +52,8 @@ public class LoginController : Controller
                         var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.Name, Nombre_Usuario),
-                            new Claim(ClaimTypes.NameIdentifier, reader["ID_usuario"].ToString())
+                            new Claim(ClaimTypes.NameIdentifier, reader["ID_usuario"].ToString()),
+                            new Claim(ClaimTypes.Role, reader["Nombre_Rol"].ToString())
                         };
 
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -85,6 +86,12 @@ public class LoginController : Controller
                 return View();
             }
         }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Logout()

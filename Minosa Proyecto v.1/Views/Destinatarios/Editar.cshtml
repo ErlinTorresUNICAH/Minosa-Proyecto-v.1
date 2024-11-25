@@ -1,0 +1,26 @@
+﻿@model Destinatario
+
+<h2>Editar Destinatario</h2>
+
+<form asp-action="Editar" method="post">
+    <input type="hidden" asp-for="ID_destinatario" />
+
+    <div class="form-group">
+        <label asp-for="Nombre_Destinatario"></label>
+        <input asp-for="Nombre_Destinatario" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Correo_Destinatario"></label>
+        <input asp-for="Correo_Destinatario" type="email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Descripcion_Destinatario"></label>
+        <input asp-for="Descripcion_Destinatario" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="id_alerta">Alerta</label>
+        <select asp-for="id_alerta" class="form-control" asp-items="ViewBag.Alertas"></select>
+    </div>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

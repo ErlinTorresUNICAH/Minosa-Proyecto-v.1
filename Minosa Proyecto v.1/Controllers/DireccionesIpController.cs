@@ -2,12 +2,17 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
+using Minosa_Proyecto_v._1.Models;
 using System.Collections.Generic;
 using System.Data;
 
 namespace Minosa_Proyecto_v._1.Controllers
 {
+
     [Authorize]
+    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = Roles.Admin)]
+    //[Authorize(Roles = _roleSettings.Admin)]
     public class DireccionesIpController : Controller
     {
         private readonly IConfiguration _configuration;

@@ -13,7 +13,16 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Login/Index";  // Página de acceso
         options.AccessDeniedPath = "/Login/AccessDenied"; // Página de acceso denegado (opcional)
     });
+
+//builder.Services.Configure<RoleSettings>(builder.Configuration.GetSection("Roles"));
+
 builder.Services.AddHostedService<ActividadBackgroundService>();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin")); // Política para rol Admin
+});
+
+
 
 var app = builder.Build();
 

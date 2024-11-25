@@ -8,4 +8,11 @@
         public string Nombre_Rol { get; set; }
         public string Descripcion { get; set; }
     }
+    public static class Roles
+    {
+        public const string Admin = "Admin";
+        public const string Supervisor = "Supervisor";
+        public const string Usuario = "Usuario";
+    }
+
 }

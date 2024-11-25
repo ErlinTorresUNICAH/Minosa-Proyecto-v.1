@@ -1,0 +1,32 @@
+﻿@model IEnumerable<Destinatario>
+
+<h2>Lista de Destinatarios</h2>
+
+<a asp-action="Crear" class="btn btn-primary">Crear Nuevo Destinatario</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Correo</th>
+            <th>Descripción</th>
+            <th>Alerta</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var destinatario in Model)
+        {
+            <tr>
+                <td>@destinatario.Nombre_Destinatario</td>
+                <td>@destinatario.Correo_Destinatario</td>
+                <td>@destinatario.Descripcion_Destinatario</td>
+                <td>@destinatario.Nombre_Alerta</td>
+                <td>
+                    <a asp-action="Editar" asp-route-id="@destinatario.ID_destinatario" class="btn btn-warning">Editar</a>
+                    <a asp-action="Eliminar" asp-route-id="@destinatario.ID_destinatario" class="btn btn-danger">Eliminar</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
