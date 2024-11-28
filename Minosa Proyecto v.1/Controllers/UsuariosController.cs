@@ -132,18 +132,29 @@ namespace Minosa_Proyecto_v._1.Controllers
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
 
-            using (var connection = new SqlConnection(connectionString))
+            try
             {
-                var command = new SqlCommand("P_GRUD_ActualizarUsuario", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@ID_usuario", usuario.ID_usuario);
-                command.Parameters.AddWithValue("@Nombre_Usuario", usuario.Nombre_Usuario);
-                command.Parameters.AddWithValue("@Contrasena", usuario.Contrasena);
-                command.Parameters.AddWithValue("@id_rol", usuario.id_rol);
-                connection.Open();
-                command.ExecuteNonQuery();
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    var command = new SqlCommand("P_GRUD_ActualizarUsuario", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ID_usuario", usuario.ID_usuario);
+                    command.Parameters.AddWithValue("@Nombre_Usuario", usuario.Nombre_Usuario);
+                    command.Parameters.AddWithValue("@Contrasena", usuario.Contrasena);
+                    command.Parameters.AddWithValue("@id_rol", usuario.id_rol);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
             }
-
+            catch (SqlException ex)
+            {
+                if (ex.Number >= 50000)
+                {
+                    ViewBag.Error = ex.Message;
+                    return View(usuario);
+                }
+                throw;
+            }
             return RedirectToAction("Index");
         }
 

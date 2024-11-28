@@ -1,5 +1,5 @@
 ﻿@model List<Actividad>
-<a asp-action="Index" asp-controller="Actividad" class="btn btn-outline-secondary">Historial</a>
+<h1 class="text-center">Graficos y Predicciones de Ping</h1>
 <div class="table-responsive">
     <table class="table  table-bordered" style="table-layout: auto; width: 100%;">
         <thead class="table-dark">
@@ -11,7 +11,7 @@
                 <th>Tipo Equipo</th>
                 <th>Ping</th>
                 <th>Última Hora Ping</th>
-                <th>Acciones</th>
+                <th><a asp-action="Index" asp-controller="Actividad" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clock-history"></i> Historial</a></th>
             </tr>
         </thead>
         <tbody>
@@ -37,14 +37,14 @@
                     <td>
                         @if (!string.IsNullOrEmpty(actividad.DescripcionEquipo))
                         {
-                            <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = actividad.ID_Equipo })" class="btn btn-info btn-sm">Ver Detalles</a>
+                            <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = actividad.ID_Equipo })" class="btn btn-warning"><i class="bi bi-info-circle-fill"></i></a>
 
                             @* <button class="btn btn-warning btn-sm" onclick="predecir('@actividad.DireccionIP', '@actividad.UltimaHoraPing')">
                                 Predecir Estado
                             </button> *@
                             <a href="@Url.Action("PredecirEstado", "Predicciones", new { ip = actividad.DireccionIP, hora = actividad.UltimaHoraPing?.ToString("dd/MM/yyyy HH:mm:ss") })"
-                               class="btn btn-warning btn-sm">
-                                Predecir Estado
+                               class="btn btn-success">
+                                <i class="bi bi-diagram-3"></i>
                             </a>
 
 

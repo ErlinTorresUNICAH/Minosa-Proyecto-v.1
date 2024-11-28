@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<Usuario>
 
-<h2>Lista de Usuarios</h2>
+<h2 class="text-center">Lista de Usuarios</h2>
 
-<a asp-action="Crear" class="btn btn-primary">Crear Nuevo Usuario</a>
 
-<table class="table">
-    <thead>
+
+<table class="table table-bordered">
+    <thead class="table-dark">
         <tr>
             <th>Usuario</th>
             <th>Rol</th>
-            <th>Acciones</th>
+            <th><a asp-action="Crear" class="btn btn-success btn-sm">Nuevo Usuario</a></th>
         </tr>
     </thead>
     <tbody>
@@ -19,8 +19,8 @@
                 <td>@usuario.Nombre_Usuario</td>
                 <td>@usuario.Nombre_Rol</td>
                 <td>
-                    <a asp-action="Editar" asp-route-id="@usuario.ID_usuario" class="btn btn-warning">Editar</a>
-                    <a asp-action="Eliminar" asp-route-id="@usuario.ID_usuario" class="btn btn-danger">Eliminar</a>
+                    <a asp-action="Editar" asp-route-id="@usuario.ID_usuario" class="btn btn-warning btn-sm">Editar</a>
+                    <a asp-action="Eliminar" asp-route-id="@usuario.ID_usuario" class="btn btn-danger btn-sm">Eliminar</a>
                 </td>
             </tr>
         }

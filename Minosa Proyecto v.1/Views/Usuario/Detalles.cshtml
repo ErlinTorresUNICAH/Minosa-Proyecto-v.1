@@ -2,8 +2,8 @@
 
 
 
-<form method="post" asp-action="Editar" class="container align-content-center" style="max-width: 500px;">
-    <h2>Detalles del Usuario</h2>
+<form method="post" asp-action="Editar" class="container " style="max-width: 500px;">
+    <h2 class="text-center">Detalles del Usuario</h2>
     <div class="form-group ">
         <label for="ID_usuario">ID de Usuario</label>
         <input type="text" class="form-control" id="ID_usuario" name="ID_usuario" value="@Model.ID_usuario" readonly />
@@ -28,8 +28,10 @@
         <label for="Descripcion">Descripción del Rol</label>
         <textarea class="form-control" id="Descripcion" name="Descripcion" readonly>@Model.Descripcion</textarea>
     </div>
-
-    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <div class="form-group text-center">
+        <button type="submit" class="btn btn-success text-center">Guardar Cambios</button>
+    </div>
+   
 </form>
 
 @if (ViewBag.Error != null)
