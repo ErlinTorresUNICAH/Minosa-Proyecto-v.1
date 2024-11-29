@@ -160,6 +160,9 @@ namespace Minosa_Proyecto_v._1.Controllers
             return data;
         }
 
+
+
+
         //Generar reporte de equipos por tipo solamente Tabla en PDF
         public ActionResult GenerarReporte()
         {
