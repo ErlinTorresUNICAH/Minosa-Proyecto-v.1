@@ -4,7 +4,8 @@
     <div class="col-md-3 col-12 mb-2">
         <a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary btn-block"><i class="fa-solid fa-folder-plus"></i> Nuevo Equipo</a>
 
-    </div><div class="col-md-3 col-12 mb-2">
+    </div>
+    <div class="col-md-3 col-12 mb-2">
         <a asp-controller="Vlans" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-wifi"></i> VLANs</a>
     </div>
     
@@ -40,14 +41,19 @@
     
 </div>
 
+<div class="text-center">
+    <h2 class="text-center">Lista de Equipos</h2>
+    <button id="exportButton" class="btn btn-success m-2">
+        <i class="fas fa-file-excel"></i> Exportar a Excel
+    </button>
+</div>
 
-<h2 class="text-center">Lista de Equipos</h2>
 <div class="table-responsive">
     <table class="table table-bordered" style="table-layout: auto; width: 100%;" id="equiposTable">
-        <thead class="table-group-divider">
+        <thead class="table-group-divider m-5">
             <tr class="table-secondary">
-                <th><input type="text" id="serialFilter" placeholder="Buscar Nº Serie" class="form-control" /></th>
-                <th><input type="text" id="descripcionFilter" placeholder="Buscar Descripción" class="form-control" /></th>
+                <th><input type="text" id="serialFilter" placeholder="Nº Serie" class="form-control" /></th>
+                <th><input type="text" id="descripcionFilter" placeholder="Descripción" class="form-control" /></th>
                 <th><input type="text" id="tipoEquipoFilter" placeholder="Buscar Tipo de Equipo" class="form-control" /></th>
                 <th><input type="text" id="modeloFilter" placeholder="Buscar Modelo" class="form-control" /></th>
                 <th><input type="text" id="areaFilter" placeholder="Buscar Área" class="form-control" /></th>
@@ -59,12 +65,15 @@
                 <th>
                     <div>
                         <button id="clearFiltersButton" class="btn btn-danger">
-                            <i class="fas fa-times-circle"></i> Borrar Filtros
+                            <i class="fas fa-times-circle"></i>
                         </button>
+
                     </div>
                 </th>
+                
             </tr>
         </thead>
+
         <thead class="thead-dark">
             <tr >
                 <th># de Serie</th>
@@ -77,7 +86,7 @@
                 <th>Activo</th>
                 <th>Respaldo</th>
                 <th>Observaciones</th>
-                <th>Acciones</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -95,7 +104,7 @@
                     <td>@equipo.Respaldo</td>
                     <td>@equipo.Observaciones</td>
                     <td>
-                        <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = equipo.ID_equipo })" class="btn btn-info btn-sm">Ver Detalles</a>
+                        <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = equipo.ID_equipo })" class="btn btn-info"><i class="bi bi-clipboard-data-fill"></i></a>
                     </td>
                 </tr>
             }
@@ -176,4 +185,18 @@
             applyFilters();
         });
     });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+        document.getElementById('exportButton').addEventListener('click', function () {
+        // Obtener la tabla HTML
+        let table = document.getElementById('equiposTable');
+
+        // Convertir tabla HTML a una hoja de cálculo
+        let workbook = XLSX.utils.table_to_book(table, { sheet: "Inventario" });
+
+        // Exportar el archivo
+        XLSX.writeFile(workbook, "Inventario.xlsx");
+    });
+
 </script>

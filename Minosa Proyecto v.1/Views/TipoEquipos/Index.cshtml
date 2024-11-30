@@ -1,11 +1,15 @@
 ﻿@model IEnumerable<TipoEquipo>
 
-<h2>Tipos de Equipos</h2>
-
+<div class="text-center">
+    <h2 class="text-center">Tipos de Equipos</h2>
+    <button id="exportButton" class="btn btn-success m-2">
+        <i class="fas fa-file-excel"></i> Exportar a Excel
+    </button>
+</div>
 <a asp-action="Crear" class="btn btn-outline-success"><i class="bi bi-cloud-plus"></i> Nuevo Tipo de Equipo</a>
 <a asp-action="Index" asp-controller="Equipos" class="btn btn-outline-secondary">Cancelar</a>
 
-<table class="table">
+<table class="table" id="tipoEquiposTable">
     <thead class="table-dark">
         <tr>
             <th>ID</th>
@@ -29,3 +33,17 @@
         }
     </tbody>
 </table>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+        document.getElementById('exportButton').addEventListener('click', function () {
+        // Obtener la tabla HTML
+        let table = document.getElementById('tipoEquiposTable');
+
+        // Convertir tabla HTML a una hoja de cálculo
+        let workbook = XLSX.utils.table_to_book(table, { sheet: "TiposDeEquipos" });
+
+        // Exportar el archivo
+        XLSX.writeFile(workbook, "TiposDeEquipos.xlsx");
+    });
+
+</script>

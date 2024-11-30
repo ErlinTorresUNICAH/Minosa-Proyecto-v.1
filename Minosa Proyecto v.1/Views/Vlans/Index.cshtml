@@ -1,11 +1,16 @@
 ﻿@model IEnumerable<Vlan>
 
-<h2>Lista de VLANs</h2>
 
+<div class="text-center">
+    <h2>Lista de VLANs</h2>
+    <button id="exportButton" class="btn btn-success m-2">
+        <i class="fas fa-file-excel"></i> Exportar a Excel
+    </button>
+</div>
 <a asp-action="Crear" class="btn btn-primary">Crear Nueva VLAN</a>
 <a asp-action="Index" asp-controller="Equipos" class="btn btn-outline-danger"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
 
-<table class="table">
+<table class="table" id="vlansTable">
     <thead>
         <tr>
             <th>Nombre de la VLAN</th>
@@ -21,14 +26,14 @@
     <tbody>
         @foreach (var vlan in Model)
         {
-            <tr>
+            <tr >
                 <td>@vlan.Nombre_Vlan</td>
                 <td>@vlan.SubNet</td>
                 <td>@vlan.Gateway</td>
                 <td>@vlan.DhcpIni</td>
                 <td>@vlan.DhcpFin</td>
                 <td>@vlan.Observaciones</td>
-                <td>
+                <td data-ping="@vlan.Activo">
                     @if (vlan.Activo)
                     {
                         <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
@@ -46,3 +51,29 @@
         }
     </tbody>
 </table>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+            document.getElementById('exportButton').addEventListener('click', function () {
+        // Clonar la tabla para evitar modificar el DOM original
+        let table = document.getElementById('vlansTable').cloneNode(true);
+
+        // Reemplazar los iconos de ping por valores de texto
+        let rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            let pingCell = row.querySelector('td[data-ping]');
+            if (pingCell) {
+                let pingValue = pingCell.getAttribute('data-ping') === "True" ? "Activa" : "Inactiva";
+                pingCell.textContent = pingValue;
+            }
+        });
+
+        // Convertir la tabla clonada a una hoja de cálculo
+        let workbook = XLSX.utils.table_to_book(table, { sheet: "Vlans" });
+
+        // Exportar el archivo
+        XLSX.writeFile(workbook, "Vlans.xlsx");
+
+    });
+
+</script>
+

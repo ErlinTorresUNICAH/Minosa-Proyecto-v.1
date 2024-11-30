@@ -7,6 +7,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.IO;
 using Microsoft.AspNetCore.Authorization;
+using Minosa_Proyecto_v._1.Models;
 
 
 namespace Minosa_Proyecto_v._1.Controllers
@@ -24,26 +25,23 @@ namespace Minosa_Proyecto_v._1.Controllers
         //Index para controlar todas las funciones
         public IActionResult Index()
         {
-            var equiposPorTipo = ObtenerEquiposPorTipo();
-            var equiposPorArea = ObtenerEquiposPorArea();
-            var equiposPorZona = ObtenerEquiposPorZona();
-            var equiposPorAreaConTipo = ObtenerEquiposPorAreaConTipo();
-            var data = new
+            var viewModel = new GraficosViewModel
             {
-                EquiposPorTipo = equiposPorTipo,
-                EquiposPorArea = equiposPorArea,
-                EquiposPorZona = equiposPorZona,
-                EquiposPorAreaConTipo = equiposPorAreaConTipo
+                EquiposPorTipo = ObtenerEquiposPorTipo(),
+                EquiposPorArea = ObtenerEquiposPorArea(),
+                EquiposPorZona = ObtenerEquiposPorZona(),
+                EquiposPorAreaConTipo = ObtenerEquiposPorAreaConTipo()
             };
 
-            return View(data);
+            return View(viewModel);
         }
 
+
         // Lista con todos los equipos por tipo para su uso en grafico
-        private List<dynamic> ObtenerEquiposPorTipo()
+        private List<EquipoPorTipo> ObtenerEquiposPorTipo()
         {
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
-            var data = new List<dynamic>();
+            var data = new List<EquipoPorTipo>();
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -57,7 +55,7 @@ namespace Minosa_Proyecto_v._1.Controllers
                 {
                     while (reader.Read())
                     {
-                        data.Add(new
+                        data.Add(new EquipoPorTipo
                         {
                             TipoEquipo = reader["Tipo_Equipo"].ToString(),
                             Cantidad = Convert.ToInt32(reader["Cantidad"])
@@ -69,11 +67,12 @@ namespace Minosa_Proyecto_v._1.Controllers
             return data;
         }
 
+
         // Lista con todos los equipos por area para su uso en grafico
-        private List<dynamic> ObtenerEquiposPorArea()
+        private List<EquipoPorArea> ObtenerEquiposPorArea()
         {
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
-            var data = new List<dynamic>();
+            var data = new List<EquipoPorArea>();
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -87,7 +86,7 @@ namespace Minosa_Proyecto_v._1.Controllers
                 {
                     while (reader.Read())
                     {
-                        data.Add(new
+                        data.Add(new EquipoPorArea
                         {
                             Area = reader["Nombre_Area"].ToString(),
                             Cantidad = Convert.ToInt32(reader["Cantidad"])
@@ -99,11 +98,12 @@ namespace Minosa_Proyecto_v._1.Controllers
             return data;
         }
 
+
         // Lista con todos los equipos por zona para su uso en grafico
-        private List<dynamic> ObtenerEquiposPorZona()
+        private List<EquipoPorZona> ObtenerEquiposPorZona()
         {
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
-            var data = new List<dynamic>();
+            var data = new List<EquipoPorZona>();
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -117,7 +117,7 @@ namespace Minosa_Proyecto_v._1.Controllers
                 {
                     while (reader.Read())
                     {
-                        data.Add(new
+                        data.Add(new EquipoPorZona
                         {
                             Zona = reader["Nombre_Zona"].ToString(),
                             Cantidad = Convert.ToInt32(reader["Cantidad"])
@@ -129,11 +129,12 @@ namespace Minosa_Proyecto_v._1.Controllers
             return data;
         }
 
+
         // Lista con todos los equipos por area con tipo para su uso en grafico
-        private List<dynamic> ObtenerEquiposPorAreaConTipo()
+        private List<EquipoPorAreaConTipo> ObtenerEquiposPorAreaConTipo()
         {
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
-            var data = new List<dynamic>();
+            var data = new List<EquipoPorAreaConTipo>();
 
             using (var connection = new SqlConnection(connectionString))
             {
@@ -147,7 +148,7 @@ namespace Minosa_Proyecto_v._1.Controllers
                 {
                     while (reader.Read())
                     {
-                        data.Add(new
+                        data.Add(new EquipoPorAreaConTipo
                         {
                             Area = reader["Area"].ToString(),
                             TipoEquipo = reader["TipoEquipo"].ToString(),
@@ -159,6 +160,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             return data;
         }
+
 
 
 

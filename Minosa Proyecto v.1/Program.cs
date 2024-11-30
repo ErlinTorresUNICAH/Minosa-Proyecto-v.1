@@ -2,6 +2,13 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Agregar archivos de configuración
+builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+
 
 // Añadir servicios al contenedor
 builder.Services.AddControllersWithViews();
@@ -23,6 +30,12 @@ builder.Services.AddAuthorization(options =>
 });
 
 
+
+builder.Services.Configure<CorreoSettings>(builder.Configuration.GetSection("CorreoSettings"));
+var correoSettings = builder.Configuration.GetSection("CorreoSettings").Get<CorreoSettings>();
+Console.WriteLine($"SMTP Server: {correoSettings.SmtpServer}");
+Console.WriteLine($"SMTP Port: {correoSettings.SmtpPort}");
+Console.WriteLine($"Email From: {correoSettings.EmailFrom}");
 
 var app = builder.Build();
 

@@ -1,7 +1,13 @@
 ﻿@model List<Actividad>
-<h1 class="text-center">Graficos y Predicciones de Ping</h1>
+<div class="text-center">
+    <h1 class="text-center">Graficos y Predicciones de Ping</h1>
+    <button id="exportButton" class="btn btn-success m-2">
+        <i class="fas fa-file-excel"></i> Exportar a Excel
+    </button>
+</div>
+
 <div class="table-responsive">
-    <table class="table  table-bordered" style="table-layout: auto; width: 100%;">
+    <table class="table  table-bordered" style="table-layout: auto; width: 100%;" id="actividadTable">
         <thead class="table-dark">
             <tr>
                 <th>ID Equipo</th>
@@ -11,7 +17,7 @@
                 <th>Tipo Equipo</th>
                 <th>Ping</th>
                 <th>Última Hora Ping</th>
-                <th><a asp-action="Index" asp-controller="Actividad" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clock-history"></i> Historial</a></th>
+                <th><a asp-action="Index" asp-controller="Actividad" class="btn btn-outline-secondary btn-sm"><i class="bi bi-clock-history"></i></a></th>
             </tr>
         </thead>
         <tbody>
@@ -23,7 +29,7 @@
                     <td>@actividad.Area</td>
                     <td>@actividad.DescripcionEquipo</td>
                     <td>@actividad.TipoEquipo</td>
-                    <td>
+                    <td data-ping="@actividad.Ping">
                         @if (actividad.Ping)
                         {
                             <span class="text-success"><i class="bi bi-reception-4"></i></span>
@@ -168,83 +174,31 @@
     });
 </script>
 
-@* <script>
-    function predecir(ip, ultimaHoraPing) {
-        // Crear un formulario oculto para enviar los datos al servidor
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = '/Predicciones/PredecirEstado';
-
-        // Crear campos ocultos para los datos
-        const inputIp = document.createElement('input');
-        inputIp.type = 'hidden';
-        inputIp.name = 'ip';
-        inputIp.value = ip;
-
-        const inputHoraPing = document.createElement('input');
-        inputHoraPing.type = 'hidden';
-        inputHoraPing.name = 'ultimaHoraPing';
-        inputHoraPing.value = ultimaHoraPing;
-
-        // Agregar los campos al formulario
-        form.appendChild(inputIp);
-        form.appendChild(inputHoraPing);
-        console.log('esta es la informacion:',form);
-        console.log('esta es la informacion:',form.get('ip'));
-        console.log('esta es la informacion:',form.get('ultimaHoraPing'));
-
-
-        // Agregar el formulario al documento y enviarlo
-        document.body.appendChild(form);
-        form.submit();
-    }
-</script> *@
-@* 
-<script>
-    function predecir(ip, ultimaHoraPing) {
-        // URL del método en el controlador
-        const url = '/Predicciones/PredecirEstado';
-
-        // Construcción de datos para enviar
-        const formData = new FormData();
-        formData.append("ip", ip);
-        formData.append("ultimaHoraPing", ultimaHoraPing);
-        console.log('esta es la informacion:',formData);
-        console.log('esta es la informacion:',formData.get('ip'));
-        console.log('esta es la informacion:',formData.get('ultimaHoraPing'));
-        // Envío de la solicitud al controlador
-        fetch(url, {
-            method: 'POST',
-            body: formData
-        })
-        // .then(response => {
-        //     if (response.ok) {
-        //         return response.text(); Recibe el HTML de la vista de resultados
-        //     } else {
-        //         throw new Error('Error al realizar la predicción');
-        //     }
-        // })
-        .then(response => {
-            return response.text().then(text => {
-            console.log('Respuesta del servidor completa:', response); // Muestra la respuesta completa
-            console.log('Texto de la respuesta:', text); // Muestra el cuerpo de la respuesta
-            if (!response.ok) {
-                throw new Error(`Error del servidor: ${text}`);
-            }
-            return text;
-            });
-        })
-        .then(html => {
-            // Mostrar los resultados en un contenedor dinámico
-            document.getElementById("resultados").innerHTML = html;
-        })
-        // .catch(error => {
-        //     console.error('Error:', error);
-        //     alert('Ocurrió un error al predecir el estado.');
-        // });
-    }
-</script> *@
-
 
 <!-- Contenedor para la gráfica -->
 <div id="container"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+            document.getElementById('exportButton').addEventListener('click', function () {
+        // Clonar la tabla para evitar modificar el DOM original
+        let table = document.getElementById('actividadTable').cloneNode(true);
+
+        // Reemplazar los iconos de ping por valores de texto
+        let rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            let pingCell = row.querySelector('td[data-ping]');
+            if (pingCell) {
+                let pingValue = pingCell.getAttribute('data-ping') === "True" ? "Activa" : "Inactiva";
+                pingCell.textContent = pingValue;
+            }
+        });
+
+        // Convertir la tabla clonada a una hoja de cálculo
+        let workbook = XLSX.utils.table_to_book(table, { sheet: "Actividad" });
+
+        // Exportar el archivo
+        XLSX.writeFile(workbook, "Actividad.xlsx");
+
+    });
+
+</script>

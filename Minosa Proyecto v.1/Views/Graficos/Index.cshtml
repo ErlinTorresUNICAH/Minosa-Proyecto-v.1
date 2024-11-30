@@ -1,17 +1,18 @@
 ﻿@model dynamic
+<div class="row mt-2">
+    @* <h2 class="text-center">Equipos por Tipo</h2> *@
+    <div class="col-md-6 col-12 mb-2" id="equipmentChartContainer" style="width:50%; height:400px;"></div>
 
-<h2 class="text-center">Equipos por Tipo</h2>
-<div id="equipmentChartContainer" style="width:100%; height:400px;"></div>
+    @* <h2 class="text-center">Equipos por Área</h2> *@
+    <div class="col-md-6 col-12 mb-2" id="areaChartContainerBasic" style="width:50%; height:400px;"></div>
 
-<h2 class="text-center">Equipos por Área</h2>
-<div id="areaChartContainerBasic" style="width:100%; height:400px;"></div>
+    @* <h2 class="text-center">Equipos por Zona</h2> *@
+    <div class="col-md-6 col-12 mb-2" id="zoneChartContainer" style="width:50%; height:400px;"></div>
 
-<h2 class="text-center">Equipos por Zona</h2>
-<div id="zoneChartContainer" style="width:100%; height:400px;"></div>
+    @* <h2 class="text-center">Equipos por Área con Tipos</h2> *@
+    <div class="col-md-12 col-12 mb-2" id="areaChartContainer" style="width:50%; height:400px;"></div>
 
-
-<h2 class="text-center">Equipos por Área con Tipos</h2>
-<div id="areaChartContainer" style="width:100%; height:400px;"></div>
+</div>
 
 
 <button id="generateReportButton" class="btn btn-primary text-center">Generar Reporte PDF</button>
@@ -128,22 +129,40 @@
 
 
 
+    // Datos para la gráfica de Equipos por Área y Tipo
         // Datos para la gráfica de Equipos por Área y Tipo
-    var dataEquiposPorAreaConTipo = [];
     var categoriasAreas = [];
+    var tiposEquipos = {};
     @foreach (var item in Model.EquiposPorAreaConTipo)
     {
         <text>
-                dataEquiposPorAreaConTipo.push({
-                    name: '@item.Area - @item.TipoEquipo',
-                    data: [@item.Cantidad]
-                });
                 if (!categoriasAreas.includes('@item.Area')) {
                     categoriasAreas.push('@item.Area');
                 }
+                if (!tiposEquipos['@item.TipoEquipo']) {
+                    tiposEquipos['@item.TipoEquipo'] = [];
+                }
+                tiposEquipos['@item.TipoEquipo'].push({
+                    area: '@item.Area',
+                    cantidad: @item.Cantidad
+                });
         </text>
     }
 
+    // Preparar series de datos
+    var seriesData = [];
+    for (var tipo in tiposEquipos) {
+        var data = categoriasAreas.map(area => {
+            var tipoData = tiposEquipos[tipo].find(t => t.area === area);
+            return tipoData ? tipoData.cantidad : 0;
+        });
+        seriesData.push({
+            name: tipo,
+            data: data
+        });
+    }
+
+    // Configurar el gráfico
     Highcharts.chart('areaChartContainer', {
         chart: {
             type: 'bar'
@@ -152,12 +171,8 @@
             text: 'Cantidad de Equipos por Área y Tipo',
             align: 'left'
         },
-        subtitle: {
-            text: 'Datos agrupados por área y tipo de equipo',
-            align: 'left'
-        },
         xAxis: {
-            categories: Object.keys(dataEquiposPorAreaConTipo),
+            categories: categoriasAreas,
             title: {
                 text: 'Áreas'
             },
@@ -173,6 +188,9 @@
             },
             gridLineWidth: 1
         },
+        legend: {
+            reversed: true
+        },
         tooltip: {
             shared: true,
             useHTML: true,
@@ -182,7 +200,8 @@
             footerFormat: '</table>'
         },
         plotOptions: {
-            bar: {
+            series: {
+                stacking: 'normal',
                 dataLabels: {
                     enabled: true
                 }
@@ -191,8 +210,9 @@
         credits: {
             enabled: false
         },
-        series: dataEquiposPorAreaConTipo
+        series: seriesData
     });
+
 </script>
 
 <script src="https://code.highcharts.com/highcharts.js"></script>

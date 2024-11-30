@@ -1,11 +1,15 @@
 ﻿@model IEnumerable<Zona>
-
-<h2>Lista de Zonas</h2>
+<div class="text-center">
+    <h1 class="text-center">Lista de Zonas</h1>
+    <button id="exportButton" class="btn btn-success m-2">
+        <i class="fas fa-file-excel"></i> Exportar a Excel
+    </button>
+</div>
 
 <a asp-action="Crear" class="btn btn-outline-success"><i class="bi bi-cloud-plus"></i> Nueva Zona</a>
 <a asp-action="Index" asp-controller="Equipos" class="btn btn-outline-secondary">Cancelar</a>
 
-<table class="table">
+<table class="table" id="zonasTable">
     <thead>
         <tr>
             <th>Nombre de la Zona</th>
@@ -21,7 +25,7 @@
             <tr>
                 <td>@zona.Nombre_Zona</td>
                 <td>@zona.Descripcion_Zona</td>
-                <td>
+                <td data-activo="@zona.Activo">
                     @if (zona.Activo)
                     {
                         <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
@@ -41,3 +45,26 @@
         }
     </tbody>
 </table>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+    document.getElementById('exportButton').addEventListener('click', function () {
+        // Clonar la tabla para evitar modificar el DOM original
+        let table = document.getElementById('zonasTable').cloneNode(true);
+
+        // Reemplazar los iconos de "Activo" por valores de texto
+        let rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            let activoCell = row.querySelector('td[data-activo]');
+            if (activoCell) {
+                let activoValue = activoCell.getAttribute('data-activo') === "True" ? "Sí" : "No";
+                activoCell.textContent = activoValue;
+            }
+        });
+
+        // Convertir la tabla clonada a una hoja de cálculo
+        let workbook = XLSX.utils.table_to_book(table, { sheet: "Zonas" });
+
+        // Exportar el archivo
+        XLSX.writeFile(workbook, "Zonas.xlsx");
+    });
+</script>

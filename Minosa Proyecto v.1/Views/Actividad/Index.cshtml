@@ -40,10 +40,15 @@
 </nav>
 
 <div class="mt-4">
-    <h4 class="text-center">Historial de Pings</h4>
-
+    
+    <div class="text-center">
+        <h4 class="text-center">Historial de Pings</h4>
+        <button id="exportButton" class="btn btn-success m-2">
+            <i class="fas fa-file-excel"></i> Exportar a Excel
+        </button>
+    </div>
     <div class="table-responsive" data-current-page="@ViewBag.PageNumber">
-        <table class="table table-sm table-bordered" style="table-layout: auto; width: 100%;">
+        <table id="historialTable" class="table table-sm table-bordered" style="table-layout: auto; width: 100%;">
             <thead class="table-dark">
                 <tr>
                     <th>Dirección IP</th>
@@ -60,7 +65,7 @@
                     {
                         <tr style="@(ping.Ping ? "background-color: #d4edda;" : "background-color: #f8d7da;")">
                             <td>@ping.DireccionIP</td>
-                            <td>
+                            <td data-ping="@ping.Ping">
                                 @if (ping.Ping)
                                 {
                                     <span class="text-success"><i class="bi bi-reception-4"></i></span>
@@ -190,139 +195,29 @@
     });
 </script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
+<script>
+            document.getElementById('exportButton').addEventListener('click', function () {
+        // Clonar la tabla para evitar modificar el DOM original
+        let table = document.getElementById('historialTable').cloneNode(true);
 
-@* <script>
-        $(document).ready(function () {
-        const pageSize = @ViewBag.PageSize; // Tamaño de página inicial
-
-        // Función para formatear la fecha
-        function formatearFecha(fechaISO) {
-            const fecha = new Date(fechaISO);
-            const opcionesDia = { weekday: 'long' };
-            const opcionesFecha = { year: 'numeric', month: '2-digit', day: '2-digit' };
-            const opcionesHora = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-
-            return {
-                dia: new Intl.DateTimeFormat('es-ES', opcionesDia).format(fecha),
-                fecha: new Intl.DateTimeFormat('es-ES', opcionesFecha).format(fecha),
-                hora: new Intl.DateTimeFormat('es-ES', opcionesHora).format(fecha),
-            };
-        }
-
-        // Función para cargar una página específica
-        function cargarPagina(pageNumber) {
-            $.ajax({
-                url: '@Url.Action("ObtenerHistorialPingsAJAXParaIndexHistorial", "Actividad")',
-                type: 'GET',
-                data: { pageNumber: pageNumber, pageSize: pageSize },
-                success: function (response) {
-                    if (response.Error) {
-                        console.error("Error en el servidor:", response.Error);
-                        $("#historialPings").html('<tr><td colspan="5" class="text-danger text-center">Error al cargar los datos.</td></tr>');
-                        return;
-                    }
-
-                    const historialTableBody = $("#historialPings");
-                    historialTableBody.empty();
-
-                    if (response.Data && response.Data.length > 0) {
-                        response.Data.forEach(function (ping) {
-                            const fechaFormateada = formatearFecha(ping.ultimaHoraPing);
-                            const row = `
-                                <tr style="${ping.ping ? 'background-color: #d4edda;' : 'background-color: #f8d7da;'}">
-                                    <td>${ping.direccionIP}</td>
-                                    <td>${ping.ping ? '<span class="text-success"><i class="bi bi-reception-4"></i></span>' : '<span class="text-danger"><i class="bi bi-reception-0"></i></span>'}</td>
-                                    <td>${fechaFormateada.dia}</td>
-                                    <td>${fechaFormateada.fecha}</td>
-                                    <td>${fechaFormateada.hora}</td>
-                                </tr>`;
-                            historialTableBody.append(row);
-                        });
-                    } else {
-                        historialTableBody.append('<tr><td colspan="5" class="text-center">No hay historial de pings disponible.</td></tr>');
-                    }
-
-                    // Actualizamos la paginación
-                    actualizarPaginacion(response.TotalRecords, pageNumber);
-                    $(".table-responsive").attr("data-current-page", pageNumber);
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error en la solicitud AJAX:", error);
-                    $("#historialPings").html('<tr><td colspan="5" class="text-danger text-center">Error al cargar los datos.</td></tr>');
-                }
-            });
-        }
-
-        // Función para actualizar la paginación
-        function actualizarPaginacion(totalRecords, currentPage) {
-            const totalPages = Math.ceil(totalRecords / pageSize);
-            const paginationContainer = $(".pagination");
-            paginationContainer.empty();
-
-            for (let i = 1; i <= totalPages; i++) {
-                const activeClass = i === currentPage ? "active" : "";
-                paginationContainer.append(`
-                    <li class="page-item ${activeClass}">
-                        <a class="page-link" href="#" data-page="${i}">${i}</a>
-                    </li>
-                `);
+        // Reemplazar los iconos de ping por valores de texto
+        let rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            let pingCell = row.querySelector('td[data-ping]');
+            if (pingCell) {
+                let pingValue = pingCell.getAttribute('data-ping') === "True" ? "Activa" : "Inactiva";
+                pingCell.textContent = pingValue;
             }
-        }
-
-        // Maneja el clic en la paginación
-        $(document).on("click", ".pagination a", function (e) {
-            e.preventDefault();
-            const pageNumber = parseInt($(this).data("page"));
-            cargarPagina(pageNumber);
         });
 
-        // Carga inicial
-        const currentPage = $(".table-responsive").data("current-page") || 1;
-        cargarPagina(currentPage);
+        // Convertir la tabla clonada a una hoja de cálculo
+        let workbook = XLSX.utils.table_to_book(table, { sheet: "Historial" });
+
+        // Exportar el archivo
+        XLSX.writeFile(workbook, "Historial.xlsx");
+
     });
 
 </script>
- *@
-
-@* <nav>
-    <ul class="pagination justify-content-center">
-        @{
-            int totalPages = (int)Math.Ceiling((double)ViewBag.TotalRecords / ViewBag.PageSize);
-            int currentPage = ViewBag.PageNumber;
-            int maxPagesToShow = 10; // Número máximo de páginas visibles
-            int startPage = Math.Max(1, currentPage - maxPagesToShow / 2);
-            int endPage = Math.Min(totalPages, startPage + maxPagesToShow - 1);
-
-            // Ajustar el rango para asegurar siempre mostrar el máximo permitido si es posible
-            if (endPage - startPage + 1 < maxPagesToShow)
-            {
-                startPage = Math.Max(1, endPage - maxPagesToShow + 1);
-            }
-
-            // Botón "Anterior"
-            if (currentPage > 1)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage - 1 })">Anterior</a>
-                </li>
-            }
-
-            // Números de página
-            for (int i = startPage; i <= endPage; i++)
-            {
-                <li class="page-item @(i == currentPage ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("Index", new { page = i })">@i</a>
-                </li>
-            }
-
-            // Botón "Siguiente"
-            if (currentPage < totalPages)
-            {
-                <li class="page-item">
-                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage + 1 })">Siguiente</a>
-                </li>
-            }
-        }
-    </ul>
-</nav> *@

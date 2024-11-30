@@ -1,0 +1,31 @@
+﻿@model CorreoSettings
+
+<h2>Editar Configuración de Correo</h2>
+<form asp-action="Editar" method="post">
+    <div class="form-group">
+        <label for="SmtpServer">Servidor SMTP:</label>
+        <input asp-for="SmtpServer" class="form-control" id="SmtpServer" />
+        <span asp-validation-for="SmtpServer" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="SmtpPort">Puerto SMTP:</label>
+        <input asp-for="SmtpPort" type="number" class="form-control" id="SmtpPort" />
+        <span asp-validation-for="SmtpPort" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="EmailFrom">Correo Electrónico:</label>
+        <input asp-for="EmailFrom" type="email" class="form-control" id="EmailFrom" />
+        <span asp-validation-for="EmailFrom" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label for="EmailPassword">Contraseña:</label>
+        <input asp-for="EmailPassword" type="password" class="form-control" id="EmailPassword" />
+        <span asp-validation-for="EmailPassword" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+</form>

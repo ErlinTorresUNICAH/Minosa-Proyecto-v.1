@@ -1,4 +1,12 @@
-﻿<form asp-action="EliminarMultiples" method="post">
+﻿
+<div class="text-center">
+    <h1>Lista de Ips</h1>
+    <button id="exportToExcel" class="btn btn-success">
+        <i class="fas fa-file-excel"></i> Exportar a Excel
+    </button>
+</div>
+
+<form asp-action="EliminarMultiples" method="post">
     <button type="submit" class="btn btn-danger" id="deleteSelectedBtn" style="display: none;">Eliminar Seleccionados</button>
     <table class="table">
         <thead class="table-dark">
@@ -14,8 +22,9 @@
         <tbody>
             @foreach (var ip in Model)
             {
-                <tr class="selectable-row" data-id="@ip.ID_ip">
-                    <td>
+                
+                <tr class="selectable-row" data-id="(@ip.ID_ip)">
+                    <td data-activa="@ip.Activa">
                         @if (ip.Activa)
                         {
                             <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
@@ -28,7 +37,7 @@
                     <td>@ip.IPV4</td>
                     <td>@ip.Estado</td>
                     <td>@ip.Nombre_Vlan</td>
-                    <td>
+                    <td data-ping="@ip.ping">
                         @if (ip.ping)
                         {
                             <span class="text-success"><i class="bi bi-reception-4"></i></span>
@@ -37,7 +46,7 @@
                         {
                             <span class="text-danger"><i class="bi bi-reception-0"></i></span>
                         }
-                    </td>
+                        
                     <td>
                         <a asp-action="Editar" asp-route-id="@ip.ID_ip" class="btn btn-warning btn-sm">Editar</a>
                         <a asp-action="Eliminar" asp-route-id="@ip.ID_ip" class="btn btn-danger btn-sm">Eliminar</a>
@@ -92,4 +101,37 @@
                 `;
         document.head.appendChild(style);
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('exportToExcel').addEventListener('click', function () {
+            // Clonar la tabla para evitar modificar la original
+            let originalTable = document.querySelector('table');
+            let tableClone = originalTable.cloneNode(true);
+
+            // Procesar las celdas de "Activa" y "Ping"
+            let rows = tableClone.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                // Reemplazar la celda de "Activa"
+                let activaCell = row.querySelector('td[data-activa]');
+                if (activaCell) {
+                    let activaValue = activaCell.getAttribute('data-activa') === "True" ? "si" : "no";
+                    activaCell.textContent = activaValue;
+                }
+
+                // Reemplazar la celda de "Ping"
+                let pingCell = row.querySelector('td[data-ping]');
+                if (pingCell) {
+                    let pingValue = pingCell.getAttribute('data-ping') === "True" ? "Activa" : "Inactiva";
+                    pingCell.textContent = pingValue;
+                }
+            });
+
+            // Convertir la tabla clonada a una hoja de cálculo
+            let workbook = XLSX.utils.table_to_book(tableClone, { sheet: "Direcciones IP" });
+
+            // Exportar como archivo Excel
+            XLSX.writeFile(workbook, "DireccionesIP.xlsx");
+        });
+    </script>
+
 }
