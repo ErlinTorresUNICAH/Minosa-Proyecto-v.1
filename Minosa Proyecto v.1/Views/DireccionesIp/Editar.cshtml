@@ -1,7 +1,7 @@
 ﻿@model DireccionIp
 
-<h2>Editar Dirección IP</h2>
-
+<div class="container p-3 mb-5" style="width: 400px; height: 300px;">
+    <h2 class=" text-center">Editar Dirección IP</h2>
 <form asp-action="Editar" method="post">
     <input type="hidden" asp-for="ID_ip" />
 
@@ -25,6 +25,10 @@
         <label asp-for="Activa" class="form-check-label"></label>
         <span asp-validation-for="Activa" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <div class="text-center">
+            <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </div>
+    
 </form>
+</div>

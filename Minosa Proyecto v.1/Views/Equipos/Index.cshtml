@@ -1,44 +1,56 @@
 ﻿@model List<Minosa_Proyecto_v._1.Models.EquipoViewModel>
 <h2 class="text-center">Inventario</h2>
-<div class="row mt-3">
-    @* <div class="col-md-3 col-12 mb-2"> *@
-        
-    @* </div> *@
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Vlans" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-wifi"></i> VLANs</a>
-    </div>
-    
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Proveedores" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-truck-fast"></i> Proveedores</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="TipoEquipos" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-computer"></i> Tipos de Equipo</a>
-    </div>
-    
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Modelos" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-regular fa-clone"></i> Modelos</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="DireccionesIp" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-qrcode"></i> Direcciones IP</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Marcas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-tags"></i> Marcas</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Areas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-regular fa-building"></i> Áreas</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Zonas" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-mountain-city"></i> Zonas</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Radio" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-tower-cell"></i> Radios</a>
-    </div>
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="Materiales" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-hammer"></i> Materiales</a>
-    </div>
+@* <div class="row mt-3"> *@
+@* <div class="col-md-3 col-12 mb-2"> *@
 
-    
+@* </div> *@
+<div class="container text-center shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <div class="row">
+        <div class="col m-2">
+            @* <a asp-controller="Vlans" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-wifi"></i> VLANs</a> *@
+            <a asp-controller="Vlans" asp-action="Index" class="btn btn-secondary w-100"><i class="fa-solid fa-wifi"></i> VLANs</a>
+        </div>
+        <div class="col m-2">
+            <a asp-controller="Proveedores" asp-action="Index" class="btn btn-secondary w-100"><i class="fa-solid fa-truck-fast"></i> Proveedores</a>
+        </div>
+        <div class="col m-2">
+            <a asp-controller="TipoEquipos" asp-action="Index" class="btn btn-secondary w-100"><i class="fa-solid fa-computer"></i> Tipos de Equipo</a>
+        </div>
+        <div class="col m-2">
+            <a asp-controller="Modelos" asp-action="Index" class="btn btn-secondary w-100"><i class="fa-regular fa-clone"></i> Modelos</a>
+        </div>
+        <div class="col m-2">
+            <a asp-controller="DireccionesIp" asp-action="Index" class="btn btn-secondary w-100"><img src="~/icons/qrcode-solid.svg" style="width: 16px; height: 16px;"> Direcciones IP</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col m-2">
+            <a asp-controller="Marcas" asp-action="Index" class="btn btn-secondary w-100"><i class="fa-solid fa-tags"></i> Marcas</a>
+        </div>
+        <div class="col m-2">
+            <a asp-controller="Areas" asp-action="Index" class="btn btn-secondary w-100"><i class="fa-regular fa-building"></i> Áreas</a>
+        </div>
+        <div class="col m-2">
+            <a asp-controller="Zonas" asp-action="Index" class="btn btn-secondary w-100"><i class="fa-solid fa-mountain-city"></i> Zonas</a>
+        </div>
+        <div class="col m-2">
+            <a asp-controller="Radio" asp-action="Index" class="btn btn-secondary w-100"><i class="fa-solid fa-tower-cell"></i> Radios</a>
+        </div>
+        <div class="col m-2">
+            <a asp-controller="Materiales" asp-action="Index" class="btn btn-secondary w-100"><i class="fa-solid fa-hammer"></i> Materiales</a>
+        </div>
+    </div>
 </div>
+
+
+
+
+
+
+
+
+
+@* </div> *@
 
 <div class="text-center">
     <h2 class="text-center">Lista de Equipos</h2>
@@ -46,12 +58,11 @@
         <i class="fas fa-file-excel"></i> Exportar a Excel
     </button>
     <a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary"><i class="fa-solid fa-folder-plus"></i> Nuevo Equipo</a>
-
 </div>
 
-<div class="table-responsive">
-    <table class="table table-bordered" style="table-layout: auto; width: 100%;" id="equiposTable">
-        <thead class="table-group-divider m-5">
+<div class=" shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <table class="table table-bordered table-responsive" style="table-layout: auto; width: 100%;" id="equiposTable">
+        <thead class="">
             <tr class="table-secondary">
                 <th><input type="text" id="serialFilter" placeholder="Nº Serie" class="form-control" /></th>
                 <th><input type="text" id="descripcionFilter" placeholder="Descripción" class="form-control" /></th>
@@ -66,17 +77,17 @@
                 <th>
                     <div>
                         <button id="clearFiltersButton" class="btn btn-danger">
-                            <i class="fas fa-times-circle"></i>
+                            <img src="~/icons/filter-circle-xmark-solid.svg" style="width: 16px; height: 16px;">
                         </button>
 
                     </div>
                 </th>
-                
+
             </tr>
         </thead>
 
-        <thead class="thead-dark">
-            <tr >
+        <thead class="table-dark">
+            <tr>
                 <th># de Serie</th>
                 <th>Descripción</th>
                 <th>Tipo de Equipo</th>
@@ -115,7 +126,7 @@
                     <td>@equipo.Respaldo</td>
                     <td>@equipo.Observaciones</td>
                     <td>
-                        <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = equipo.ID_equipo })" class="btn btn-info"><i class="bi bi-clipboard-data-fill"></i></a>
+                        <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = equipo.ID_equipo })" class="btn btn-info"><img src="~/icons/file-circle-question-solid.svg" style="width: 16px; height: 16px;"></a>
                     </td>
                 </tr>
             }

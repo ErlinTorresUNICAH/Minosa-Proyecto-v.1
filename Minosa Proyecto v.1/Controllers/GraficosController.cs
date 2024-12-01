@@ -30,6 +30,7 @@ namespace Minosa_Proyecto_v._1.Controllers
                 EquiposPorTipo = ObtenerEquiposPorTipo(),
                 EquiposPorArea = ObtenerEquiposPorArea(),
                 EquiposPorZona = ObtenerEquiposPorZona(),
+                EquiposActivos = ObtenerEquiposActivos(),
                 EquiposPorAreaConTipo = ObtenerEquiposPorAreaConTipo()
             };
 
@@ -129,6 +130,33 @@ namespace Minosa_Proyecto_v._1.Controllers
             return data;
         }
 
+
+        // Lista d
+        private List<EquiposActivos> ObtenerEquiposActivos()
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            var data = new List<EquiposActivos>();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var command = new SqlCommand("P_GetActivos_G", connection)
+                {
+                    CommandType = CommandType.StoredProcedure
+                };
+                connection.Open();
+                using (var reader = command.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        data.Add(new EquiposActivos
+                        {
+                            Activos = Convert.ToInt32(reader["Activo"]),
+                            Inactivos = Convert.ToInt32(reader["Inactivo"])
+                        });
+                    }
+                }
+            }
+            return data;
+        }
 
         // Lista con todos los equipos por area con tipo para su uso en grafico
         private List<EquipoPorAreaConTipo> ObtenerEquiposPorAreaConTipo()

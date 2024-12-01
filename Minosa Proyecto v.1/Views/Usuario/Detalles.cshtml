@@ -4,34 +4,35 @@
 
 <form method="post" asp-action="Editar" class="container " style="max-width: 500px;">
     <h2 class="text-center">Detalles del Usuario</h2>
-    <div class="form-group ">
-        <label for="ID_usuario">ID de Usuario</label>
-        <input type="text" class="form-control" id="ID_usuario" name="ID_usuario" value="@Model.ID_usuario" readonly />
-    </div>
+    <div class="rounded-3 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+        <div class="form-group m-2">
+            <label for="ID_usuario" class="text-decoration-line-through">ID de Usuario</label>
+            <input type="text" class="form-control" id="ID_usuario" name="ID_usuario" value="@Model.ID_usuario" readonly />
+        </div>
 
-    <div class="form-group">
-        <label for="Nombre_Usuario">Nombre de Usuario</label>
-        <input type="text" class="form-control" id="Nombre_Usuario" name="Nombre_Usuario" value="@Model.Nombre_Usuario" required />
-    </div>
+        <div class="form-group m-2">
+            <label for="Nombre_Usuario">Nombre de Usuario</label>
+            <input type="text" class="form-control" id="Nombre_Usuario" name="Nombre_Usuario" value="@Model.Nombre_Usuario" required />
+        </div>
 
-    <div class="form-group">
-        <label for="Contrasena">Contraseña</label>
-        <input type="password" class="form-control" id="Contrasena" name="Contrasena" value="@Model.Contrasena" required />
-    </div>
+        <div class="form-group m-2">
+            <label for="Contrasena">Contraseña</label>
+            <input type="password" class="form-control" id="Contrasena" name="Contrasena" value="@Model.Contrasena" required />
+        </div>
 
-    <div class="form-group">
-        <label for="Nombre_Rol">Rol</label>
-        <input type="text" class="form-control" id="Nombre_Rol" name="Nombre_Rol" value="@Model.Nombre_Rol" readonly />
-    </div>
+        <div class="form-group m-2">
+            <label for="Nombre_Rol" class="text-decoration-line-through">Rol</label>
+            <input type="text" class="form-control" id="Nombre_Rol" name="Nombre_Rol" value="@Model.Nombre_Rol" readonly />
+        </div>
 
-    <div class="form-group">
-        <label for="Descripcion">Descripción del Rol</label>
-        <textarea class="form-control" id="Descripcion" name="Descripcion" readonly>@Model.Descripcion</textarea>
-    </div>
-    <div class="form-group text-center">
-        <button type="submit" class="btn btn-success text-center">Guardar Cambios</button>
-    </div>
-   
+        <div class="form-group m-2">
+            <label for="Descripcion" class="text-decoration-line-through">Descripción del Rol</label>
+            <textarea class="form-control" id="Descripcion" name="Descripcion" readonly>@Model.Descripcion</textarea>
+        </div>
+        <div class="form-group text-center m-2">
+            <button type="submit" class="btn btn-success text-center">Guardar Cambios</button>
+        </div>
+   </div>
 </form>
 
 @if (ViewBag.Error != null)

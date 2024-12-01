@@ -6,14 +6,14 @@
     <button id="exportButton" class="btn btn-success m-2">
         <i class="fas fa-file-excel"></i> Exportar a Excel
     </button>
-    <a asp-controller="CorreoSettings" asp-action="Index" class="btn btn-primary"><i class="fa-solid fa-folder-plus"></i> Gestion Correo</a>
+    <a asp-controller="CorreoSettings" asp-action="Index" class="btn btn-primary"><i class="fa-solid fa-folder-plus"></i> Gestion de Correo</a>
 </div>
 <div class="col-md-3 col-12 mb-2">
     
 
 </div>
-<div class="shadow-lg">
-    <table class="table table-bordered rounded-3" id="destinatariosTable">
+<div class="rounded-3 shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <table class="table table-bordered " id="destinatariosTable">
         <thead class="table-dark">
             <tr>
                 <th>Nombre</th>
@@ -22,7 +22,7 @@
                 <th>Alerta</th>
                 @* <th>Acciones</th> *@
                 <th>
-                    <a asp-action="Crear" class="btn btn-success"><i class="bi bi-envelope-plus"></i></a>
+                    <a asp-action="Crear" class="btn btn-success"><img src="~/icons/square-plus-regular.svg" style="width: 16px; height: 16px;"></a>
                 </th>
             </tr>
         </thead>
@@ -35,8 +35,8 @@
                     <td>@destinatario.Descripcion_Destinatario</td>
                     <td>@destinatario.Nombre_Alerta</td>
                     <td>
-                        <a asp-action="Editar" asp-route-id="@destinatario.ID_destinatario" class="btn btn-warning"><i class="bi bi-pen"></i></a>
-                        <a asp-action="Eliminar" asp-route-id="@destinatario.ID_destinatario" class="btn btn-danger"><i class="bi bi-trash3"></i></a>
+                        <a asp-action="Editar" asp-route-id="@destinatario.ID_destinatario" class="btn btn-warning"> <img src="~/icons/pencil-square.svg" style="width: 16px; height: 16px;"></a>
+                        <a asp-action="Eliminar" asp-route-id="@destinatario.ID_destinatario" class="btn btn-danger"> <img src="~/icons/person-x-fill.svg" alt="Eliminar" style="width: 16px; height: 16px;"></a>
                     </td>
                 
                 </tr>

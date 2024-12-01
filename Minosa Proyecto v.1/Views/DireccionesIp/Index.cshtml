@@ -1,7 +1,7 @@
 ﻿
 <div class="text-center">
-    <h1>Lista de Ips</h1>
-    <button id="exportToExcel" class="btn btn-success">
+    <h1>Lista de Dirreciones Ip</h1>
+    <button id="exportToExcel" class="btn btn-success m-2">
         <i class="fas fa-file-excel"></i> Exportar a Excel
     </button>
 </div>
@@ -27,11 +27,11 @@
                     <td data-activa="@ip.Activa">
                         @if (ip.Activa)
                         {
-                            <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
+                            <span class="text-success"><img src="~/icons/check-solid.svg" style="width: 16px; height: 16px;"></span>
                         }
                         else
                         {
-                            <span class="text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                            <span class="text-danger"><img src="~/icons/ban-solid.svg" style="width: 16px; height: 16px;"></span>
                         }
                     </td>
                     <td>@ip.IPV4</td>
@@ -40,16 +40,16 @@
                     <td data-ping="@ip.ping">
                         @if (ip.ping)
                         {
-                            <span class="text-success"><i class="bi bi-reception-4"></i></span>
+                            <span class="text-success"><img src="~/icons/signal-solid.svg" style="width: 16px; height: 16px;"></span>
                         }
                         else
                         {
-                            <span class="text-danger"><i class="bi bi-reception-0"></i></span>
+                            <span class="text-danger"><img src="~/icons/sort-down-solid.svg" style="width: 16px; height: 16px;"></span>
                         }
                         
                     <td>
-                        <a asp-action="Editar" asp-route-id="@ip.ID_ip" class="btn btn-warning btn-sm">Editar</a>
-                        <a asp-action="Eliminar" asp-route-id="@ip.ID_ip" class="btn btn-danger btn-sm">Eliminar</a>
+                        <a asp-action="Editar" asp-route-id="@ip.ID_ip" class="btn btn-warning btn-sm"><img src="~/icons/pencil-square.svg" style="width: 16px; height: 16px;"></a>
+                        <a asp-action="Eliminar" asp-route-id="@ip.ID_ip" class="btn btn-danger btn-sm"><img src="~/icons/trash-can-regular.svg" style="width: 16px; height: 16px;"></a>
 
                     </td>
                 </tr>

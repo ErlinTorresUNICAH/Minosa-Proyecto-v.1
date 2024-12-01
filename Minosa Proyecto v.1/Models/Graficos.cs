@@ -30,6 +30,12 @@ namespace Minosa_Proyecto_v._1.Models
         public string TipoEquipo { get; set; }
         public int Cantidad { get; set; }
     }
+    // Modelo para Equipos Activos
+    public class EquiposActivos
+    {
+        public int Activos { get; set; }
+        public int Inactivos { get; set; }
+    }
 
     // ViewModel principal para Graficos
     public class GraficosViewModel
@@ -37,6 +43,7 @@ namespace Minosa_Proyecto_v._1.Models
         public List<EquipoPorTipo> EquiposPorTipo { get; set; }
         public List<EquipoPorArea> EquiposPorArea { get; set; }
         public List<EquipoPorZona> EquiposPorZona { get; set; }
+        public List<EquiposActivos> EquiposActivos { get; set; }
         public List<EquipoPorAreaConTipo> EquiposPorAreaConTipo { get; set; }
     }
 }

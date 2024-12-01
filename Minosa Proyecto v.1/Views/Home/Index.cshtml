@@ -76,17 +76,26 @@
     }
 </style>
 
-<script src="https://code.highcharts.com/maps/highmaps.js"></script>
-<script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/maps/modules/offline-exporting.js">
-</script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+@* <script src="https://code.highcharts.com/maps/highmaps.js"></script> *@
+@* <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>  *@
+@* <script src="https://code.highcharts.com/maps/modules/accessibility.js"></script>  *@
+@* <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script> *@
+@* <script src="https://code.highcharts.com/maps/modules/export-data.js"></script>*@
+
+
+
+
+
+
+
+@* <script src="https://code.highcharts.com/modules/accessibility.js"></script> *@
 
 @* Este es el script del grafico del inicio, Mapa mundia *@
 <script>
     (async () => {
         const topology = await fetch(
-            'https://code.highcharts.com/mapdata/custom/world-highres.topo.json'
+            
+            'wwwroot/js/highcharts/maps/mapdata/world-highres.topo.json'
         ).then(response => response.json());
 
         const data = [

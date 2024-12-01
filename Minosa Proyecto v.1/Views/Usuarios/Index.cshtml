@@ -8,13 +8,13 @@
     </button>
 </div>
 
-
-<table class="table table-bordered" id="usuariosTable">
+<div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+    <table class="table table-bordered" id="usuariosTable">
     <thead class="table-dark">
         <tr>
             <th>Usuario</th>
             <th>Rol</th>
-            <th><a asp-action="Crear" class="btn btn-success btn-sm"><i class="bi bi-envelope-plus"></i></a></th>
+            <th><a asp-action="Crear" class="btn btn-success"><img src="~/icons/square-plus-regular.svg" style="width: 16px; height: 16px;"></a></th>
         </tr>
     </thead>
     <tbody>
@@ -24,13 +24,16 @@
                 <td>@usuario.Nombre_Usuario</td>
                 <td>@usuario.Nombre_Rol</td>
                 <td>
-                    <a asp-action="Editar" asp-route-id="@usuario.ID_usuario" class="btn btn-warning btn-sm"><i class="bi bi-pen"></i></a>
-                    <a asp-action="Eliminar" asp-route-id="@usuario.ID_usuario" class="btn btn-danger btn-sm"><i class="bi bi-trash3"></i></a>
+                    <a asp-action="Editar" asp-route-id="@usuario.ID_usuario" class="btn btn-warning"><img src="~/icons/pencil-square.svg" style="width: 16px; height: 16px;"></a>
+                    <a asp-action="Eliminar" asp-route-id="@usuario.ID_usuario" class="btn btn-danger"><img src="~/icons/person-x-fill.svg" style="width: 16px; height: 16px;"></a>
+
+            
                 </td>
             </tr>
         }
     </tbody>
 </table>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script>
         document.getElementById('exportButton').addEventListener('click', function () {

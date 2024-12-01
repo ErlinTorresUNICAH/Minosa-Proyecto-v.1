@@ -1,6 +1,7 @@
 ﻿@model DireccionIp
 
-<h2>Eliminar Dirección IP</h2>
+<div class="container p-3 mb-5" style="width: 400px; height: 300px;">
+    <h2 class=" text-center">Eliminar Dirección IP</h2>
 
 @if (ViewBag.Error != null)
 {
@@ -24,6 +25,11 @@
         <label>VLAN:</label>
         <input asp-for="Nombre_Vlan" class="form-control" readonly />
     </div>
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <div class=" text-center">
+            <button type="submit" class="btn btn-danger m-2">Eliminar</button>
+            <a asp-action="Index" class="btn btn-secondary m-2">Cancelar</a>
+    </div>
+    
+
 </form>
+</div>
