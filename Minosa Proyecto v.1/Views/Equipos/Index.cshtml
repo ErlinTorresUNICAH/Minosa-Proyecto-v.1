@@ -1,10 +1,9 @@
 ﻿@model List<Minosa_Proyecto_v._1.Models.EquipoViewModel>
 <h2 class="text-center">Inventario</h2>
 <div class="row mt-3">
-    <div class="col-md-3 col-12 mb-2">
-        <a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary btn-block"><i class="fa-solid fa-folder-plus"></i> Nuevo Equipo</a>
-
-    </div>
+    @* <div class="col-md-3 col-12 mb-2"> *@
+        
+    @* </div> *@
     <div class="col-md-3 col-12 mb-2">
         <a asp-controller="Vlans" asp-action="Index" class="btn btn-secondary btn-block"><i class="fa-solid fa-wifi"></i> VLANs</a>
     </div>
@@ -46,6 +45,8 @@
     <button id="exportButton" class="btn btn-success m-2">
         <i class="fas fa-file-excel"></i> Exportar a Excel
     </button>
+    <a asp-controller="EquiposDetalles" asp-action="Crear" class="btn btn-primary"><i class="fa-solid fa-folder-plus"></i> Nuevo Equipo</a>
+
 </div>
 
 <div class="table-responsive">
@@ -100,7 +101,17 @@
                     <td>@equipo.Area</td>
                     <td>@equipo.Direccion_IP</td>
                     <td>@equipo.Estado</td>
-                    <td>@equipo.Activo</td>
+                    @* <td>@equipo.Activo</td> *@
+                    <td data-activo="@equipo.Activo">
+                        @if (equipo.Activo)
+                        {
+                            <span>Si</span>
+                        }
+                        else
+                        {
+                            <span>No</span>
+                        }
+                    </td>
                     <td>@equipo.Respaldo</td>
                     <td>@equipo.Observaciones</td>
                     <td>
@@ -200,3 +211,28 @@
     });
 
 </script>
+
+@* <script>
+            document.getElementById('exportButton').addEventListener('click', function () {
+        // Clonar la tabla para evitar modificar el DOM original
+        let table = document.getElementById('equiposTable').cloneNode(true);
+
+        // Reemplazar los iconos de ping por valores de texto
+        let rows = table.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            let pingCell = row.querySelector('td[data-activo]');
+            if (pingCell) {
+                let pingValue = pingCell.getAttribute('data-activo') === "True" ? "Activa" : "Inactiva";
+                pingCell.textContent = pingValue;
+            }
+        });
+
+        // Convertir la tabla clonada a una hoja de cálculo
+        let workbook = XLSX.utils.table_to_book(table, { sheet: "Inventario" });
+
+        // Exportar el archivo
+        XLSX.writeFile(workbook, "Inventario.xlsx");
+
+    });
+
+</script> *@
