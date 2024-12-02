@@ -27,7 +27,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             using (var connection = new SqlConnection(connectionString))
             {
-                var command = new SqlCommand("", connection);
+                var command = new SqlCommand("P_ObtenerMarcaIdDeMarcas", connection);
                 connection.Open();
                 var reader = command.ExecuteReader();
 

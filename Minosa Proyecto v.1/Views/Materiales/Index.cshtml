@@ -1,23 +1,22 @@
 ﻿@model IEnumerable<Material>
 
-
 <div class="text-center">
     <h2 class="text-center">Lista de Materiales</h2>
     <button id="exportButton" class="btn btn-success m-2">
-        <i class="fas fa-file-excel"></i> Exportar a Excel
+        <img src="~/icons/file-excel-regular.svg" style="width: 16px; height: 16px;"> Exportar a Excel
     </button>
 </div>
-<a asp-action="Crear" class="btn btn-primary">Crear Nuevo Material</a>
+<a asp-action="Crear" class="btn btn-primary m-2">Crear Nuevo Material</a>
 
-<a asp-action="Index" asp-controller="Equipos" class="btn btn-outline-secondary"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
+<a asp-action="Index" asp-controller="Equipos" class="btn btn-secondary m-2">Cancelar</a>
 
-<table class="table" id="materialesTable">
-    <thead>
+<table class="table table-bordered" id="materialesTable">
+    <thead class="table-dark">
         <tr>
             <th>Descripción</th>
             <th>Cantidad</th>
             <th>Área</th>
-            <th>Acciones</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -28,16 +27,20 @@
                 <td>@material.Cantidad</td>
                 <td>@material.Nombre_Area</td>
                 <td>
-                    <a asp-action="Editar" asp-route-id="@material.ID_Material">Editar</a> |
-                    <a asp-action="Eliminar" asp-route-id="@material.ID_Material">Eliminar</a>
+                    <a asp-action="Editar" asp-route-id="@material.ID_Material" class="btn btn-warning btn-sm">
+                        <img src="~/icons/pencil-square.svg" style="width: 16px; height: 16px;">
+                    </a>
+                    <a asp-action="Eliminar" asp-route-id="@material.ID_Material" class="btn btn-danger btn-sm">
+                        <img src="~/icons/trash-can-regular.svg" style="width: 16px; height: 16px;">
+                    </a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script>
-        document.getElementById('exportButton').addEventListener('click', function () {
+    document.getElementById('exportButton').addEventListener('click', function () {
         // Obtener la tabla HTML
         let table = document.getElementById('materialesTable');
 
@@ -47,5 +50,4 @@
         // Exportar el archivo
         XLSX.writeFile(workbook, "Materiales.xlsx");
     });
-
 </script>

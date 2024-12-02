@@ -2,13 +2,13 @@
 <div class="text-center">
     <h1>Lista de Dirreciones Ip</h1>
     <button id="exportToExcel" class="btn btn-success m-2">
-        <i class="fas fa-file-excel"></i> Exportar a Excel
+        <img src="~/icons/file-excel-regular.svg" style="width: 16px; height: 16px;"> Exportar a Excel
     </button>
 </div>
 
 <form asp-action="EliminarMultiples" method="post">
     <button type="submit" class="btn btn-danger" id="deleteSelectedBtn" style="display: none;">Eliminar Seleccionados</button>
-    <table class="table">
+    <table class="table table-bordered">
         <thead class="table-dark">
             <tr>
                 <th>Activa</th>
@@ -63,6 +63,39 @@
 
 @section Scripts {
     <script>
+        document.getElementById('exportToExcel').addEventListener('click', function () {
+            // Clonar la tabla para evitar modificar la original
+            let originalTable = document.querySelector('table');
+            let tableClone = originalTable.cloneNode(true);
+
+            // Procesar las celdas de "Activa" y "Ping"
+            let rows = tableClone.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                // Reemplazar la celda de "Activa"
+                let activaCell = row.querySelector('td[data-activa]');
+                if (activaCell) {
+                    let activaValue = activaCell.getAttribute('data-activa') === "True" ? "si" : "no";
+                    activaCell.textContent = activaValue;
+                }
+
+                // Reemplazar la celda de "Ping"
+                let pingCell = row.querySelector('td[data-ping]');
+                if (pingCell) {
+                    let pingValue = pingCell.getAttribute('data-ping') === "True" ? "Activa" : "Inactiva";
+                    pingCell.textContent = pingValue;
+                }
+            });
+
+            // Convertir la tabla clonada a una hoja de cálculo
+            let workbook = XLSX.utils.table_to_book(tableClone, { sheet: "Direcciones IP" });
+
+            // Exportar como archivo Excel
+            XLSX.writeFile(workbook, "DireccionesIP.xlsx");
+        });
+    </script>
+
+}
+@* <script>
         const selectedIds = new Set();
         const deleteButton = document.getElementById('deleteSelectedBtn');
         const selectedIdsInput = document.getElementById('selectedIds');
@@ -100,38 +133,4 @@
                     }
                 `;
         document.head.appendChild(style);
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <script>
-        document.getElementById('exportToExcel').addEventListener('click', function () {
-            // Clonar la tabla para evitar modificar la original
-            let originalTable = document.querySelector('table');
-            let tableClone = originalTable.cloneNode(true);
-
-            // Procesar las celdas de "Activa" y "Ping"
-            let rows = tableClone.querySelectorAll('tbody tr');
-            rows.forEach(row => {
-                // Reemplazar la celda de "Activa"
-                let activaCell = row.querySelector('td[data-activa]');
-                if (activaCell) {
-                    let activaValue = activaCell.getAttribute('data-activa') === "True" ? "si" : "no";
-                    activaCell.textContent = activaValue;
-                }
-
-                // Reemplazar la celda de "Ping"
-                let pingCell = row.querySelector('td[data-ping]');
-                if (pingCell) {
-                    let pingValue = pingCell.getAttribute('data-ping') === "True" ? "Activa" : "Inactiva";
-                    pingCell.textContent = pingValue;
-                }
-            });
-
-            // Convertir la tabla clonada a una hoja de cálculo
-            let workbook = XLSX.utils.table_to_book(tableClone, { sheet: "Direcciones IP" });
-
-            // Exportar como archivo Excel
-            XLSX.writeFile(workbook, "DireccionesIP.xlsx");
-        });
-    </script>
-
-}
+    </script> *@
