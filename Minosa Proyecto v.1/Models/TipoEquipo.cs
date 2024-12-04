@@ -7,6 +7,6 @@ public class TipoEquipo
 
     [Required(ErrorMessage = "El tipo de equipo es obligatorio.")]
     public string Tipo_Equipo { get; set; } = string.Empty;
-
+    [Required(ErrorMessage = "La Creacion es obligatoria es obligatorio.")]
     public DateTime Creacion_Tipo_Equipo { get; set; } = DateTime.Now;
 }

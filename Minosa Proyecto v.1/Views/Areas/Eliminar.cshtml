@@ -1,25 +1,26 @@
 ﻿@model Area
 
-<h2>Eliminar Área</h2>
+<div class="container p-4 mb-5" style="max-width: 500px;">
+    <h2 class="text-center text-danger mb-4">Eliminar Área</h2>
 
-@if (ViewBag.Error != null)
-{
-    <div class="alert alert-danger">
-        @ViewBag.Error
-    </div>
-}
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger text-center">
+            @ViewBag.Error
+        </div>
+    }
 
-<form asp-action="Eliminar" method="post">
-    <input type="hidden" asp-for="ID_area" />
+    <div class="mb-3 text-center">
+        <p><strong>Nombre del Área:</strong> @Model.Nombre_Area</p>
+        <p><strong>Zona:</strong> @Model.Nombre_Zona</p>
+    </div>
 
-    <div class="form-group">
-        <label>Nombre del Área:</label>
-        <input asp-for="Nombre_Area" class="form-control" readonly />
-    </div>
-    <div class="form-group">
-        <label>Zona:</label>
-        <input asp-for="Nombre_Zona" class="form-control" readonly />
-    </div>
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+    <form asp-action="Eliminar" method="post">
+        <input type="hidden" asp-for="ID_area" />
+
+        <div class="d-flex justify-content-center gap-3">
+            <button type="submit" class="btn btn-danger px-4">Eliminar</button>
+            <a asp-action="Index" class="btn btn-secondary px-4">Cancelar</a>
+        </div>
+    </form>
+</div>

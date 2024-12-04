@@ -1,11 +1,6 @@
 ﻿@model Vlan
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-    console.log("jQuery version:", $.fn.jquery);
-</script>
-
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script>
     $(document).ready(function () {
         $("input[name='ip'], input[name='subnetMask']").on("change", function () {
@@ -26,46 +21,57 @@
             }
         });
     });
-    console.log('@Url.Action("CalculateVlanFields", "Vlans")');
-
 </script>
 
-<h2>Crear VLAN</h2>
+<div class="container p-3 mb-5" style="width: 500px;">
+    <h2 class="text-center">Crear VLAN</h2>
 
-<a asp-action="Index" class="btn btn-outline-danger"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
-<form asp-action="CrearVlanConIps" method="post">
-    <button type="submit" class="btn btn-primary">Guardar VLAN</button>
-    <div class="form-group">
-        <label>IP Inicial</label>
-        <input type="text" name="ip" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label>Subnet Mask</label>
-        <input type="number" name="subnetMask" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label>SubNet</label>
-        <input type="text" name="SubNet" class="form-control" readonly />
-    </div>
-    <div class="form-group">
-        <label>Gateway</label>
-        <input type="text" name="Gateway" class="form-control" readonly />
-    </div>
-    <div class="form-group">
-        <label>DHCP Start</label>
-        <input type="text" name="DhcpIni" class="form-control" readonly />
-    </div>
-    <div class="form-group">
-        <label>DHCP End</label>
-        <input type="text" name="DhcpFin" class="form-control" readonly />
-    </div>
-    <div class="form-group">
-        <label>Nombre VLAN</label>
-        <input type="text" name="nombreVlan" class="form-control" required />
-    </div>
-    <div class="form-group">
-        <label>Observaciones</label>
-        <input type="text" name="observaciones" class="form-control" />
-    </div>
-    
-</form>
+    <form asp-action="CrearVlanConIps" method="post">
+        <div class="form-group">
+            <label>IP Inicial</label>
+            <input type="text" name="ip" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label>Subnet Mask</label>
+            <input type="number" name="subnetMask" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label>SubNet</label>
+            <input type="text" name="SubNet" class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Gateway</label>
+            <input type="text" name="Gateway" class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>DHCP Inicio</label>
+            <input type="text" name="DhcpIni" class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>DHCP Fin</label>
+            <input type="text" name="DhcpFin" class="form-control" readonly />
+        </div>
+
+        <div class="form-group">
+            <label>Nombre VLAN</label>
+            <input type="text" name="nombreVlan" class="form-control" required />
+        </div>
+
+        <div class="form-group">
+            <label>Observaciones</label>
+            <input type="text" name="observaciones" class="form-control" />
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary m-2">Guardar VLAN</button>
+            <a asp-action="Index" class="btn btn-secondary m-2">
+                <i class="fa-solid fa-triangle-exclamation"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>

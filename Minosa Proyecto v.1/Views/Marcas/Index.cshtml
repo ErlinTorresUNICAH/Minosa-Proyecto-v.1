@@ -3,18 +3,18 @@
 <div class="text-center">
     <h1 class="text-center">Lista de Marcas</h1>
     <button id="exportButton" class="btn btn-success m-2">
-        <i class="fas fa-file-excel"></i> Exportar a Excel
+        <img src="~/icons/file-excel-regular.svg" style="width: 16px; height: 16px;"> Exportar a Excel
     </button>
 </div>
-<a asp-action="Crear" class="btn btn-primary">Crear Nueva Marca</a>
-<a asp-action="Index" asp-controller="Equipos" class="btn btn-secondary">Cancelar</a>
+<a asp-action="Crear" class="btn btn-primary m-2">Crear Nueva Marca</a>
+<a asp-action="Index" asp-controller="Equipos" class="btn btn-secondary m-2">Cancelar</a>
 
-<table class="table" id="marcasTable">
-    <thead>
+<table class="table table-bordered" id="marcasTable">
+    <thead class="table-dark">
         <tr>
             <th>Nombre de la Marca</th>
             <th>Activa</th>
-            <th>Acciones</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -25,22 +25,30 @@
                 <td data-activo="@marca.Activa">
                     @if (marca.Activa)
                     {
-                        <span class="text-success"><i class="bi bi-check-circle-fill"></i></span>
+                        <span class="text-success">
+                            <img src="~/icons/check-solid.svg" style="width: 16px; height: 16px;">
+                        </span>
                     }
                     else
                     {
-                        <span class="text-danger"><i class="bi bi-x-circle-fill"></i></span>
+                        <span class="text-danger">
+                            <img src="~/icons/ban-solid.svg" style="width: 16px; height: 16px;">
+                        </span>
                     }
                 </td>
                 <td>
-                    <a asp-action="Editar" asp-route-id="@marca.ID_marca" class="btn btn-warning btn-sm">Editar</a>
-                    <a asp-action="Eliminar" asp-route-id="@marca.ID_marca" class="btn btn-danger btn-sm">Eliminar</a>
+                    <a asp-action="Editar" asp-route-id="@marca.ID_marca" class="btn btn-warning btn-sm">
+                        <img src="~/icons/pencil-square.svg" style="width: 16px; height: 16px;">
+                    </a>
+                    <a asp-action="Eliminar" asp-route-id="@marca.ID_marca" class="btn btn-danger btn-sm">
+                        <img src="~/icons/trash-can-regular.svg" style="width: 16px; height: 16px;">
+                    </a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 <script>
     document.getElementById('exportButton').addEventListener('click', function () {
         // Clonar la tabla para evitar modificar el DOM original

@@ -20,3 +20,11 @@ html {
 body {
   margin-bottom: 60px;
 }*/
+
+.custom-link{
+    color: white !important;
+}
+.custom-link:hover {
+    color: orange !important;
+    text-decoration: none;
+}

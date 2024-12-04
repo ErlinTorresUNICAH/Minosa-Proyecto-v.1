@@ -1,21 +1,25 @@
 ﻿@model Vlan
 
-<h2>Eliminar VLAN</h2>
+<div class="container p-4 mb-5" style="max-width: 500px;">
+    <h2 class="text-center text-danger mb-4">Eliminar VLAN</h2>
 
-@if (ViewBag.Error != null)
-{
-    <div class="alert alert-danger">
-        @ViewBag.Error
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger text-center">
+            @ViewBag.Error
+        </div>
+    }
+
+    <div class="mb-3 text-center">
+        <p><strong>Nombre de la VLAN:</strong> @Model.Nombre_Vlan</p>
     </div>
-}
 
-<form asp-action="Eliminar" method="post">
-    <input type="hidden" asp-for="ID_vlan" />
+    <form asp-action="Eliminar" method="post">
+        <input type="hidden" asp-for="ID_vlan" />
 
-    <div class="form-group">
-        <label>Nombre de la VLAN:</label>
-        <input asp-for="Nombre_Vlan" class="form-control" readonly />
-    </div>
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+        <div class="d-flex justify-content-center gap-3">
+            <button type="submit" class="btn btn-danger px-4">Eliminar</button>
+            <a asp-action="Index" class="btn btn-secondary px-4">Cancelar</a>
+        </div>
+    </form>
+</div>

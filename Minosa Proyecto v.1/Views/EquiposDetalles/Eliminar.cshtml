@@ -1,27 +1,37 @@
 ﻿@model Minosa_Proyecto_v._1.Models.EquipoDetalleViewModel
 
-<h2>¿Estás seguro de que deseas eliminar este equipo?</h2>
+<div class="container p-4 mb-5" style="max-width: 500px;">
+    <h2 class="text-center text-danger mb-4">Eliminar Equipo</h2>
 
-<p><strong>Número de Serie:</strong> @Model.NumeroSerie</p>
-<p><strong>Descripción:</strong> @Model.Descripcion</p>
-<p><strong>Estado:</strong> @Model.Estado</p>
-<p><strong>Área:</strong> @Model.Nombre_Area</p>
-<p><strong>Tipo de Equipo:</strong> @Model.Tipo_Equipo</p>
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger text-center">
+            @TempData["Error"]
+        </div>
+    }
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success text-center">
+            @TempData["Success"]
+        </div>
+    }
 
-<form asp-action="Eliminar" method="post">
-    <input type="hidden" asp-for="ID_equipo" />
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = Model.ID_equipo })" class="btn btn-outline-danger"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
-    
+    <div class="mb-3 text-center">
+        <p><strong>Número de Serie:</strong> @Model.NumeroSerie</p>
+        <p><strong>Descripción:</strong> @Model.Descripcion</p>
+        <p><strong>Estado:</strong> @Model.Estado</p>
+        <p><strong>Área:</strong> @Model.Nombre_Area</p>
+        <p><strong>Tipo de Equipo:</strong> @Model.Tipo_Equipo</p>
+    </div>
 
-</form>
+    <form asp-action="Eliminar" method="post">
+        <input type="hidden" asp-for="ID_equipo" />
 
-@if (TempData["Error"] != null)
-
-{
-    <div class="alert alert-danger">@TempData["Error"]</div>
-}
-@if (TempData["Success"] != null)
-{
-    <div class="alert alert-success">@TempData["Success"]</div>
-}
+        <div class="d-flex justify-content-center gap-3">
+            <button type="submit" class="btn btn-danger px-4">Eliminar</button>
+            <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = Model.ID_equipo })" class="btn btn-secondary px-4">
+                <i class="fa-solid fa-triangle-exclamation"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>

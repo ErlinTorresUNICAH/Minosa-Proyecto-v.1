@@ -1,11 +1,20 @@
 ﻿@model TipoEquipo
 
-<h2>Editar Tipo de Equipo</h2>
+<div class="container p-3 mb-5" style="width: 400px;">
+    <h2 class="text-center">Editar Tipo de Equipo</h2>
 
-<form asp-action="Editar" method="post">
-    <input type="hidden" asp-for="ID_tipo_equipo" />
-    <label>Tipo de Equipo:</label>
-    <input asp-for="Tipo_Equipo" />
-    <button type="submit">Guardar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+    <form asp-action="Editar" method="post">
+        <input type="hidden" asp-for="ID_tipo_equipo" />
+
+        <div class="form-group">
+            <label asp-for="Tipo_Equipo"></label>
+            <input asp-for="Tipo_Equipo" class="form-control" />
+            <span asp-validation-for="Tipo_Equipo" class="text-danger"></span>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary m-2">Guardar</button>
+            <a asp-action="Index" class="btn btn-secondary m-2">Cancelar</a>
+        </div>
+    </form>
+</div>

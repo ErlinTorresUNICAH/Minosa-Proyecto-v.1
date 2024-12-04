@@ -1,42 +1,48 @@
 ﻿@model Proveedor
 
-<h2>Editar Proveedor</h2>
+<div class="container p-3 mb-5" style="width: 400px;">
+    <h2 class="text-center">Editar Proveedor</h2>
 
-<form asp-action="Editar" method="post">
-    <div class="form-group">
-        <label>ID del Proveedor</label>
-        <input asp-for="ID_proveedor" class="form-control" readonly />
-    </div>
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger text-center">
+            @ViewBag.Error
+        </div>
+    }
 
-    <div class="form-group">
-        <label>Nombre</label>
-        <input asp-for="Nombre" class="form-control" />
-        <span asp-validation-for="Nombre" class="text-danger"></span>
-    </div>
+    <form asp-action="Editar" method="post">
+        <div class="form-group">
+            <label asp-for="ID_proveedor"></label>
+            <input asp-for="ID_proveedor" class="form-control" readonly />
+        </div>
 
-    <div class="form-group">
-        <label>Dirección</label>
-        <input asp-for="Direccion" class="form-control" />
-        <span asp-validation-for="Direccion" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Nombre"></label>
+            <input asp-for="Nombre" class="form-control" />
+            <span asp-validation-for="Nombre" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label>Teléfono</label>
-        <input asp-for="Telefono" class="form-control" />
-        <span asp-validation-for="Telefono" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Direccion"></label>
+            <input asp-for="Direccion" class="form-control" />
+            <span asp-validation-for="Direccion" class="text-danger"></span>
+        </div>
 
-    <div class="form-group">
-        <label>Correo</label>
-        <input asp-for="Correo" class="form-control" />
-        <span asp-validation-for="Correo" class="text-danger"></span>
-    </div>
+        <div class="form-group">
+            <label asp-for="Telefono"></label>
+            <input asp-for="Telefono" class="form-control" />
+            <span asp-validation-for="Telefono" class="text-danger"></span>
+        </div>
 
-    <button type="submit" class="btn btn-success">Guardar Cambios</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+        <div class="form-group">
+            <label asp-for="Correo"></label>
+            <input asp-for="Correo" class="form-control" />
+            <span asp-validation-for="Correo" class="text-danger"></span>
+        </div>
 
-@if (ViewBag.Error != null)
-{
-    <div class="alert alert-danger">@ViewBag.Error</div>
-}
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary m-2">Guardar Cambios</button>
+            <a asp-action="Index" class="btn btn-secondary m-2">Cancelar</a>
+        </div>
+    </form>
+</div>

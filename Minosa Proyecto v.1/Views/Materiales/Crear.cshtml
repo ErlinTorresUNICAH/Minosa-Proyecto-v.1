@@ -1,23 +1,32 @@
 ﻿@model Material
 
-<h2>Crear Material</h2>
+<div class="container p-3 mb-5" style="width: 400px;">
+    <h2 class="text-center">Crear Material</h2>
 
-<form asp-action="Crear" method="post">
-    <div class="form-group">
-        <label asp-for="Descripcion"></label>
-        <input asp-for="Descripcion" class="form-control" />
-        <span asp-validation-for="Descripcion" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Cantidad"></label>
-        <input asp-for="Cantidad" class="form-control" />
-        <span asp-validation-for="Cantidad" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="id_area">Área</label>
-        <select asp-for="id_area" class="form-control" asp-items="ViewBag.Areas"></select>
-        <span asp-validation-for="id_area" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Crear</button>
-    <a asp-action="Index"  class="btn btn-outline-secondary"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
-</form>
+    <form asp-action="Crear" method="post">
+        <div class="form-group">
+            <label asp-for="Descripcion"></label>
+            <input asp-for="Descripcion" class="form-control" />
+            <span asp-validation-for="Descripcion" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Cantidad"></label>
+            <input asp-for="Cantidad" class="form-control" />
+            <span asp-validation-for="Cantidad" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="id_area">Área</label>
+            <select asp-for="id_area" class="form-control" asp-items="ViewBag.Areas"></select>
+            <span asp-validation-for="id_area" class="text-danger"></span>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary m-2">Crear</button>
+            <a asp-action="Index" class="btn btn-secondary m-2">
+                <i class="fa-solid fa-triangle-exclamation"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>

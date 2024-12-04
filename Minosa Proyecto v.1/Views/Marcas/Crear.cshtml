@@ -1,13 +1,16 @@
 ﻿@model Marca
+<div class="container p-3 mb-5" style="width: 400px;">
+    <h2 class="text-center">Crear Marca</h2>
 
-<h2>Crear Marca</h2>
-
-<form asp-action="Crear" method="post">
-    <div class="form-group">
-        <label asp-for="NombreMarca"></label>
-        <input asp-for="NombreMarca" class="form-control" />
-        <span asp-validation-for="NombreMarca" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-primary">Crear</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+    <form asp-action="Crear" method="post">
+        <div class="form-group">
+            <label asp-for="NombreMarca"></label>
+            <input asp-for="NombreMarca" class="form-control" />
+            <span asp-validation-for="NombreMarca" class="text-danger"></span>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary m-2">Crear</button>
+            <a asp-action="Index" class="btn btn-secondary m-2">Cancelar</a>
+        </div>
+    </form>
+</div>

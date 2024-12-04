@@ -1,23 +1,23 @@
 ﻿@model Minosa_Proyecto_v._1.Models.EquipoDetalleViewModel
 
-<h2 class="text-center my-4"><i class="fas fa-edit"></i> Editar Equipo</h2>
-
-<form asp-action="Editar" method="post" class="container text-start mt-2 needs-validation" novalidate style="max-width: 500px;">
-    <div class="text-center">
+<form asp-action="Editar" method="post" class="container text-start mt-2 needs-validation" novalidate>
+    <div class="container text-center m-2">
+        <h2><i class="fas fa-edit"></i> Editar Equipo</h2>
         <button type="submit" class="btn btn-success"><i class="fas fa-save"></i> Guardar Cambios</button>
-        <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = Model.ID_equipo })" class="btn btn-outline-danger">
+        <a href="@Url.Action("Detalles", "EquiposDetalles", new { id = Model.ID_equipo })" class="btn btn-secondary">
             <i class="fa-solid fa-triangle-exclamation"></i> Cancelar
         </a>
     </div>
 
     <input type="hidden" asp-for="ID_equipo" />
 
-    <div class="card mb-4">
-        <div class="card-header bg-primary text-white">
+    <div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded p-4 card">
+        <div class="card-header bg-primary text-white m-2">
             <h3><i class="fas fa-info-circle"></i> Datos Básicos del Equipo</h3>
         </div>
-        <div class="card-body">
-            <div class="form-group">
+
+        <div class="row">
+            <div class="form-group col">
                 <label for="ID_tipo_equipo">Tipo de Equipo</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-laptop"></i></span>
@@ -26,7 +26,7 @@
                 <span asp-validation-for="ID_tipo_equipo" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="ID_proveedor">Proveedor</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-truck"></i></span>
@@ -34,8 +34,10 @@
                 </div>
                 <span asp-validation-for="ID_proveedor" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="row">
+            <div class="form-group col">
                 <label for="ID_modelo">Modelo</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-cogs"></i></span>
@@ -44,7 +46,7 @@
                 <span asp-validation-for="ID_modelo" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="ID_area">Área</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
@@ -52,8 +54,10 @@
                 </div>
                 <span asp-validation-for="ID_area" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="row">
+            <div class="form-group col">
                 <label for="ID_ip">Dirección IP</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-network-wired"></i></span>
@@ -62,7 +66,7 @@
                 <span asp-validation-for="ID_ip" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="NumeroSerie">Número de Serie</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-barcode"></i></span>
@@ -70,8 +74,10 @@
                 </div>
                 <span asp-validation-for="NumeroSerie" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="row">
+            <div class="form-group col">
                 <label for="Descripcion">Descripción</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-align-left"></i></span>
@@ -80,7 +86,7 @@
                 <span asp-validation-for="Descripcion" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="Estado">Estado</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-thermometer-half"></i></span>
@@ -88,17 +94,21 @@
                 </div>
                 <span asp-validation-for="Estado" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-check form-switch">
+        <div class="row">
+            <div class="form-check col">
                 <label for="Activo">Activo</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-toggle-on"></i></span>
-                    <input type="checkbox" asp-for="Activo" class="form-check-input" id="flexSwitchCheckDefault" />
+                    <input type="checkbox" asp-for="Activo" class="form-check-input" id="Activo" />
                 </div>
                 <span asp-validation-for="Activo" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="row">
+            <div class="form-group col">
                 <label for="Respaldo">Respaldo</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-cloud-upload-alt"></i></span>
@@ -107,7 +117,7 @@
                 <span asp-validation-for="Respaldo" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="Observaciones">Observaciones</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-comment-dots"></i></span>
@@ -118,13 +128,13 @@
         </div>
     </div>
 
-    <!-- Sección de detalles técnicos con la misma estructura -->
-    <div class="card mb-4">
-        <div class="card-header bg-secondary text-white">
+    <div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded p-4 card">
+        <div class="card-header bg-secondary text-white m-2">
             <h3><i class="fas fa-tools"></i> Detalles Técnicos</h3>
         </div>
-        <div class="card-body">
-            <div class="form-group">
+
+        <div class="row">
+            <div class="form-group col">
                 <label for="Tipo_Voltaje">Tipo de Voltaje</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-bolt"></i></span>
@@ -133,7 +143,7 @@
                 <span asp-validation-for="Tipo_Voltaje" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="Voltaje">Voltaje</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-tachometer-alt"></i></span>
@@ -141,8 +151,10 @@
                 </div>
                 <span asp-validation-for="Voltaje" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="row">
+            <div class="form-group col">
                 <label for="Amperaje">Amperaje</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-battery-three-quarters"></i></span>
@@ -151,7 +163,7 @@
                 <span asp-validation-for="Amperaje" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="Num_Puertos_RJ45">Número de Puertos RJ45</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-plug"></i></span>
@@ -159,8 +171,10 @@
                 </div>
                 <span asp-validation-for="Num_Puertos_RJ45" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="row">
+            <div class="form-group col">
                 <label for="Num_Puertos_SFP">Número de Puertos SFP</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-link"></i></span>
@@ -169,7 +183,7 @@
                 <span asp-validation-for="Num_Puertos_SFP" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="Fecha_Compra">Fecha de Compra</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
@@ -177,8 +191,10 @@
                 </div>
                 <span asp-validation-for="Fecha_Compra" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="row">
+            <div class="form-group col">
                 <label for="Fecha_Garantia">Fecha de Garantía</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-calendar-check"></i></span>
@@ -187,7 +203,7 @@
                 <span asp-validation-for="Fecha_Garantia" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="Tipo_Garantia">Tipo de Garantía</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-shield-alt"></i></span>
@@ -195,8 +211,10 @@
                 </div>
                 <span asp-validation-for="Tipo_Garantia" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="row">
+            <div class="form-group col">
                 <label for="Canal">Canal</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-wifi"></i></span>
@@ -205,7 +223,7 @@
                 <span asp-validation-for="Canal" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="Firmware">Firmware</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-microchip"></i></span>
@@ -213,8 +231,9 @@
                 </div>
                 <span asp-validation-for="Firmware" class="text-danger"></span>
             </div>
-
-            <div class="form-group">
+        </div>
+        <div class="row">
+            <div class="form-group col">
                 <label for="Usuario">Usuario</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-user"></i></span>
@@ -223,7 +242,7 @@
                 <span asp-validation-for="Usuario" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="Contracena">Contraseña</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-key"></i></span>
@@ -231,8 +250,10 @@
                 </div>
                 <span asp-validation-for="Contracena" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="row">
+            <div class="form-group col">
                 <label for="MAC_Address">MAC Address</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-id-card"></i></span>
@@ -241,16 +262,18 @@
                 <span asp-validation-for="MAC_Address" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="Fecha_Instalacion">Fecha de Instalación</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-wrench"></i></span>
-                    <input type="text" asp-for="Fecha_Instalacion" class="form-control" />
+                    <input type="date" asp-for="Fecha_Instalacion" class="form-control" />
                 </div>
                 <span asp-validation-for="Fecha_Instalacion" class="text-danger"></span>
             </div>
+        </div>
 
-            <div class="form-group">
+        <div class="row">
+            <div class="form-group col">
                 <label for="Ultima_Actualizacion">Última Actualización</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-sync"></i></span>
@@ -259,7 +282,7 @@
                 <span asp-validation-for="Ultima_Actualizacion" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div class="form-group col">
                 <label for="Voltaje_Energia">Voltaje de Energía</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-bolt"></i></span>
@@ -273,8 +296,9 @@
 
 @if (ViewBag.Error != null)
 {
-    <div class="alert alert-danger mt-3">@ViewBag.Error</div>
+    <div class="alert alert-warning">@ViewBag.Error</div>
 }
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

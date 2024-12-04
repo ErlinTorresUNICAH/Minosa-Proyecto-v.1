@@ -1,17 +1,20 @@
 ﻿@model Minosa_Proyecto_v._1.Models.EquipoDetalleViewModel
 
-        <form asp-action="Crear" method="post" class="container text-start mt-2 needs-validation" novalidate >
+<form asp-action="Crear" method="post" class="container text-start mt-2 needs-validation" novalidate >
             <div class="container text-center m-2">
                 <h2>Agregar Nuevo Equipo</h2>
-                <button type="submit" class="btn btn-outline-success">Guardar Equipo</button>
-                <a asp-controller="Equipos" asp-action="Index" class="btn btn-outline-danger">
+                <button type="submit" class="btn btn-success">Guardar Equipo</button>
+                <a asp-controller="Equipos" asp-action="Index" class="btn btn-secondary">
                     <i class="fa-solid fa-triangle-exclamation"></i> Cancelar
                 </a>
             </div>
 
             
-    <div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded p-4">
-        <h3>Datos Básicos del Equipo</h3>
+    <div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded p-4 card">
+        <div class="card-header bg-primary text-white m-2">
+            <h3><i class="fas fa-info-circle"></i> Datos Básicos del Equipo</h3>
+        </div>
+        
         <div class="row">
             <div class="form-group col-1">
                 <div class="form-check mt-4">
@@ -114,8 +117,11 @@
                 </div>
             
             </div>
-            
-            <h3>Detalles Técnicos</h3>
+    </div>
+    <div class="container shadow-lg p-3 mb-5 bg-body-tertiary rounded p-4 card">
+        <div class="card-header bg-secondary text-white m-2">
+            <h3><i class="fas fa-tools"></i> Detalles Técnicos</h3>
+        </div>
         <div class="row">
             <div class="form-group col">
                 <label for="Tipo_Voltaje">Tipo de Voltaje</label>
@@ -270,8 +276,9 @@
                 <span asp-validation-for="Voltaje_Energia" class="text-danger"></span>
             </div>
         </div>
-        </div>
-    </form>
+    </div>
+    
+</form>
 
 @if (ViewBag.Error != null)
 {

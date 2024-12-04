@@ -11,12 +11,16 @@ public class Vlan
     [Required(ErrorMessage = "La Subnet es obligatoria.")]
     public string SubNet { get; set; }
 
+    [Required(ErrorMessage = "La máscara de red es obligatoria.")]
     public string Gateway { get; set; }
 
+    [Required(ErrorMessage = "El rango de direcciones IP es obligatorio.")]
     public string DhcpIni { get; set; }
 
+    [Required(ErrorMessage = "El rango de direcciones IP es obligatorio.")]
     public string DhcpFin { get; set; }
 
+    [Required(ErrorMessage = "El rango de direcciones IP es obligatorio.")]
     public string Observaciones { get; set; }
 
     public bool Activo { get; set; } = true;
@@ -29,7 +33,7 @@ public class Vlan
 
     [Required(ErrorMessage = "La dirección IP es obligatoria.")]
     public string IPV4 { get; set; }
-
+    [Required(ErrorMessage = "El estado es obligatoria.")]
     public string Estado { get; set; }
 
     public bool ping { get; set; }

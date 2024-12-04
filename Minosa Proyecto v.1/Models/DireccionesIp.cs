@@ -7,6 +7,8 @@ public class DireccionIp
     [Required(ErrorMessage = "La dirección IP es obligatoria.")]
     public string IPV4 { get; set; }
 
+
+    [Required(ErrorMessage = "El estado es obligatoria.")]
     public string Estado { get; set; }
 
     public bool ping { get; set; }

@@ -1,23 +1,35 @@
 ﻿@model Zona
 
-<h2>Crear Zona</h2>
-@if (ViewBag.Error != null)
-{
-    <div class="alert alert-danger">
-        @ViewBag.Error
-    </div>
-}
-<form asp-action="Crear" method="post">
-    <div class="form-group">
-        <label asp-for="Nombre_Zona"></label>
-        <input asp-for="Nombre_Zona" class="form-control" />
-        <span asp-validation-for="Nombre_Zona" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="Descripcion_Zona"></label>
-        <input asp-for="Descripcion_Zona" class="form-control" />
-        <span asp-validation-for="Descripcion_Zona" class="text-danger"></span>
-    </div>
-    <button type="submit" class="btn btn-outline-success"><i class="fa-solid fa-folder-plus"></i> Crear</button>
-    <a asp-action="Index" class="btn btn-outline-secondary"><i class="fa-solid fa-triangle-exclamation"></i> Cancelar</a>
-</form>
+<div class="container p-3 mb-5" style="width: 400px;">
+    <h2 class="text-center">Crear Zona</h2>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger text-center">
+            @ViewBag.Error
+        </div>
+    }
+
+    <form asp-action="Crear" method="post">
+        <div class="form-group">
+            <label asp-for="Nombre_Zona"></label>
+            <input asp-for="Nombre_Zona" class="form-control" />
+            <span asp-validation-for="Nombre_Zona" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Descripcion_Zona"></label>
+            <input asp-for="Descripcion_Zona" class="form-control" />
+            <span asp-validation-for="Descripcion_Zona" class="text-danger"></span>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary m-2">
+                <i class="fa-solid fa-folder-plus"></i> Crear
+            </button>
+            <a asp-action="Index" class="btn btn-secondary m-2">
+                <i class="fa-solid fa-triangle-exclamation"></i> Cancelar
+            </a>
+        </div>
+    </form>
+</div>

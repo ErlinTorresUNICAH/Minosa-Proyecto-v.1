@@ -19,7 +19,7 @@ namespace Minosa_Proyecto_v._1.Models
         [Required(ErrorMessage = "El modo es obligatorio.")]
         public string Modo { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "El Ssid es obligatorio")]
+        [Required(ErrorMessage = "El Ssid es obligatorio.")]
         public string Ssid { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La modulación es obligatoria.")]
@@ -39,37 +39,90 @@ namespace Minosa_Proyecto_v._1.Models
 
         // Propiedades de la tabla Equipos
         public int ID_equipo { get; set; }
+
+        [Required(ErrorMessage = "El número de serie es requerido.")]
         public string NumeroSerie { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La descripción es requerida.")]
         public string Descripcion { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El estado es requerido.")]
         public string Estado { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El estado activo es requerido.")]
         public bool Activo { get; set; }
+
+        [Required(ErrorMessage = "El respaldo es requerido.")]
         public string Respaldo { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Las observaciones son requeridas.")]
         public string Observaciones { get; set; } = string.Empty;
 
         // Propiedades de la tabla Detalle_Equipo
         public int ID_detalle_equipo { get; set; }
+
+        [Required(ErrorMessage = "El tipo de voltaje es requerido.")]
         public string Tipo_Voltaje { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El voltaje es requerido.")]
         public int Voltaje { get; set; }
+
+        [Required(ErrorMessage = "El amperaje es requerido.")]
         public int Amperaje { get; set; }
+
+        [Required(ErrorMessage = "El número de puertos RJ45 es requerido.")]
         public int Num_Puertos_RJ45 { get; set; }
+
+        [Required(ErrorMessage = "El número de puertos SFP es requerido.")]
         public int Num_Puertos_SFP { get; set; }
+
+        [Required(ErrorMessage = "La fecha de compra es requerida.")]
         public DateTime Fecha_Compra { get; set; }
+
+        [Required(ErrorMessage = "La fecha de garantía es requerida.")]
         public DateTime Fecha_Garantia { get; set; }
+
+        [Required(ErrorMessage = "El tipo de garantía es requerido.")]
         public string Tipo_Garantia { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El canal es requerido.")]
         public string Canal { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El firmware es requerido.")]
         public string Firmware { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El usuario es requerido.")]
         public string Usuario { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La contraseña es requerida.")]
         public string Contracena { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La dirección MAC es requerida.")]
         public string MAC_Address { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La fecha de instalación es requerida.")]
         public string Fecha_Instalacion { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "La última actualización es requerida.")]
         public string Ultima_Actualizacion { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "El voltaje de energía es requerido.")]
         public string Voltaje_Energia { get; set; } = string.Empty;
 
         // Relacionados con otras tablas
+        [Required(ErrorMessage = "El proveedor es requerido.")]
         public int ID_proveedor { get; set; }
+
+        [Required(ErrorMessage = "El modelo es requerido.")]
         public int ID_modelo { get; set; }
+
+        [Required(ErrorMessage = "El tipo de equipo es requerido.")]
         public int ID_tipo_equipo { get; set; }
+
+        [Required(ErrorMessage = "El área es requerida.")]
         public int ID_area { get; set; }
+
+        [Required(ErrorMessage = "La dirección IP es requerida.")]
         public int ID_ip { get; set; }
 
         // Listas para los menús desplegables

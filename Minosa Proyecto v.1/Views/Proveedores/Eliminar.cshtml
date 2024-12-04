@@ -1,14 +1,22 @@
 ﻿@model Proveedor
 
-<h2>¿Estás seguro de que deseas eliminar este proveedor?</h2>
+<div class="container p-4 mb-5" style="max-width: 500px;">
+    <h2 class="text-center text-danger mb-4">Eliminar Proveedor</h2>
 
-<p>Nombre: @Model.Nombre</p>
-<p>Dirección: @Model.Direccion</p>
-<p>Teléfono: @Model.Telefono</p>
-<p>Correo: @Model.Correo</p>
+    <div class="mb-3 text-center">
+        <p><strong>¿Estás seguro de que deseas eliminar este proveedor?</strong></p>
+        <p><strong>Nombre:</strong> @Model.Nombre</p>
+        <p><strong>Dirección:</strong> @Model.Direccion</p>
+        <p><strong>Teléfono:</strong> @Model.Telefono</p>
+        <p><strong>Correo:</strong> @Model.Correo</p>
+    </div>
 
-<form asp-action="Eliminar" method="post">
-    <input type="hidden" asp-for="ID_proveedor" />
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+    <form asp-action="Eliminar" method="post">
+        <input type="hidden" asp-for="ID_proveedor" />
+
+        <div class="d-flex justify-content-center gap-3">
+            <button type="submit" class="btn btn-danger px-4">Eliminar</button>
+            <a asp-action="Index" class="btn btn-secondary px-4">Cancelar</a>
+        </div>
+    </form>
+</div>

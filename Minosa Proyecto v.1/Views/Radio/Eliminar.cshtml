@@ -1,22 +1,25 @@
 ﻿@model Radio
 
-<h2>Eliminar Radio</h2>
+<div class="container p-4 mb-5" style="max-width: 500px;">
+    <h2 class="text-center text-danger mb-4">Eliminar Radio</h2>
 
-@if (ViewBag.Error != null)
-{
-    <div class="alert alert-danger">
-        @ViewBag.Error
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger text-center">
+            @ViewBag.Error
+        </div>
+    }
+
+    <div class="mb-3 text-center">
+        <p class="text-warning"><strong>¿Estás seguro de que deseas eliminar este radio?</strong></p>
     </div>
-}
 
-<form asp-action="Eliminar" method="post">
-    <input type="hidden" asp-for="ID_Radio" />
+    <form asp-action="Eliminar" method="post">
+        <input type="hidden" asp-for="ID_Radio" />
 
-    <div class="form-group">
-        <label>Seguro que quieres eliminar?</label>
-        
-    </div>
-    
-    <button type="submit" class="btn btn-danger">Eliminar</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
-</form>
+        <div class="d-flex justify-content-center gap-3">
+            <button type="submit" class="btn btn-danger px-4">Eliminar</button>
+            <a asp-action="Index" class="btn btn-secondary px-4">Cancelar</a>
+        </div>
+    </form>
+</div>
