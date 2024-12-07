@@ -1,77 +1,181 @@
-﻿@model Vlan
+﻿@model Minosa_Proyecto_v._1.Models.Vlan
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 <script>
     $(document).ready(function () {
-        $("input[name='ip'], input[name='subnetMask']").on("change", function () {
+        // Función para validar IP
+        function validateIp(ip) {
+            const ipRegex = /^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}$/;
+            return ipRegex.test(ip);
+        }
+
+        // Función para validar máscara de subred
+        function validateSubnetMask(mask) {
+            return mask >= 1 && mask <= 32;
+        }
+
+        // Función para mostrar alertas con Bootstrap
+        function showAlert(message, type = "danger") {
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+            $("#alertContainer").html(alertHtml);
+        }
+
+        // Manejar el cálculo de campos
+        $("#calculateFields").on("click", function (e) {
+            e.preventDefault();
+
             let ip = $("input[name='ip']").val();
             let subnetMask = $("input[name='subnetMask']").val();
-            if (ip && subnetMask) {
+
+            // Validar IP y máscara
+            if (validateIp(ip) && validateSubnetMask(subnetMask)) {
                 $.ajax({
                     url: '@Url.Action("CalculateVlanFields", "Vlans")',
                     type: 'POST',
                     data: { ip, subnetMask },
                     success: function (data) {
-                        $("input[name='SubNet']").val(data.subNet);
-                        $("input[name='Gateway']").val(data.gateway);
-                        $("input[name='DhcpIni']").val(data.dhcpIni);
-                        $("input[name='DhcpFin']").val(data.dhcpFin);
+                        if (data.error) {
+                            showAlert(data.error, "warning");
+                        } else {
+                            $("input[name='SubNet']").val(data.subNet);
+                            $("input[name='Gateway']").val(data.gateway);
+                            $("input[name='DhcpIni']").val(data.dhcpIni);
+                            $("input[name='DhcpFin']").val(data.dhcpFin);
+                            showAlert("Cálculo realizado con éxito.", "success");
+                        }
+                    },
+                    error: function () {
+                        showAlert("Ocurrió un error al calcular los campos de la VLAN.", "danger");
                     }
                 });
+            } else {
+                showAlert("Por favor, ingresa una IP válida y una máscara entre 1 y 32.", "danger");
             }
         });
     });
 </script>
+<script>
+    $(document).ready(function () {
+        // Función para mostrar alertas con Bootstrap
+        function showAlert(message, type = "danger") {
+            const alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>`;
+            $("#alertContainer").html(alertHtml);
+        }
+
+        // Manejar el evento de guardar
+        $(".btn-success").on("click", function (e) {
+            e.preventDefault();
+
+            // Recolectar datos de ambos formularios
+            let formData = {
+                Nombre_Vlan: $("input[name='Nombre_Vlan']").val(),
+                subNet: $("input[name='SubNet']").val(),
+                gateway: $("input[name='Gateway']").val(),
+                dhcpIni: $("input[name='DhcpIni']").val(),
+                dhcpFin: $("input[name='DhcpFin']").val(),
+                observaciones: $("input[name='Observaciones']").val(),
+                ip: $("input[name='ip']").val(),
+                subnetMask: $("input[name='subnetMask']").val() // Sin convertir a entero
+            };
+
+            // Enviar datos al servidor como parámetros individuales (no JSON)
+            $.ajax({
+                url: '@Url.Action("CrearVlanConIps", "Vlans")',
+                type: 'POST',
+                data: formData, // Enviar datos como parámetros de formulario
+                success: function (response) {
+                    window.location.href = '@Url.Action("Index", "Vlans")';
+                },
+                error: function () {
+                    showAlert("Ocurrió un error al guardar la VLAN.", "danger");
+                }
+            });
+        });
+    });
+</script>
+
+
 
 <div class="container p-3 mb-5" style="width: 500px;">
     <h2 class="text-center">Crear VLAN</h2>
 
-    <form asp-action="CrearVlanConIps" method="post">
-        <div class="form-group">
-            <label>IP Inicial</label>
-            <input type="text" name="ip" class="form-control" required />
-        </div>
+    <!-- Contenedor para el formulario de cálculo -->
+    <div id="calculation-container">
+        <form id="calculateForm" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label>IP Inicial</label>
+                <input type="text" name="ip" class="form-control" required />
+            </div>
 
-        <div class="form-group">
-            <label>Subnet Mask</label>
-            <input type="number" name="subnetMask" class="form-control" required />
-        </div>
+            <div class="form-group">
+                <label>Subnet Mask</label>
+                <input type="number" name="subnetMask" class="form-control" min="1" max="32" required />
+            </div>
 
-        <div class="form-group">
-            <label>SubNet</label>
-            <input type="text" name="SubNet" class="form-control" readonly />
-        </div>
+            <div class="text-center">
+                <button type="submit" form="calculateForm" id="calculateFields" class="btn btn-primary m-2">Calcular Campos</button>
+            </div>
+        </form>
+    </div>
 
-        <div class="form-group">
-            <label>Gateway</label>
-            <input type="text" name="Gateway" class="form-control" readonly />
-        </div>
+    <hr />
+    <div id="alertContainer"></div>
 
-        <div class="form-group">
-            <label>DHCP Inicio</label>
-            <input type="text" name="DhcpIni" class="form-control" readonly />
-        </div>
+    <!-- Contenedor para el formulario de datos -->
+    <div id="creation-container">
+        <form asp-action="CrearVlanConIps" method="post" class="needs-validation" novalidate>
+            <div class="form-group">
+                <label>SubNet</label>
+                <input asp-for="SubNet" class="form-control" readonly />
+                <span asp-validation-for="SubNet" class="text-danger"></span>
+            </div>
 
-        <div class="form-group">
-            <label>DHCP Fin</label>
-            <input type="text" name="DhcpFin" class="form-control" readonly />
-        </div>
+            <div class="form-group">
+                <label>Gateway</label>
+                <input asp-for="Gateway" class="form-control" readonly />
+                <span asp-validation-for="Gateway" class="text-danger"></span>
+            </div>
 
-        <div class="form-group">
-            <label>Nombre VLAN</label>
-            <input type="text" name="nombreVlan" class="form-control" required />
-        </div>
+            <div class="form-group">
+                <label>DHCP Inicio</label>
+                <input asp-for="DhcpIni" class="form-control" readonly />
+                <span asp-validation-for="DhcpIni" class="text-danger"></span>
+            </div>
 
-        <div class="form-group">
-            <label>Observaciones</label>
-            <input type="text" name="observaciones" class="form-control" />
-        </div>
+            <div class="form-group">
+                <label>DHCP Fin</label>
+                <input asp-for="DhcpFin" class="form-control" readonly />
+                <span asp-validation-for="DhcpFin" class="text-danger"></span>
+            </div>
 
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary m-2">Guardar VLAN</button>
-            <a asp-action="Index" class="btn btn-secondary m-2">
-                <i class="fa-solid fa-triangle-exclamation"></i> Cancelar
-            </a>
-        </div>
-    </form>
+            <div class="form-group">
+                <label>Nombre VLAN</label>
+                <input asp-for="Nombre_Vlan" class="form-control" required />
+                <span asp-validation-for="Nombre_Vlan" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label>Observaciones</label>
+                <input asp-for="Observaciones" class="form-control" required />
+                <span asp-validation-for="Observaciones" class="text-danger"></span>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-success m-2">Guardar VLAN</button>
+                <a asp-action="Index" class="btn btn-secondary m-2">Cancelar</a>
+            </div>
+        </form>
+    </div>
 </div>
+
+

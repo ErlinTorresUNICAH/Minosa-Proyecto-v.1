@@ -86,7 +86,7 @@ public class LoginController : Controller
                 return View();
             }
         }
-
+        [Authorize]
         public IActionResult AccessDenied()
         {
             return View();

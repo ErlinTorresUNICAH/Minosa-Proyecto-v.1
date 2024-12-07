@@ -157,14 +157,24 @@ public class ProveedoresController : Controller
     public IActionResult Eliminar(Proveedor proveedor)
     {
         string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-        using (var connection = new SqlConnection(connectionString))
+        try
         {
-            var command = new SqlCommand("P_GRUD_EliminarProveedor", connection);
-            command.CommandType = CommandType.StoredProcedure;
-            command.Parameters.AddWithValue("@ID_proveedor", proveedor.ID_proveedor);
-            connection.Open();
-            command.ExecuteNonQuery();
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var command = new SqlCommand("P_GRUD_EliminarProveedor", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@ID_proveedor", proveedor.ID_proveedor);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+        }
+        catch (SqlException ex)
+        {
+            if (ex.Number == 50000)
+            {
+                ViewBag.Error = ex.Message;
+                return View(proveedor);
+            }
         }
         return RedirectToAction("Index");
     }

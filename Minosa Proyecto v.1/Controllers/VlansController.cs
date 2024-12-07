@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Net;
+using Minosa_Proyecto_v._1.Models;
 
 namespace Minosa_Proyecto_v._1.Controllers
 {
@@ -264,8 +265,9 @@ namespace Minosa_Proyecto_v._1.Controllers
 
         // Función para crear una VLAN con direcciones IP
         [HttpPost]
-        public IActionResult CrearVlanConIps(string nombreVlan, string subNet, string gateway, string dhcpIni, string dhcpFin, string observaciones, string ip, int subnetMask)
+        public IActionResult CrearVlanConIps(string Nombre_Vlan, string subNet, string gateway, string dhcpIni, string dhcpFin, string observaciones, string ip, int subnetMask)
         {
+            Console.WriteLine("Datos", Nombre_Vlan, subNet, gateway, dhcpIni, dhcpFin, observaciones, ip, subnetMask);
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
             int idVlan = 0;
 
@@ -275,7 +277,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
                 var command = new SqlCommand("P_GRUD_CrearVlanID", connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@Nombre_Vlan", nombreVlan);
+                command.Parameters.AddWithValue("@Nombre_Vlan", Nombre_Vlan);
                 command.Parameters.AddWithValue("@SubNet", subNet);
                 command.Parameters.AddWithValue("@Gateway", gateway);
                 command.Parameters.AddWithValue("@DhcpIni", dhcpIni);
@@ -284,7 +286,7 @@ namespace Minosa_Proyecto_v._1.Controllers
 
                 var idVlanParameter = new SqlParameter("@ID_vlan", SqlDbType.Int) { Direction = ParameterDirection.Output };
                 command.Parameters.Add(idVlanParameter);
-
+                Console.WriteLine("Datos", Nombre_Vlan,  subNet,  gateway,  dhcpIni,  dhcpFin,  observaciones,  ip,  subnetMask);
                 command.ExecuteNonQuery();
                 idVlan = (int)idVlanParameter.Value;
             }

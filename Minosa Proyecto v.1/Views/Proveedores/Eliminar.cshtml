@@ -2,7 +2,12 @@
 
 <div class="container p-4 mb-5" style="max-width: 500px;">
     <h2 class="text-center text-danger mb-4">Eliminar Proveedor</h2>
-
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger text-center">
+            @ViewBag.Error
+        </div>
+    }
     <div class="mb-3 text-center">
         <p><strong>¿Estás seguro de que deseas eliminar este proveedor?</strong></p>
         <p><strong>Nombre:</strong> @Model.Nombre</p>
