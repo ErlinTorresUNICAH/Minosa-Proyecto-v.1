@@ -1,8 +1,8 @@
 ﻿@model Minosa_Proyecto_v._1.Models.Vlan
-
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+@* Escript para validacion de vlan *@
 <script>
     $(document).ready(function () {
         // Función para validar IP
@@ -10,12 +10,10 @@
             const ipRegex = /^(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])(\.(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])){3}$/;
             return ipRegex.test(ip);
         }
-
         // Función para validar máscara de subred
         function validateSubnetMask(mask) {
             return mask >= 1 && mask <= 32;
         }
-
         // Función para mostrar alertas con Bootstrap
         function showAlert(message, type = "danger") {
             const alertHtml = `
@@ -25,27 +23,22 @@
                 </div>`;
             $("#alertContainer").html(alertHtml);
         }
-
         // Manejar el cálculo de campos
         $("#calculateFields").on("click", function (e) {
             e.preventDefault();
-
             // Obtener valores
             let ip = $("input[name='ip']").val();
             let subnetMask = $("input[name='subnetMask']").val();
-
             // Validaciones con mensajes
             const validations = [
                 { validate: () => validateIp(ip), errorMessage: "La dirección IP ingresada no es válida." },
                 { validate: () => validateSubnetMask(subnetMask), errorMessage: "La máscara de subred debe estar entre 1 y 32." }
             ];
-
             // Verificar errores
             let errorMessage = validations
                 .filter(v => !v.validate())
                 .map(v => v.errorMessage)
                 .join("<br>");
-
             if (errorMessage) {
                 showAlert(errorMessage, "danger");
             } else {
@@ -73,6 +66,7 @@
     });
 </script>
 
+@* Script para mandar todos los datos al controoller *@
 <script>
     $(document).ready(function () {
         // Función para mostrar alertas con Bootstrap
@@ -88,6 +82,17 @@
         // Manejar el evento de guardar
         $(".btn-success").on("click", function (e) {
             e.preventDefault();
+
+            // Referencia al formulario
+            const creationForm = document.querySelector("#creation-container form");
+            const calculationForm = document.querySelector("#calculateForm");
+
+            // Verificar si ambos formularios son válidos
+            if (!creationForm.checkValidity() || !calculationForm.checkValidity()) {
+                creationForm.reportValidity();
+                calculationForm.reportValidity();
+                return; // Detener el envío si no son válidos
+            }
 
             // Recolectar datos de ambos formularios
             let formData = {
@@ -116,6 +121,7 @@
         });
     });
 </script>
+    
 
 
 
