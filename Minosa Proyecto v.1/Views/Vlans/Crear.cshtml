@@ -30,11 +30,25 @@
         $("#calculateFields").on("click", function (e) {
             e.preventDefault();
 
+            // Obtener valores
             let ip = $("input[name='ip']").val();
             let subnetMask = $("input[name='subnetMask']").val();
 
-            // Validar IP y máscara
-            if (validateIp(ip) && validateSubnetMask(subnetMask)) {
+            // Validaciones con mensajes
+            const validations = [
+                { validate: () => validateIp(ip), errorMessage: "La dirección IP ingresada no es válida." },
+                { validate: () => validateSubnetMask(subnetMask), errorMessage: "La máscara de subred debe estar entre 1 y 32." }
+            ];
+
+            // Verificar errores
+            let errorMessage = validations
+                .filter(v => !v.validate())
+                .map(v => v.errorMessage)
+                .join("<br>");
+
+            if (errorMessage) {
+                showAlert(errorMessage, "danger");
+            } else {
                 $.ajax({
                     url: '@Url.Action("CalculateVlanFields", "Vlans")',
                     type: 'POST',
@@ -54,12 +68,11 @@
                         showAlert("Ocurrió un error al calcular los campos de la VLAN.", "danger");
                     }
                 });
-            } else {
-                showAlert("Por favor, ingresa una IP válida y una máscara entre 1 y 32.", "danger");
             }
         });
     });
 </script>
+
 <script>
     $(document).ready(function () {
         // Función para mostrar alertas con Bootstrap
