@@ -8,15 +8,16 @@ import json
 from datetime import datetime
 from sqlalchemy import create_engine
 
-def conectar_y_extraer_datos():
+def conectar_y_extraer_datos(ip):
     connection_string = "mssql+pyodbc://localhost/Testv1_MinosaProyecto?driver=SQL+Server&trusted_connection=yes"
     engine = create_engine(connection_string)
-    query = """
+    query = f"""
     SELECT ip, HoraPing, ResultadoPing
     FROM HistorialPings
-    WHERE HoraPing >= DATEADD(DAY, -30, GETDATE()) -- Últimos 30 días
+    WHERE ip = '{ip}' AND HoraPing >= DATEADD(DAY, -30, GETDATE()) -- Últimos 30 días
     """
     data = pd.read_sql_query(query, engine)
+    
     return data
 
 def preparar_datos(data):
@@ -26,8 +27,8 @@ def preparar_datos(data):
     data['ResultadoPing'] = data['ResultadoPing'].astype(int)
     return data
 
-def entrenar_modelo():
-    datos = conectar_y_extraer_datos()
+def entrenar_modelo(ip):
+    datos = conectar_y_extraer_datos(ip)
     datos_preparados = preparar_datos(datos)
     X = pd.get_dummies(datos_preparados[['hora', 'dia_semana', 'ip']], columns=['ip'])
     y = datos_preparados['ResultadoPing']
@@ -49,7 +50,7 @@ def entrenar_modelo():
 def predecir(ip, ultima_hora_ping):
     try:
         # Entrenar el modelo cada vez que se realiza una predicción
-        modelo, columnas = entrenar_modelo()
+        modelo, columnas = entrenar_modelo(ip)
 
         # Convertir la fecha y hora al formato necesario
         hora_dt = datetime.strptime(ultima_hora_ping, "%d/%m/%Y %H:%M:%S")

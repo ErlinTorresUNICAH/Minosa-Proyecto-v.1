@@ -120,16 +120,22 @@
                 // ObtenerHistorialPingsAJAX es la funcion que tiene los datos
                 url: '@Url.Action("ObtenerHistorialPingsAJAX", "Actividad")',
                 type: 'GET',
-                data: { direccionIP: ip }, // Enviar la IP seleccionada al servidor
+                data: { ip: ip }, // Enviar la IP seleccionada al servidor
                 success: function (data) {
                     if (Array.isArray(data) && data.length > 0) {
-                        const filteredData = data.filter(ping => ping.direccionIP === ip);
+                        const filteredData = data
+                        // const filteredData = data.filter(ping => ping.direccionIP === ip);
+                        console.log('Asi se ve la filteredData : ',filteredData);
                         var cantidadDatos = -10;
-                        const limitedData = filteredData.slice(cantidadDatos);// datos a mostrar
+                        const limitedData = filteredData;// datos a mostrar
+                        // const limitedData = filteredData.slice(cantidadDatos);
+                        console.log('Asi se ve la limitedData : ',limitedData);
 
                         const seriesData = limitedData.map(ping => {
                             console.log('asi se ve el la hora antes de formato',ping.ultimaHoraPing);
-                            const fecha = new Date(ping.ultimaHoraPing).getTime(); // Marca de tiempo para las Highcharts
+                            const fecha = ping.ultimaHoraPing;
+                            /* const fecha = new Date(ping.ultimaHoraPing); */ // Marca de tiempo para las Highcharts
+                            // const fecha = new Date(ping.ultimaHoraPing).getTime();;
                             console.log('asi se ve la fecha',fecha);
                             return [fecha, ping.ping ? 1 : 0]; // Representar el estado de ping como 1 o 0
                         });
@@ -145,6 +151,11 @@
                                 type: 'datetime',
                                 title: {
                                     text: 'Fecha y Hora'
+                                },
+                                tickInterval: 10 * 60 * 1000, // Intervalo de 10 minutos en milisegundos
+                                dateTimeLabelFormats: {
+                                    minute: '%H:%M', // Formato para mostrar solo horas y minutos
+                                    hour: '%H:%M'    // Formato alternativo para horas
                                 }
                             },
                             yAxis: {
@@ -192,7 +203,7 @@
 </script>
 
 
-<!-- Contenedor para la gráfica -->
+<!-- Contenedor para l  a gráfica -->
 <div id="container" style="min-height: 400px;"></div>
 @* <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script> *@
 

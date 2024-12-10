@@ -70,7 +70,7 @@ public class ActividadBackgroundService : BackgroundService
 
 
             //cambiar este parametro en base del tiempo que se quiere que se ejecute los pings en minutos
-            await Task.Delay(TimeSpan.FromMinutes(20), stoppingToken);
+            await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
 
         }
 

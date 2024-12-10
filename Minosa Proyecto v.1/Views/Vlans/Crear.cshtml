@@ -152,10 +152,10 @@
 
     <!-- Contenedor para el formulario de datos -->
     <div id="creation-container">
-        <form asp-action="CrearVlanConIps" method="post" class="needs-validation" novalidate>
+        <form asp-action="CrearVlanConIps" method="post" class="needs-validation" novalidate> @* Este atributo se reemplaza en el script con la llamada AJAX *@
             <div class="form-group">
                 <label>SubNet</label>
-                <input asp-for="SubNet" class="form-control" readonly />
+                <input asp-for="SubNet" class="form-control" readonly /> @* Algunos campos son de solo lectura porque sus valores se calculan automáticamente. *@
                 <span asp-validation-for="SubNet" class="text-danger"></span>
             </div>
 
@@ -179,7 +179,7 @@
 
             <div class="form-group">
                 <label>Nombre VLAN</label>
-                <input asp-for="Nombre_Vlan" class="form-control" required />
+                <input asp-for="Nombre_Vlan" class="form-control" required /> @* El campo es obligatorio. *@
                 <span asp-validation-for="Nombre_Vlan" class="text-danger"></span>
             </div>
 

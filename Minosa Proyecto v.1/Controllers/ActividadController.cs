@@ -31,10 +31,11 @@ namespace Minosa_Proyecto_v._1.Controllers
         }
 
         // Funcion para obtener el historial de pings atravez de AJAX
-        public JsonResult ObtenerHistorialPingsAJAX()
+        public JsonResult ObtenerHistorialPingsAJAX(string ip)
         {
+            Console.WriteLine("esta es la ip ::::", ip);
             // Obtener el historial actualizado de pings
-            var historialPings = ObtenerHistorialPings();
+            var historialPings = ObtenerHistorialPingsUltimos(ip);
             return Json(historialPings);
         }
 
@@ -110,7 +111,38 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             return historialPings;
         }
+        //Funcion para obatener el historial de todos los ping
+        private List<Actividad> ObtenerHistorialPingsUltimos(string ip)
+        {
+            List<Actividad> historialPings = new List<Actividad>();
 
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("[dbo].[P_ObtenerHistorialPingsUltimos]", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    
+                    cmd.Parameters.AddWithValue("@ip", ip);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            historialPings.Add(new Actividad
+                            {
+                                ID_HistorialPing = Convert.ToInt32(reader["ID_HistorialPing"]),
+                                DireccionIP = (string)reader["ip"],
+                                UltimaHoraPing = Convert.ToDateTime(reader["HoraPing"]),
+                                Ping = Convert.ToBoolean(reader["ResultadoPing"])
+                            });
+                        }
+                    }
+                }
+            }
+
+            return historialPings;
+        }
 
 
 
