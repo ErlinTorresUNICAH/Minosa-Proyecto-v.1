@@ -16,36 +16,18 @@ using MimeKit;
 /// <summary>
 /// Clase heredada de BackgroundService para tener un servicio en segundo plano.
 /// </summary>
-public class ActividadBackgroundService : BackgroundService
+public class ActividadBackgroundService(IConfiguration configuration, ILogger<ActividadBackgroundService> logger) : BackgroundService
 {
 
     /*private readonly string _connectionString;
     private readonly ILogger<ActividadBackgroundService> _logger;
     private object _configuration;*/
-    private readonly string _connectionString;
-    private readonly string _smtpServer;
-    private readonly int _smtpPort;
-    private readonly string _emailFrom;
-    private readonly string _emailPassword;
-    private readonly ILogger<ActividadBackgroundService> _logger;
-
-    public ActividadBackgroundService(IConfiguration configuration, ILogger<ActividadBackgroundService> logger)
-    {
-        /*_connectionString = configuration.GetConnectionString("DefaultConnection");
-        _connectionCorreo = configuration.GetCorreosString("");
-        _logger = logger;*/
-
-        // Obtén la cadena de conexión desde la configuración
-        _connectionString = configuration.GetConnectionString("DefaultConnection");
-
-        // Obtén las configuraciones de correo electrónico desde la sección "CorreoSettings"
-        _smtpServer = configuration["CorreoSettings:SmtpServer"];
-        _smtpPort = int.Parse(configuration["CorreoSettings:SmtpPort"]);
-        _emailFrom = configuration["CorreoSettings:EmailFrom"];
-        _emailPassword = configuration["CorreoSettings:EmailPassword"];
-
-        _logger = logger;
-    }
+    private readonly string _connectionString = configuration.GetConnectionString("DefaultConnection");
+    private readonly string _smtpServer = configuration["CorreoSettings:SmtpServer"];
+    private readonly int _smtpPort = int.Parse(configuration["CorreoSettings:SmtpPort"]);
+    private readonly string _emailFrom = configuration["CorreoSettings:EmailFrom"];
+    private readonly string _emailPassword = configuration["CorreoSettings:EmailPassword"];
+    private readonly ILogger<ActividadBackgroundService> _logger = logger;
 
     //Llama a todas las funcion en orden para su control
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -66,7 +48,7 @@ public class ActividadBackgroundService : BackgroundService
 
             _logger.LogInformation("Completed activity device scan at: {time}", DateTimeOffset.Now);
 
-            //await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
+            await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
 
 
             //cambiar este parametro en base del tiempo que se quiere que se ejecute los pings en minutos
@@ -257,8 +239,9 @@ public class ActividadBackgroundService : BackgroundService
 
         var message = new MimeMessage();
 
-        // Configurar remitente
-        message.From.Add(new MailboxAddress("NetGuardião", "erla_lopezt@unicah.edu"));
+        // Configurar remitente 
+        message.From.Add(new MailboxAddress("NetGuardião", emailFrom));
+        //message.From.Add(new MailboxAddress("NetGuardião", "erla_lopezt@unicah.edu"));
 
         /*// Agregar destinatarios
         message.Bcc.Add(new MailboxAddress("Administrador", "erlintorres000@gmail.com"));*/
@@ -336,6 +319,8 @@ public class ActividadBackgroundService : BackgroundService
         cuerpo += "</tbody></table>";
         return cuerpo;
     }*/
+
+    // Cuerpo del correo en formato HTML
     private string GenerarCuerpoCorreoHTML(List<Actividad> dispositivosDesconectados)
     {
         var cuerpo = @"
@@ -401,7 +386,8 @@ public class ActividadBackgroundService : BackgroundService
 
         return cuerpo;
     }
-    //<img src = 'https://via.placeholder.com/900x150?text=Alerta+de+Dispositivos' class='img-fluid rounded mb-4' alt='Alerta'>
+   
+    // Funcion para optener los correos
     private async Task<List<Actividad>> ObtenerCorreosDestinatariosAsync()
     {
         var correos = new List<Actividad>();
@@ -430,13 +416,7 @@ public class ActividadBackgroundService : BackgroundService
 
         return correos;
     }
-
-
-
-
-
-
-
+    // 
     private async Task<List<Actividad>> ObtenerHistorialDispositivosAsync()
     {
         List<Actividad> dispositivosHistory = new List<Actividad>();
@@ -466,6 +446,13 @@ public class ActividadBackgroundService : BackgroundService
 
         return dispositivosHistory;
     }
+
+
+
+
+
+
+
     //cuenta regresiva para control en el cmd
     private async Task CuentaRegresivaCincoMinutosAsync()
     {

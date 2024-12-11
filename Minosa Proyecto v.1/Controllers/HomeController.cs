@@ -15,16 +15,10 @@ namespace Minosa_Proyecto_v._1.Controllers
         {
             _logger = logger;
         }
-
         public IActionResult Index()
         {
             return View();
         }
-        //public IActionResult Index1()
-        //{
-        //    return View();
-        //}
-
         public IActionResult Privacy()
         {
             return View();

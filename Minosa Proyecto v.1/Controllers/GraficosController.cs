@@ -37,7 +37,6 @@ namespace Minosa_Proyecto_v._1.Controllers
             return View(viewModel);
         }
 
-
         // Lista con todos los equipos por tipo para su uso en grafico
         private List<EquipoPorTipo> ObtenerEquiposPorTipo()
         {
@@ -67,7 +66,6 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             return data;
         }
-
 
         // Lista con todos los equipos por area para su uso en grafico
         private List<EquipoPorArea> ObtenerEquiposPorArea()
@@ -99,7 +97,6 @@ namespace Minosa_Proyecto_v._1.Controllers
             return data;
         }
 
-
         // Lista con todos los equipos por zona para su uso en grafico
         private List<EquipoPorZona> ObtenerEquiposPorZona()
         {
@@ -130,8 +127,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             return data;
         }
 
-
-        // Lista d
+        // Lista de equipos activos para grafico
         private List<EquiposActivos> ObtenerEquiposActivos()
         {
             string? connectionString = _configuration.GetConnectionString("DefaultConnection");
@@ -188,10 +184,6 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             return data;
         }
-
-
-
-
 
         //Generar reporte de equipos por tipo solamente Tabla en PDF
         public ActionResult GenerarReporte()

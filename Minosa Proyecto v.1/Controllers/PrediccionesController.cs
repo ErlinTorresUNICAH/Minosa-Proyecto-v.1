@@ -6,11 +6,21 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using Microsoft.Extensions.Configuration;
 
 namespace Minosa_Proyecto_v._1.Controllers
 {
     public class PrediccionesController : Controller
     {
+        private readonly IConfiguration _configuration;
+        private readonly string _connectionString;
+
+        public PrediccionesController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+            _connectionString = _configuration.GetConnectionString("DefaultConnection");
+        }
+
         [HttpGet]
         public IActionResult PredecirEstado(string ip, string hora)
         {
@@ -22,14 +32,17 @@ namespace Minosa_Proyecto_v._1.Controllers
                 // Ruta al script Python
                 //string scriptPath = @"~/PythonScripts/prediction_service.py";
                 //string scriptPath = IWebHostEnvironment("~/PythonScripts/prediction_service.py");
-                string scriptPath = @"C:\Users\erlin\source\repos\Minosa Proyecto v.1\Minosa Proyecto v.1\PythonScripts\prediction_service.py";
+                string scriptPath = _configuration["PythonSettings:ScriptPath"];
+                //string scriptPath = @"C:\Users\erlin\source\repos\Minosa Proyecto v.1\Minosa Proyecto v.1\PythonScripts\prediction_service.py";
+
                 // Enciérralo entre comillas
                 string formattedScriptPath = $"\"{scriptPath}\"";
 
                 // Configurar el proceso
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
-                    FileName = @"C:\Users\erlin\AppData\Local\Programs\Python\Python312\python.exe",
+                    //FileName = @"C:\Users\erlin\AppData\Local\Programs\Python\Python312\python.exe",
+                    FileName = _configuration["PythonSettings:FileName"],
                     Arguments = $"{formattedScriptPath} \"{ip}\" \"{hora}\"",
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,

@@ -1,0 +1,56 @@
+﻿.animated-text {
+    font-size: 4rem;
+    font-weight: bold;
+    /* color: #273970; */
+    color: darkorange;
+    animation: fadeInUp 2s ease-in-out;
+}
+.bg {
+    width: max-content;
+    margin: 0 auto;
+    padding: 0;
+}
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Esta funcion permite que la pagina no se baje a la hora de recargarla varias veces */
+window.onload = function () {
+    window .scrollTo(0, 0); /*    Mueve el scroll al inicio*/
+}
+
+
+
+#container {
+    min-width: 320px;
+    max-width: 800px;
+    height: 500px;
+    margin: 1em auto;
+    overflow: hidden;
+    position: relative;
+    /* Evitar problemas de scroll */
+}
+
+.animated-line {
+    stroke-dasharray: 8;
+    stroke-dashoffset: 10;
+    animation: dash 5s linear infinite;
+}
+
+@keyframes dash {
+    from {
+        stroke-dashoffset: 100;
+    }
+
+    to {
+        stroke-dashoffset: 20;
+    }
+}

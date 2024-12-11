@@ -1,101 +1,17 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 <div class="text-center">
     <h1 id="netGuardian" class="animated-text">NetGuardião</h1>
-    @* <div class="bg">
-        <img src="~/img/network.jpg" alt="Logo" />
-    </div> *@
     <div id="container"></div>
-    
 </div>
-<style>
-    .animated-text {
-        font-size: 4rem; /* Ajusta el tamaño según tus necesidades */
-        font-weight: bold;
-        /* color: #273970; */
-        color:darkorange;
-        animation: fadeInUp 2s ease-in-out;
-    }
-    .bg{
-        width:max-content;
-        margin: 0 auto;
-        padding : 0;
-    }
-    @@keyframes fadeInUp {
-        0%
-    {
-        opacity: 0;
-        transform: translateY(30px);
-    }
 
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    }
-</style>
-
-@* style="width: 400px; height: auto; " *@
-
-
-@* --------------------------------------- *@
-
-<style>
-    /* Esta funcion me permite que la pagina no se baje a la hora de recargarla varias veces */
-    window.onload = function () {
-        window .scrollTo(0, 0);
-        // Mueve el scroll al inicio
-    }
-
-    ;
-    #container {
-        min-width: 320px;
-        max-width: 800px;
-        height: 500px;
-        margin: 1em auto;
-        overflow: hidden; /* Evitar contenido que sobresalga */
-        position: relative; /* Evitar problemas de scroll */
-    }
-
-    .animated-line {
-        stroke-dasharray: 8;
-        stroke-dashoffset: 10;
-        animation: dash 5s linear infinite;
-    }
-
-    @@keyframes dash {
-        from {
-            stroke-dashoffset: 100;
-        }
-
-        to {
-            stroke-dashoffset: 20;
-        }
-    }
-</style>
-
-@* <script src="https://code.highcharts.com/maps/highmaps.js"></script> *@
-@* <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>  *@
-@* <script src="https://code.highcharts.com/maps/modules/accessibility.js"></script>  *@
-@* <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script> *@
-@* <script src="https://code.highcharts.com/maps/modules/export-data.js"></script>*@
-
-
-
-
-
-
-
-@* <script src="https://code.highcharts.com/modules/accessibility.js"></script> *@
-
-@* Este es el script del grafico del inicio, Mapa mundia *@
+<link rel="stylesheet" href="~/css/homeMap.css">
+@* Este es el script del grafico del inicio, Mapa mundial *@
 <script>
     (async () => {
         const topology = await fetch(
-            
+            // este es el json de la data del mapa
             '/js/highcharts/maps/mapdata/world-highres.topo.json'
         ).then(response => response.json());
 
@@ -136,14 +52,20 @@
                 info: 'Coffee came from France.'
             },
             {
-                'hc-key': 're',
+                'hc-key': 'hn',
                 color: '#c0ffd5',
-                info: 'Coffee came from Yemen.'
+                info: 'Minosa San Andres.'
             },
             {
-                'hc-key': 'in',
+                'hc-key': 'us',
                 color: '#c0ffd5',
-                info: 'Coffee came from Yemen.'
+                info: 'Miami.'
+            }
+            ,
+            {
+                'hc-key': 'mx',
+                color: '#c0ffd5',
+                info: 'Aranzazu'
             }
         ];
 

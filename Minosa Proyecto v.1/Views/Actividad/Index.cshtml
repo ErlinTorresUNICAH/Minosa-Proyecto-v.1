@@ -1,8 +1,5 @@
 ﻿@model List<Actividad>
 
-
-
-
 <div class="mt-4">
     
     <div class="text-center">
@@ -104,7 +101,8 @@
     </div>
 }
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+@* Funcion para paginacion de la tabla *@
 <script>
     function formatearFecha(fechaISO) {
         const fecha = new Date(fechaISO);
@@ -197,9 +195,7 @@
                 
     });
 </script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-
+@* Script para crear el reporte a Excel *@
 <script>
             document.getElementById('exportButton').addEventListener('click', function () {
         // Clonar la tabla para evitar modificar el DOM original

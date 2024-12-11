@@ -45,9 +45,9 @@
         <p class="alert alert-warning text-center">No se encontraron predicciones.</p>
     }
 </div>
-
+@* script para generar el grafico *@
 @section Scripts {
-    <script src="https://code.highcharts.com/highcharts.js"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const data = @Html.Raw(JsonConvert.SerializeObject(Model.Select(m => new { Hora = m.hora, Estado = m.Estado == "Activo" ? 1 : 0 })));

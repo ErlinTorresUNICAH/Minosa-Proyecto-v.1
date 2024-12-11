@@ -1,52 +1,36 @@
 ﻿@model dynamic
 <div class="row m-2 text-center">
-    @* <h2 class="text-center">Equipos por Tipo</h2> *@
+    
     <div class="col-md-6 col-12 m-1 border shadow p-3 mb-5 bg-body-tertiary rounded" id="equipmentChartContainer" style="width:49%; height:400px;"></div>
 
-    @* <h2 class="text-center">Equipos por Área</h2> *@
+    
     <div class="col-md-6 col-12 m-1 border shadow p-3 mb-5 bg-body-tertiary rounded" id="areaChartContainerBasic" style="width:49%; height:400px;"></div>
 
-    @* <h2 class="text-center">Equipos por Zona</h2> *@
+    
     <div class="col-md-6 col-12 m-1 border shadow p-3 mb-5 bg-body-tertiary rounded" id="zoneChartContainer" style="width:49%; height:400px;"></div>
 
 
     <div class="col-md-6 col-12 m-1 border shadow p-3 mb-5 bg-body-tertiary rounded" id="activoChartContainer" style="width:49%; height:400px;"></div>
-
-    @* <h2 class="text-center">Equipos por Área con Tipos</h2> *@
     <div class="col-md-12 col-12 m-1 border shadow p-3 mb-5 bg-body-tertiary rounded" id="areaChartContainer" style="width:100%; height:400px;"></div>
 </div>
+@* LA EXPORTACION DE PDF ESTA COMENTADA PARA FUTUROS CAMBIOS Y OPTIMIZACION*@
 
-
-
-<div class="text-center">
+@* <div class="text-center">
     <button id="generateReportButton" class="btn btn-primary text-center m-4">Generar Reporte PDF</button>
-</div>
-
-@* <script src="https://code.highcharts.com/highcharts.js"></script> *@
-@* <script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>*@
-
-
-@* <script src="https://code.highcharts.com/highcharts.js"></script> *@
-@* <script src="https://code.highcharts.com/modules/exporting.js"></script> *@
-@* <script src="https://code.highcharts.com/modules/export-data.js"></script> *@
-@* <script src="https://code.highcharts.com/modules/offline-exporting.js"></script> *@
-
+</div> *@
 
 @* esto es para crear el pdf y svg *@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> 
+@* <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/canvg/3.0.7/umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/svg2pdf.js/2.3.7/svg2pdf.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> *@
 
 
 @* HightChart *@
-<script src="/js/highcharts/highcharts.js"></script>
-<script src="/js/highcharts/exporting.js"></script>
-<script src="/js/highcharts/export-data.js"></script>
-<script src="/js/highcharts/offline-exporting.js"></script>
+<script src="~/js/highcharts/highcharts.js"></script>
+<script src="~/js/highcharts/exporting.js"></script>
+<script src="~/js/highcharts/export-data.js"></script>
+<script src="~/js/highcharts/offline-exporting.js"></script>
 
 @* Script para generar todos los graficos *@
 <script>

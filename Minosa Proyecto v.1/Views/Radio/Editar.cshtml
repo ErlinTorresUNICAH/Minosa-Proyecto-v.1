@@ -12,70 +12,67 @@
                 <h3>Datos Básicos del Radio</h3>
             </div>
             <div class="card-body">
-                    <div class="row">
-                    
-                        <div class="form-group col">
-                                <label><strong>Frecuencia:</strong></label>
-                                <input asp-for="Frecuencia" class="form-control" />
+                <div class="row">
+                    <div class="form-group col">
+                        <label><strong>Frecuencia:</strong></label>
+                        <input asp-for="Frecuencia" class="form-control" />
                         <span asp-validation-for="Frecuencia" class="text-danger"></span>
                         </div>
-                        <div class="form-group col">
-                                <label><strong>Frecuencia Rango:</strong></label>
-                                <input asp-for="Frecuencia_Rango" class="form-control" />
+                    <div class="form-group col">
+                        <label><strong>Frecuencia Rango:</strong></label>
+                        <input asp-for="Frecuencia_Rango" class="form-control" />
                         <span asp-validation-for="Frecuencia_Rango" class="text-danger"></span>
-                        </div>
+                    </div>
                 
-                    </div>
-                    <div class="row">
-                        <div class="form-group col">
-                            <label><strong>Modo:</strong></label>
-                            <input asp-for="Modo" class="form-control" />
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label><strong>Modo:</strong></label>
+                        <input asp-for="Modo" class="form-control" />
                         <span asp-validation-for="Modo" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>SSID:</strong></label>
-                            <input asp-for="Ssid" class="form-control" />
+                    </div>
+                    <div class="form-group col">
+                        <label><strong>SSID:</strong></label>
+                        <input asp-for="Ssid" class="form-control" />
                         <span asp-validation-for="Ssid" class="text-danger"></span>
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col">
-                            <label><strong>Modulación:</strong></label>
-                            <input asp-for="Modulacion" class="form-control" />
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label><strong>Modulación:</strong></label>
+                        <input asp-for="Modulacion" class="form-control" />
                         <span asp-validation-for="Modulacion" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Potencia:</strong></label>
-                            <input asp-for="Potencia" class="form-control" />
+                    </div>
+                    <div class="form-group col">
+                        <label><strong>Potencia:</strong></label>
+                        <input asp-for="Potencia" class="form-control" />
                         <span asp-validation-for="Potencia" class="text-danger"></span>
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col">
-                            <label><strong>Tx Power:</strong></label>
-                            <input asp-for="Tx_Power" class="form-control" />
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label><strong>Tx Power:</strong></label>
+                        <input asp-for="Tx_Power" class="form-control" />
                         <span asp-validation-for="Tx_Power" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Rx Level:</strong></label>
-                            <input asp-for="Rx_Level" class="form-control" />
+                    </div>
+                    <div class="form-group col">
+                        <label><strong>Rx Level:</strong></label>
+                        <input asp-for="Rx_Level" class="form-control" />
                         <span asp-validation-for="Rx_Level" class="text-danger"></span>
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="form-group col">
-                            <label><strong>Tx Freq:</strong></label>
-                            <input asp-for="Tx_Freq" class="form-control" />
-                        <span asp-validation-for="Tx_Freq" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
+                </div>
+                <div class="row">
+                     <div class="form-group col">
+                        <label><strong>Tx Freq:</strong></label>
+                        <input asp-for="Tx_Freq" class="form-control" />
+                        <span asp-vaWlidation-for="Tx_Freq" class="text-danger"></span>
+                     </div>
+                     <div class="form-group col">
 
-                        </div>
-                    </div>
-               
+                     </div>
+                </div>
             </div>
         </div>
-
         <div class="card mb-4">
             <div class="card-header bg-primary  text-white ">
                 <h3>Detalles del Equipo</h3>
@@ -86,177 +83,168 @@
                         <label><strong>Activo:</strong></label>
                         <input asp-for="Activo" class="form-check-input" type="checkbox" />
                     </div>
-                        <div class="form-group col-5">
-                            <label><strong>Tipo de Equipo:</strong></label>
-                            <input asp-for="Tipo_Equipo" class="form-control" readonly />
-                        </div>
-                        <div class="form-group col-6">
-                            <label><strong>Proveedor:</strong></label>
-                            <select asp-for="ID_proveedor" asp-items="Model.Proveedores" class="form-control"></select>
-                        </div>
-                </div>
-                    <div class="row">
-                        <div class="form-group col">
-                            <label><strong>Modelo:</strong></label>
-                            <select asp-for="ID_modelo" asp-items="Model.Modelos" class="form-control"></select>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Área:</strong></label>
-                            <select asp-for="ID_area" asp-items="Model.Areas" class="form-control"></select>
-                        </div>
+                    <div class="form-group col-5">
+                        <label><strong>Tipo de Equipo:</strong></label>
+                        <input asp-for="Tipo_Equipo" class="form-control" readonly />
                     </div>
-                    <div class="row">
-                        <div class="form-group col">
+                    <div class="form-group col-6">
+                        <label><strong>Proveedor:</strong></label>
+                        <select asp-for="ID_proveedor" asp-items="Model.Proveedores" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col">
+                        <label><strong>Modelo:</strong></label>
+                        <select asp-for="ID_modelo" asp-items="Model.Modelos" class="form-control"></select>
+                    </div>
+                    <div class="form-group col">
+                        <label><strong>Área:</strong></label>
+                        <select asp-for="ID_area" asp-items="Model.Areas" class="form-control"></select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col">
                             <label><strong>Dirección IP:</strong></label>
                             <select asp-for="ID_ip" asp-items="Model.IPs" class="form-control"></select>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Número de Serie:</strong></label>
-                            <input asp-for="NumeroSerie" class="form-control" />
+                    </div>
+                    <div class="form-group col">
+                        <label><strong>Número de Serie:</strong></label>
+                        <input asp-for="NumeroSerie" class="form-control" />
                         <span asp-validation-for="NumeroSerie" class="text-danger"></span>
-                        </div>
+                    </div>
                     </div>
                 <div class="row">
-                        <div class="form-group col">
-                            <label><strong>Descripción:</strong></label>
-                            <input asp-for="Descripcion" class="form-control" />
+                    <div class="form-group col">
+                        <label><strong>Descripción:</strong></label>
+                        <input asp-for="Descripcion" class="form-control" />
                         <span asp-validation-for="Descripcion" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Estado:</strong></label>
-                            <input asp-for="Estado" class="form-control" />
+                    </div>
+                    <div class="form-group col">
+                        <label><strong>Estado:</strong></label>
+                        <input asp-for="Estado" class="form-control" />
                         <span asp-validation-for="Estado" class="text-danger"></span>
-                        </div>
+                    </div>
                     </div>
                 <div class="row">
                         
-                        <div class="form-group col">
-                            <label><strong>Respaldo:</strong></label>
-                            <input asp-for="Respaldo" class="form-control" />
+                    <div class="form-group col">
+                        <label><strong>Respaldo:</strong></label>
+                        <input asp-for="Respaldo" class="form-control" />
                         <span asp-validation-for="Respaldo" class="text-danger"></span>
-                        </div>
+                    </div>
                     <div class="form-group col">
                         <label><strong>Observaciones:</strong></label>
                         <textarea asp-for="Observaciones" class="form-control"></textarea>
                         <span asp-validation-for="Observaciones" class="text-danger"></span>
                     </div>
                 </div>
-                
             </div>
         </div>
     </div>
 
-        <div class="card ">
-            <div class="card-header bg-secondary text-white">
-                <h3>Detalles Técnicos del Equipo</h3>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    
-                        <div class="form-group col">
-                            <label><strong>Tipo de Voltaje:</strong></label>
-                            <input asp-for="Tipo_Voltaje" class="form-control" />
+    <div class="card ">
+        <div class="card-header bg-secondary text-white">
+            <h3>Detalles Técnicos del Equipo</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">  
+                <div class="form-group col">
+                    <label><strong>Tipo de Voltaje:</strong></label>
+                    <input asp-for="Tipo_Voltaje" class="form-control" />
                     <span asp-validation-for="Tipo_Voltaje" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Canal:</strong></label>
-                            <input asp-for="Canal" class="form-control" />
+                </div>
+                <div class="form-group col">
+                    <label><strong>Canal:</strong></label>
+                    <input asp-for="Canal" class="form-control" />
                     <span asp-validation-for="Canal" class="text-danger"></span>
-                        </div>
-                 </div> 
-                <div class="row">
-                    <div class="form-group col">
-                        <label><strong>Amperaje:</strong></label>
-                        <input asp-for="Amperaje" class="form-control" />
+                </div>
+            </div> 
+            <div class="row">
+                <div class="form-group col">
+                    <label><strong>Amperaje:</strong></label>
+                    <input asp-for="Amperaje" class="form-control" />
                     <span asp-validation-for="Amperaje" class="text-danger"></span>
                     </div>
-                    <div class="form-group col">
-                        <label><strong>Voltaje:</strong></label>
-                        <input asp-for="Voltaje" class="form-control" />
+                <div class="form-group col">
+                    <label><strong>Voltaje:</strong></label>
+                    <input asp-for="Voltaje" class="form-control" />
                     <span asp-validation-for="Voltaje" class="text-danger"></span>
-                    </div>
                 </div>
-
-                
-                    <div class="row">
-                        <div class="form-group col">
-                            <label><strong>Puertos RJ45:</strong></label>
-                            <input asp-for="Num_Puertos_RJ45" class="form-control" />
+            </div>
+            <div class="row">
+                <div class="form-group col">
+                    <label><strong>Puertos RJ45:</strong></label>
+                    <input asp-for="Num_Puertos_RJ45" class="form-control" />
                     <span asp-validation-for="Num_Puertos_RJ45" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Puertos SFP:</strong></label>
-                            <input asp-for="Num_Puertos_SFP" class="form-control" />
+                </div>
+                <div class="form-group col">
+                    <label><strong>Puertos SFP:</strong></label>
+                    <input asp-for="Num_Puertos_SFP" class="form-control" />
                     <span asp-validation-for="Num_Puertos_SFP" class="text-danger"></span>
-                        </div>
-                    </div>
+                </div>
+            </div>
             <div class="row">
-                        <div class="form-group col">
-                            <label><strong>Fecha de Compra:</strong></label>
-                            <input asp-for="Fecha_Compra" type="date" class="form-control" />
-                            <span asp-validation-for="Fecha_Compra" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Fecha de Garantía:</strong></label>
-                            <input asp-for="Fecha_Garantia" type="date" class="form-control" />
+                <div class="form-group col">
+                    <label><strong>Fecha de Compra:</strong></label>
+                    <input asp-for="Fecha_Compra" type="date" class="form-control" />
+                    <span asp-validation-for="Fecha_Compra" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label><strong>Fecha de Garantía:</strong></label>
+                    <input asp-for="Fecha_Garantia" type="date" class="form-control" />
                     <span asp-validation-for="Fecha_Garantia" class="text-danger"></span>
-                        </div>
+                </div>
             </div>
             <div class="row">
-                        <div class="form-group col">
-                            <label><strong>Tipo de Garantía:</strong></label>
-                            <input asp-for="Tipo_Garantia" class="form-control" />
-                            <span asp-validation-for="Tipo_Garantia" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Firmware:</strong></label>
-                            <input asp-for="Firmware" class="form-control" />
+                <div class="form-group col">
+                    <label><strong>Tipo de Garantía:</strong></label>
+                    <input asp-for="Tipo_Garantia" class="form-control" />
+                    <span asp-validation-for="Tipo_Garantia" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label><strong>Firmware:</strong></label>
+                    <input asp-for="Firmware" class="form-control" />
                     <span asp-validation-for="Firmware" class="text-danger"></span>
-                        </div>
+                </div>
             </div>
             <div class="row">
-                        <div class="form-group col">
-                            <label><strong>Usuario:</strong></label>
-                            <input asp-for="Usuario" class="form-control" />
-                            <span asp-validation-for="Usuario" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Contraseña:</strong></label>
-                            <input asp-for="Contracena" class="form-control"  />
+                <div class="form-group col">
+                    <label><strong>Usuario:</strong></label>
+                    <input asp-for="Usuario" class="form-control" />
+                    <span asp-validation-for="Usuario" class="text-danger"></span>
+                </div>
+                <div class="form-group col">
+                    <label><strong>Contraseña:</strong></label>
+                    <input asp-for="Contracena" class="form-control"  />
                     <span asp-validation-for="Contracena" class="text-danger"></span>
-                        </div>
+                </div>
             </div>
             <div class="row">
-                        <div class="form-group col">
-                            <label><strong>MAC Address:</strong></label>
-                            <input asp-for="MAC_Address" class="form-control" />
+                <div class="form-group col">
+                    <label><strong>MAC Address:</strong></label>
+                    <input asp-for="MAC_Address" class="form-control" />
                     <span asp-validation-for="MAC_Address" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Fecha de Instalación:</strong></label>
-                            <input asp-for="Fecha_Instalacion" class="form-control" />
+                </div>
+                <div class="form-group col">
+                    <label><strong>Fecha de Instalación:</strong></label>
+                    <input asp-for="Fecha_Instalacion" class="form-control" />
                     <span asp-validation-for="Fecha_Instalacion" class="text-danger"></span>
-                        </div>
+                </div>
             </div>
             <div class="row">
-                        <div class="form-group col">
-                            <label><strong>Última Actualización:</strong></label>
-                            <input asp-for="Ultima_Actualizacion" class="form-control" />
+                <div class="form-group col">
+                    <label><strong>Última Actualización:</strong></label>
+                    <input asp-for="Ultima_Actualizacion" class="form-control" />
                     <span asp-validation-for="Ultima_Actualizacion" class="text-danger"></span>
-                        </div>
-                        <div class="form-group col">
-                            <label><strong>Voltaje de Energía:</strong></label>
-                            <input asp-for="Voltaje_Energia" class="form-control" />
+                </div>
+                <div class="form-group col">
+                    <label><strong>Voltaje de Energía:</strong></label>
+                    <input asp-for="Voltaje_Energia" class="form-control" />
                     <span asp-validation-for="Voltaje_Energia" class="text-danger"></span>
-                        </div>
-                
-                    
-                
+                </div>
             </div>
-        </div>
-
-        
-</div>
+        </div> 
+    </div>
 </form>
 
 @if (ViewBag.Error != null)

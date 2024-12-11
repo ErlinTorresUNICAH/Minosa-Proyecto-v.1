@@ -13,146 +13,20 @@
     <script src="~/js/xlsx/xlsx.full.min.js"></script>
 
     @* HightChart *@
-    @* <script src="/js/highcharts/highcharts.js"></script>  *@
-    <script src="/js/highcharts/exporting.js"></script> 
-    <script src="/js/highcharts/export-data.js"></script> 
-    <script src="/js/highcharts/offline-exporting.js"></script>
+    @* <script src="~/js/highcharts/highcharts.js"></script>   *@
+    <script src="~/js/highcharts/exporting.js"></script> 
+    <script src="~/js/highcharts/export-data.js"></script> 
+    <script src="~/js/highcharts/offline-exporting.js"></script>
 
     <script src="~/js/highcharts/maps/highmaps.js"></script>
     <script src="~/js/highcharts/maps/exporting.js"></script>
     <script src="~/js/highcharts/maps/accessibility.js"></script>
     <script src="~/js/highcharts/maps/offline-exporting.js"></script>
-
-
-    <!-- Bootstrap 4.0.0 CDN -->
-    @* <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">  *@
-   
-    @* <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script> *@
-    
-
-    @* ICONOS *@
-    @* <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />  *@
-    @* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">  *@
-    @* <link rel="icon" href="https://www.auraminerals.com/wp-content/themes/mziq_aura-minerals_hibr/assets/img/favicon/favicon.ico" type="image/x-icon"> *@
-
-
-    @* <link href="~/css/bootstrap-custom.css" rel="stylesheet" /> *@
-
-
-    @* <link href="/lib/bootstrap/scss/bootstrap.scss" rel="stylesheet" /> *@
-    @* <link href="/lib/bootstrap/scss/utilities" rel="stylesheet" /> *@
-    @* <link href="/lib/bootstrap/scss/reboot" rel="stylesheet" /> *@
-    @* <link href="/lib/bootstrap/scss/type" rel="stylesheet" /> *@
-    @* <link href="/lib/bootstrap/scss/images" rel="stylesheet" /> *@
-    @* <link href="/lib/bootstrap/scss/containers" rel="stylesheet" /> *@
-    @* <link href="/lib/bootstrap/scss/grid" rel="stylesheet" /> *@
-    @* <link href="/lib/bootstrap/scss/helpers" rel="stylesheet" /> *@
-    @* <link href="/lib/bootstrap/scss/variables" rel="stylesheet" /> *@
-    @* <link href="/lib/bootstrap/scss/print" rel="stylesheet" /> *@
-    <!-- Otras Hojas de Estilo -->
-    @* <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" /> *@
-    @* <link rel="stylesheet" href="~/Minosa_Proyecto_v._1.styles.css" asp-append-version="true" /> *@
-
-    
-    @* <script src="https://code.highcharts.com/highcharts.js"></script> *@
-
-    @* ----------------------------------------------------------------------------------------------------------- *@
-
-
-
-
-    @* <style>
-        
-        body {
-            font-size: .875rem;
-        }
-
-        .sidebar {
-            width: 200px;
-            position: fixed;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            z-index: 100;
-            padding: 48px 0 0;
-            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-            background-color: #f8f9fa;
-        }
-
-        .sidebar-sticky {
-            position: relative;
-            top: 0;
-            height: calc(100vh - 48px);
-            padding-top: .5rem;
-            overflow-x: hidden;
-            overflow-y: auto;
-        }
-
-        .sidebar .nav-link {
-            font-weight: 500;
-            color: #333;
-        }
-
-            .sidebar .nav-link.active {
-                color: #007bff;
-            }
-
-            .sidebar .nav-link:hover {
-                color: #ff624c;
-            }
-
-        .navbar {
-            position: fixed;
-            width: 100%;
-            z-index: 1020;
-        }
-        /* Asegúrate de que el contenido esté debajo del navbar */
-        .content-wrapper {
-            margin-left: 10px; /* Espacio para la barra lateral */
-            margin-top: 85px; /* Ajuste para la barra de navegación fija */
-            padding-top: 20px;
-        }
-
-        .main-content {
-            padding-left: 10px;
-        }
-
-        .footer {
-            /*margin-left: 200px;  Ajustar al ancho de la barra lateral
-                    max-width: calc(100% - 200px); /* El footer ocupa el espacio restante 
-            padding: 10px 20px;
-            background-color: #f8f9fa;
-            text-align: center;*/
-        }
-
-        .main-content {
-            padding-left: 40px; /* Ajuste de 240px a 40px */
-        }
-
-        .nav-link.custom-link {
-            color: white !important; /* Cambia el color al que prefieras */
-            text-decoration: none; /* Elimina el subrayado, si es necesario */
-        }
-
-        .nav-link.custom-link:hover {
-                color: orange !important; /* Cambia el color cuando el enlace esté en hover */
-        }
-
-
-    </style> *@
 </head>
 <body>
-
-    <!-- Navbar -->
-    @* <nav class="navbar navbar-dark bg-dark fixed-top custom-link"> *@
     <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
-
         <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" asp-controller="Home" asp-action="Index">NetGuardião</a>
-
-        @* d *@
-       @*  <nav class="col-md-2 d-none d-md-block bg-light ">
-            <div class="sidebar-sticky"> *@
-                <ul class="nav justify-content-center">
+        <ul class="nav justify-content-center">
             <li class="nav-item">
                 <a class="nav-link active custom-link" asp-controller="Home" asp-action="Index">
                     <img src="~/icons/house-solid.svg" style="width: 16px; height: 16px;"> Inicio
@@ -193,24 +67,7 @@
                     </a>
                 </li>
             }
-            @* <li class="nav-item">
-                <a class="nav-link custom-link" asp-controller="Home" asp-action="Index1">
-                    <i class="bi bi-graph-up-arrow"></i> Homeee
-                </a>
-            </li> *@
-            @* <li class="nav-item">
-                <a class="nav-link custom-link" asp-controller="Home" asp-action="Privacy">
-                    <i class="bi bi-file-earmark-bar-graph"></i> Reportes
-                </a>
-            </li> *@
-
         </ul>
-       @*  </div>
-        </nav> *@
-
-
-
-
         <ul class="navbar-nav px-3">
             @if (User.Identity.IsAuthenticated)
             {
@@ -222,8 +79,7 @@
                     <form method="post" asp-controller="Login" asp-action="Logout" class="form-inline">
                         <button type="submit" class="btn btn-outline-light">
                             <img src="~/icons/diamond-turn-right-solid.svg" style="width: 16px; height: 16px;"> Cerrar sesión
-                            </button>
-                        
+                        </button>
                     </form>
                 </li>
             }
@@ -235,86 +91,12 @@
             }
         </ul>
     </nav>
-
-    @* <!-- Esta seccion es el menu lateral-->
-    <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-        <div class="sidebar-sticky">
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" asp-controller="Home" asp-action="Index">
-                        <i class="bi bi-house-door"></i> Inicio
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Equipos" asp-action="Index">
-                        <i class="bi bi-box"></i> Almacen
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Actividad" asp-action="Index">
-                        <i class="bi bi-activity"></i> Actividad
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Usuario" asp-action="Detalles" asp-route-id="1">
-                        <i class="bi bi-person-fill-gear"></i> Perfil
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Graficos" asp-action="Index">
-                        <i class="bi bi-graph-up-arrow"></i> Reportes
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" asp-controller="Home" asp-action="Privacy">
-                        <i class="bi bi-file-earmark-bar-graph"></i> Reportes
-                    </a>
-                </li>
-                
-            </ul>
-        </div>
-    </nav> *@
-
     <div class="content-wrapper">
         <main role="main" class="container-fluid main-content">
             @RenderBody()
         </main>
     </div>
 
-
-    
-
-
-
-    @* <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
-
-    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script> *@
-    @* <script src="/lib/bootstrap/js/bootstrap.min.js"></script> *@
-    @* <footer class="footer text-muted mt-5">
-        <div class="container">
-            &copy; 2024 - Minosa_Proyecto_v._1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer> *@
-
-    @* <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" /> *@
-    <!-- Bootstrap 4.0.0 Scripts -->
-    @* <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script> *@
-    @* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
-
-    @*  <!-- Bootstrap 5.3.3 Scripts -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script> *@
-
-    @* <script src="/lib/jquery/dist/jquery.min.js" ></script> *@
-    
-    @* <script src="/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script> *@
-     
-    @* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
-    
-    @* @await RenderSectionAsync("Scripts", required: false) *@
-    @* <script src="~/js/site.js" asp-append-version="true"></script> *@
-
-    
     @* BOOTSTRAP *@
     <script src="~/lib/bootstrap-5.3.3-dist/js/bootstrap.min.js"></script>
     <script src="~/lib/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js"></script>

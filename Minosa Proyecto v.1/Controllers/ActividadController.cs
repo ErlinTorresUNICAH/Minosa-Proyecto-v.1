@@ -33,7 +33,6 @@ namespace Minosa_Proyecto_v._1.Controllers
         // Funcion para obtener el historial de pings atravez de AJAX
         public JsonResult ObtenerHistorialPingsAJAX(string ip)
         {
-            Console.WriteLine("esta es la ip ::::", ip);
             // Obtener el historial actualizado de pings
             var historialPings = ObtenerHistorialPingsUltimos(ip);
             return Json(historialPings);
@@ -111,6 +110,8 @@ namespace Minosa_Proyecto_v._1.Controllers
 
             return historialPings;
         }
+
+
         //Funcion para obatener el historial de todos los ping
         private List<Actividad> ObtenerHistorialPingsUltimos(string ip)
         {
@@ -144,13 +145,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             return historialPings;
         }
 
-
-
-
-
-
-        // ------------------------------------------------------------
-
+        // Funcion para mostrar la vista de historial
         [HttpGet]
         public JsonResult ObtenerHistorialPingsAJAXParaIndexHistorial(int pageNumber = 1, int pageSize = 13)
         {
@@ -221,7 +216,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             }
         }
 
-
+        // funcion para obtener el historial de pings para pasarlo a la vista inicial
         private List<Actividad> ObtenerHistorialPingsParaIndexHistorial(int pageNumber, int pageSize, out int totalRecords)
         {
             List<Actividad> historialPings = new List<Actividad>();

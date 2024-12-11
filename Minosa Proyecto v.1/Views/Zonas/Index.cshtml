@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<Zona>
-
 <div class="text-center">
     <h1 class="text-center">Lista de Zonas</h1>
     <button id="exportButton" class="btn btn-success m-2">
@@ -50,6 +49,7 @@
     </tbody>
 </table>
 
+@* script para exportar a excel *@
 <script>
     document.getElementById('exportButton').addEventListener('click', function () {
         // Clonar la tabla para evitar modificar el DOM original

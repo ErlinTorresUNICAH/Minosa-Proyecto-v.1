@@ -5,7 +5,6 @@
         <i class="fas fa-file-excel"></i> Exportar a Excel
     </button>
 </div>
-
 <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
     <table class="table-responsive table table-bordered" style="table-layout: auto; width: 100%;" id="actividadTable">
         <thead class="table-dark">
@@ -47,17 +46,10 @@
                                class="btn btn-info">
                                 <img src="~/icons/file-circle-question-solid.svg" style="width: 16px; height: 16px;">
                             </a>
-
-                            @* <button class="btn btn-warning btn-sm" onclick="predecir('@actividad.DireccionIP', '@actividad.UltimaHoraPing')">
-                                Predecir Estado
-                            </button> *@
                             <a href="@Url.Action("PredecirEstado", "Predicciones", new { ip = actividad.DireccionIP, hora = actividad.UltimaHoraPing?.ToString("dd/MM/yyyy HH:mm:ss") })"
                                class="btn btn-success justify-content-center align-items-center">
                                 <img src="~/icons/magnifying-glass-chart-solid.svg" style="width: 16px; height: 16px;">
                             </a>
-
-
-
                         }
                         else
                         {
@@ -71,29 +63,14 @@
         </tbody>
     </table>
 </div>
-
 @if (ViewBag.Error != null)
 {
     <div class="alert alert-danger">
         @ViewBag.Error
     </div>
 }
-@* <script src="https://code.highcharts.com/highcharts.js"></script> *@
-@* <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> *@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-@* tengo que hacer algo con este link *@
-
-<style>
-    .fila-seleccionada {
-        background-color: #d3e2f1; /* Cambia este color según prefieras */
-    }
-</style>
-
-
-@* <script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/offline-exporting.js"></script> *@
+@* script para generar grafico *@
 <script>
     $(document).ready(function () {
 
@@ -107,15 +84,8 @@
             // Obtener la IP seleccionada
             const ipSeleccionada = $(this).data('ip');
             actualizarGraficoHistorialPings(ipSeleccionada);
-            // Desplazarse al contenedor del gráfico
-            // const container = document.getElementById('container');
-            // if (container) {
-            //     container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            // }
         });
-
         function actualizarGraficoHistorialPings(ip) {
-
             $.ajax({
                 // ObtenerHistorialPingsAJAX es la funcion que tiene los datos
                 url: '@Url.Action("ObtenerHistorialPingsAJAX", "Actividad")',
@@ -171,7 +141,6 @@
                                 max: 1,
                                 tickInterval: 1
                             },
-                            
                             tooltip: {
                                 formatter: function () {
                                     const fecha = Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x); // Formato de la fecha
@@ -205,9 +174,9 @@
 
 <!-- Contenedor para l  a gráfica -->
 <div id="container" style="min-height: 400px;"></div>
-@* <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script> *@
 
 
+@* script para exportar a excel *@
 <script>
             document.getElementById('exportButton').addEventListener('click', function () {
         // Clonar la tabla para evitar modificar el DOM original

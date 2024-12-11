@@ -1,14 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
-//public class Usuario
-//{
-//    public int ID_usuario { get; set; }
-//    public string Nombre_Usuario { get; set; }
-//    public string Contrasena { get; set; }
-//    public int id_rol { get; set; }
-//    public string Nombre_Rol { get; set; }
-//}
-
 public class Usuario
 {
     public int ID_usuario { get; set; }
@@ -24,5 +14,5 @@ public class Usuario
     [Required(ErrorMessage = "Debe seleccionar un rol.")]
     public int id_rol { get; set; }
 
-    public string Nombre_Rol { get; set; } // Para mostrar en las vistas
+    public string Nombre_Rol { get; set; } 
 }
