@@ -101,7 +101,8 @@ CREATE TABLE [DireccionesIp] (
   [Estado] nvarchar(255),
   [id_vlan] integer,
   [Activa] bit DEFAULT (1),
-  [ping] bit DEFAULT (1) -- nuevo campo para ping
+  [ping] bit DEFAULT (1), -- nuevo campo para ping
+  [UltimaHoraPing] datetime
 )
 GO
 
@@ -213,3 +214,30 @@ ALTER TABLE [Usuarios] ADD FOREIGN KEY ([id_rol]) REFERENCES [Roles] ([ID_rol])
 GO
 
 ALTER TABLE [Radio] ADD FOREIGN KEY ([id_equipo]) REFERENCES [Equipos] ([ID_equipo])
+
+
+/*Insertar los datos*/
+SET IDENTITY_INSERT [dbo].[Roles] ON 
+
+INSERT [dbo].[Roles] ([ID_rol], [Nombre_Rol], [Descripcion]) VALUES (1, N'Admin', N'Acceso completo al sistema')
+INSERT [dbo].[Roles] ([ID_rol], [Nombre_Rol], [Descripcion]) VALUES (2, N'Usuario', N'Acceso limitado a ciertas funciones')
+INSERT [dbo].[Roles] ([ID_rol], [Nombre_Rol], [Descripcion]) VALUES (3, N'Supervisor', N'Acceso administrado')
+SET IDENTITY_INSERT [dbo].[Roles] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[Tipo_Alerta] ON 
+
+INSERT [dbo].[Tipo_Alerta] ([ID_alerta], [Nombre_Alerta], [Descripcion_Alerta]) VALUES (1, N'Desconexión', N'Alerta de desconexión de dispositivo')
+SET IDENTITY_INSERT [dbo].[Tipo_Alerta] OFF
+GO
+
+SET IDENTITY_INSERT [dbo].[Tipo_Equipos] ON 
+INSERT [dbo].[Tipo_Equipos] ([ID_tipo_equipo], [Tipo_Equipo], [Creacion_Tipo_Equipo]) VALUES (1, N'Radio', CAST(N'2024-10-31T10:35:11.203' AS DateTime))
+
+SET IDENTITY_INSERT [dbo].[Tipo_Equipos] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Usuarios] ON 
+
+INSERT [dbo].[Usuarios] ([ID_usuario], [Nombre_Usuario], [Contrasena], [id_rol]) VALUES (1, N'admin', N'password', 1)
+SET IDENTITY_INSERT [dbo].[Usuarios] OFF
+GO

@@ -145,8 +145,8 @@ namespace Minosa_Proyecto_v._1.Controllers
                     {
                         data.Add(new EquiposActivos
                         {
-                            Activos = Convert.ToInt32(reader["Activo"]),
-                            Inactivos = Convert.ToInt32(reader["Inactivo"])
+                            Activos = reader["Activo"] != DBNull.Value ? Convert.ToInt32(reader["Activo"]) : 0,
+                            Inactivos = reader["Inactivo"] != DBNull.Value ? Convert.ToInt32(reader["Inactivo"]) : 0
                         });
                     }
                 }

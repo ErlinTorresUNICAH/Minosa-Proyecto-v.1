@@ -27,11 +27,13 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
     private readonly int _smtpPort = int.Parse(configuration["CorreoSettings:SmtpPort"]);
     private readonly string _emailFrom = configuration["CorreoSettings:EmailFrom"];
     private readonly string _emailPassword = configuration["CorreoSettings:EmailPassword"];
+    private readonly string _nmapPath = configuration["PythonSettings:nmapPath"];
     private readonly ILogger<ActividadBackgroundService> _logger = logger;
 
     //Llama a todas las funcion en orden para su control
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        //await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);
         while (!stoppingToken.IsCancellationRequested)
         {
             _logger.LogInformation("Starting activity device scan at: {time}", DateTimeOffset.Now);
@@ -129,7 +131,8 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         return await Task.Run(() =>
         {
             Process process = new Process();
-            process.StartInfo.FileName = @"C:\Program Files (x86)\Nmap\nmap.exe";
+            //process.StartInfo.FileName = @"C:\Program Files (x86)\Nmap\nmap.exe";
+            process.StartInfo.FileName = _nmapPath;
             process.StartInfo.Arguments = $"-sn {direccionIP}";
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.UseShellExecute = false;
@@ -152,7 +155,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             foreach (var dispositivo in dispositivos)
             {
                 // Actualizar el estado del ping en la tabla principal
-                string updateQuery = "UPDATE DireccionesIp SET ping = @Ping, UltimaHoraPing = @UltimaHoraPing WHERE IPV4 = @DireccionIP";
+                string updateQuery = "[dbo].[P_ActualizarPingDireccionIp]";
                 using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
                 {
                     updateCmd.Parameters.AddWithValue("@Ping", dispositivo.Ping ? 1 : 0);
@@ -300,25 +303,6 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             }
         }
     }
-
-
-    // Generar el cuerpo del correo en formato HTML
-    /*private string GenerarCuerpoCorreoHTML(List<Actividad> dispositivosDesconectados)
-    {
-        var cuerpo = "<h1>Dispositivos Desconectados</h1><table border='1'><thead><tr>" +
-                     "<th>IP</th><th>Descripción</th><th>Área</th><th>Última Hora Ping</th></tr></thead><tbody>";
-
-        foreach (var dispositivo in dispositivosDesconectados)
-        {
-            cuerpo += $"<tr><td>{dispositivo.DireccionIP}</td>" +
-                      $"<td>{dispositivo.DescripcionEquipo}</td>" +
-                      $"<td>{dispositivo.Area}</td>" +
-                      $"<td>{(dispositivo.UltimaHoraPing.HasValue ? dispositivo.UltimaHoraPing.Value.ToString("g") : "N/A")}</td></tr>";
-        }
-
-        cuerpo += "</tbody></table>";
-        return cuerpo;
-    }*/
 
     // Cuerpo del correo en formato HTML
     private string GenerarCuerpoCorreoHTML(List<Actividad> dispositivosDesconectados)

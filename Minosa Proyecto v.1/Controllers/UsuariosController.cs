@@ -189,14 +189,24 @@ namespace Minosa_Proyecto_v._1.Controllers
         public IActionResult Eliminar(Usuario usuario)
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection");
-
-            using (var connection = new SqlConnection(connectionString))
+            try
             {
-                var command = new SqlCommand("P_GRUD_EliminarUsuario", connection);
-                command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@ID_usuario", usuario.ID_usuario);
-                connection.Open();
-                command.ExecuteNonQuery();
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    var command = new SqlCommand("P_GRUD_EliminarUsuario", connection);
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@ID_usuario", usuario.ID_usuario);
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Number == 50000)
+                {
+                    ViewBag.Error = ex.Message;
+                    return View(usuario);
+                }
             }
 
             return RedirectToAction("Index");
