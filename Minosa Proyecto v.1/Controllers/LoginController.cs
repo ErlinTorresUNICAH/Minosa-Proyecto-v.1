@@ -25,14 +25,42 @@ public class LoginController : Controller
             return View();
         }
 
+        
         [HttpPost]
         public async Task<IActionResult> Index(string Nombre_Usuario, string Contrasena)
         {
-            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            int attempts = HttpContext.Session.GetInt32("LoginAttempts") ?? 0;
 
+            // Verificar si hay un tiempo de bloqueo establecido
+            var lockoutEndString = HttpContext.Session.GetString("LockoutEnd");
+            if (!string.IsNullOrEmpty(lockoutEndString) && DateTime.TryParse(lockoutEndString, out var lockoutEnd))
+            {
+                if (lockoutEnd > DateTime.Now)
+                {
+                    var minutesRemaining = (lockoutEnd - DateTime.Now).TotalMinutes;
+                    ViewBag.Error = $"Demasiados intentos fallidos. Intenta de nuevo en {minutesRemaining:F2} minutos.";
+                    return View();
+                }
+                else
+                {
+                    // Si el tiempo de bloqueo ha expirado, reiniciar los valores
+                    HttpContext.Session.Remove("LockoutEnd");
+                    HttpContext.Session.SetInt32("LoginAttempts", 0);
+                    attempts = 0;
+                }
+            }
+
+            if (attempts >= 10)
+            {
+                HttpContext.Session.SetString("LockoutEnd", DateTime.Now.AddMinutes(30).ToString("o"));
+                ViewBag.Error = "Demasiados intentos fallidos. Intenta de nuevo en un momento.";
+                return View();
+            }
+
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
             if (string.IsNullOrEmpty(connectionString))
             {
-                ViewBag.Error = "Connection string is not configured properly.";
+                ViewBag.Error = "Connection string is not configurado correctamente.";
                 return View();
             }
 
@@ -50,32 +78,44 @@ public class LoginController : Controller
                     if (reader.Read())
                     {
                         var claims = new List<Claim>
-                        {
-                            new Claim(ClaimTypes.Name, Nombre_Usuario),
-                            new Claim(ClaimTypes.NameIdentifier, reader["ID_usuario"].ToString()),
-                            new Claim(ClaimTypes.Role, reader["Nombre_Rol"].ToString())
-                        };
+                {
+                    new Claim(ClaimTypes.Name, Nombre_Usuario),
+                    new Claim(ClaimTypes.NameIdentifier, reader["ID_usuario"].ToString()),
+                    new Claim(ClaimTypes.Role, reader["Nombre_Rol"].ToString())
+                };
 
                         var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                        // Crear las propiedades de autenticación
                         var authProperties = new AuthenticationProperties
                         {
-                            IsPersistent = true, // Mantener la sesión iniciada
-                            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(30) // Configurar el tiempo de expiración
+                            IsPersistent = true,
+                            ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(60)
                         };
 
-                        // Iniciar la sesión con la cookie de autenticación
                         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
                                                       new ClaimsPrincipal(claimsIdentity),
                                                       authProperties);
 
-                        // Usuario autenticado, redirigir a la página principal
+                        // Reiniciar los valores de sesión al iniciar sesión correctamente
+                        HttpContext.Session.SetInt32("LoginAttempts", 0);
+                        HttpContext.Session.Remove("LockoutEnd");
+
                         return RedirectToAction("Index", "Home");
                     }
                     else
                     {
-                        ViewBag.Error = "Usuario o contraseña incorrectos.";
+                        attempts++;
+                        HttpContext.Session.SetInt32("LoginAttempts", attempts);
+
+                        if (attempts >= 10)
+                        {
+                            HttpContext.Session.SetString("LockoutEnd", DateTime.Now.AddMinutes(30).ToString("o"));
+                            ViewBag.Error = "Demasiados intentos fallidos. Intenta de nuevo en unos minuto.";
+                        }
+                        else
+                        {
+                            ViewBag.Error = "Usuario o contraseña incorrectos.";
+                        }
+
                         return View();
                     }
                 }
@@ -86,6 +126,9 @@ public class LoginController : Controller
                 return View();
             }
         }
+
+
+
         [Authorize]
         public IActionResult AccessDenied()
         {

@@ -13,6 +13,17 @@ builder.Configuration
 // Añadir servicios al contenedor
 builder.Services.AddControllersWithViews();
 
+// Agregar soporte para la sesión
+builder.Services.AddDistributedMemoryCache(); // Necesario para usar la sesión
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(60); // Duración de la sesión
+    options.Cookie.HttpOnly = true; // Hacer la cookie solo accesible por HTTP
+    options.Cookie.IsEssential = true; // Necesario para que la cookie esté disponible
+});
+
+
+
 // Agregar autenticación con cookies
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
@@ -50,6 +61,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthentication(); // Habilitar la autenticación
 app.UseAuthorization();  // Habilitar la autorización
