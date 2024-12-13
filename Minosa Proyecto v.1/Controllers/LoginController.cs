@@ -103,6 +103,7 @@ public class LoginController : Controller
                     }
                     else
                     {
+                        await Task.Delay(1000); // para los ataques de fuerza bruta
                         attempts++;
                         HttpContext.Session.SetInt32("LoginAttempts", attempts);
 

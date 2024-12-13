@@ -61,10 +61,11 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseSession();
+
 
 app.UseAuthentication(); // Habilitar la autenticación
 app.UseAuthorization();  // Habilitar la autorización
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",
