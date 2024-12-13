@@ -18,54 +18,78 @@
         const data = [
             {
                 'hc-key': 'ye',
-                color: '#ffa500',
-                info: 'Yemen is where coffee took off.'
+                color: '#c0ffd5',
+                info: ''
             },
             {
                 'hc-key': 'br',
                 color: '#c0ffd5',
-                info: 'Coffee came from La Reunion.'
+                info: ''
             },
             {
-                'hc-key': 'fr',
+                'hc-key': 'br',
                 color: '#c0ffd5',
-                info: 'Coffee came from Java.'
+                info: ''
             },
             {
                 'hc-key': 'gb',
                 color: '#c0ffd5',
-                info: 'Coffee came from Java.'
+                info: ''
             },
             {
                 'hc-key': 'id',
                 color: '#c0ffd5',
-                info: 'Coffee came from Yemen.'
+                info: ''
             },
             {
                 'hc-key': 'nl',
                 color: '#c0ffd5',
-                info: 'Coffee came from Java.'
+                info: ''
             },
             {
                 'hc-key': 'gu',
                 color: '#c0ffd5',
-                info: 'Coffee came from France.'
+                info: ''
             },
             {
                 'hc-key': 'hn',
-                color: '#c0ffd5',
-                info: 'Minosa San Andres.'
+                color: '#ffa500',
+                info: ''
             },
             {
                 'hc-key': 'us',
                 color: '#c0ffd5',
-                info: 'Miami.'
+                info: ''
             }
             ,
             {
                 'hc-key': 'mx',
                 color: '#c0ffd5',
-                info: 'Aranzazu'
+                info: ''
+            }
+            ,
+            {
+                'hc-key': 'co',
+                color: '#c0ffd5',
+                info: ''
+            }
+            ,
+            {
+                'hc-key': 'mg',
+                color: '#c0ffd5',
+                info: ''
+            }
+            ,
+            {
+                'hc-key': 'ru',
+                color: '#c0ffd5',
+                info: ''
+            }
+            ,
+            {
+                'hc-key': 'cn',
+                color: '#c0ffd5',
+                info: ''
             }
         ];
 
@@ -100,6 +124,9 @@
                         [179, -38],
                         // Chile south
                         [-68, -55]
+
+                        //[-170, 70],  // Extremo noroeste (Alaska)
+                        //[-35, -55],  // Extremo sureste (Chile)
                     ]
                 }
             },
@@ -117,8 +144,8 @@
                             geometry: {
                                 type: 'LineString',
                                 coordinates: [
-                                    [48.516388, 15.552727], // Yemen
-                                    [110.004444, -7.491667] // Java
+                                    [-46.633308, -23.550520], //  São Paulo, Brasil
+                                   [47.5162, -18.8792] // Antananarivo, Madagascar
                                 ]
                             },
                             className: 'animated-line',
@@ -130,7 +157,7 @@
                                 type: 'LineString',
                                 coordinates: [
                                     [-86.241905, 14.634915], // Honduras (aproximado)
-                                    [-95.712891, 37.09024]  // Estados Unidos (centro aproximado)
+                                    [-80.191790, 25.761680] // Miami, Florida, EE.UU.
                                 ]
                             },
                             className: 'animated-line',
@@ -142,8 +169,8 @@
                             geometry: {
                                 type: 'LineString',
                                 coordinates: [
-                                    [48.516388, 15.552727], // Yemen
-                                    [55.5325, -21.114444] // La reunion
+                                    [-80.191790, 25.761680], // Miami, Florida, EE.UU.
+                                    [-75.607220, 5.298320] // Caldas, Colombia
                                 ]
                             },
                             className: 'animated-line',
@@ -153,8 +180,8 @@
                             geometry: {
                                 type: 'LineString',
                                 coordinates: [
-                                    [55.5325, -21.114444], // La reunion
-                                    [-43.2, -22.9] // Brazil
+                                    [37.6173, 55.7558], // Moscú, Rusia
+                                    [-56.097891, -12.681871] // Mato Grosso, Brasil
                                 ]
                             },
                             className: 'animated-line',
@@ -176,7 +203,7 @@
                                 type: 'LineString',
                                 coordinates: [
                                     [110.004444, -7.491667], // Java
-                                    [4.9, 52.366667] // Amsterdam
+                                    [37.6173, 55.7558] // Moscú, Rusia
                                 ]
                             },
                             className: 'animated-line',
@@ -187,7 +214,7 @@
                                 type: 'LineString',
                                 coordinates: [
                                     [-3, 55], // UK
-                                    [-61.030556, 14.681944] // Antilles
+                                    [-80.191790, 25.761680] // Miami, Florida, EE.UU.
                                 ]
                             },
                             className: 'animated-line',
@@ -197,8 +224,48 @@
                             geometry: {
                                 type: 'LineString',
                                 coordinates: [
-                                    [2.352222, 48.856613], // Paris
-                                    [-53, 4] // Guyane
+                                    [-102.583252, 22.770930], // Zacatecas, México
+                                    //[-47.920574, -10.183197] // Greenstone Belt de Alma, Brasil (TO - Tocantins)
+                                    [-80.191790, 25.761680] // Miami, Florida, EE.UU.
+
+                                ]
+                            },
+                            className: 'animated-line',
+                            color: '#666'
+                        },
+                        {
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: [
+                                    [48.516388, 15.552727], // Yemen
+                                    [-47.920574, -10.183197] // Greenstone Belt de Alma, Brasil (TO - Tocantins)
+
+                                ]
+                            },
+                            className: 'animated-line',
+                            color: '#666'
+                        }
+                        ,
+                        {
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: [
+                                    [116.4074, 39.9042], // Pekín, China
+                                    [48.516388, 15.552727] // Yemen
+
+                                ]
+                            },
+                            className: 'animated-line',
+                            color: '#666'
+                        }
+                        ,
+                        {
+                            geometry: {
+                                type: 'LineString',
+                                coordinates: [
+                                    [116.4074, 39.9042], // Pekín, China
+                                    [47.5162, -18.8792] // Antananarivo, Madagascar
+
                                 ]
                             },
                             className: 'animated-line',
@@ -248,10 +315,10 @@
                         },
                         // Estados Unidos
                         {
-                            name: 'United States',
+                            name: 'Miami, Florida, EE.UU',
                             geometry: {
                                 type: 'Point',
-                                coordinates: [-95.712891, 37.09024] // Estados Unidos (centro aproximado)
+                                coordinates: [-80.191790, 25.761680] // Estados Unidos (centro aproximado)
                             },
                             custom: {
                                 arrival: 2024 // Año representativo o información adicional
@@ -260,10 +327,19 @@
                                 align: 'left'
                             }
                         },
-
-
-
-
+                        {
+                            name: 'Zacatecas',
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [-102.583252, 22.770930] // Zacatecas, México
+                            },
+                            custom: {
+                                arrival: 2024 // Año representativo o información adicional
+                            },
+                            dataLabels: {
+                                align: 'left'
+                            }
+                        },
                         {
                             name: 'Java',
                             geometry: {
@@ -275,20 +351,46 @@
                             }
                         },
                         {
-                            name: 'La Reunion',
+                            name: 'Moscú',
                             geometry: {
                                 type: 'Point',
-                                coordinates: [55.5325, -21.114444] // La reunion
+                                coordinates: [37.6173, 55.7558] // Moscú, Rusia
                             },
                             custom: {
                                 arrival: 1708
                             }
                         },
                         {
-                            name: 'Brazil',
+                            name: 'Almas',
                             geometry: {
                                 type: 'Point',
-                                coordinates: [-43.2, -22.9] // Brazil
+                                coordinates: [-47.920574, -10.183197] // Greenstone Belt de Alma, Brasil (TO - Tocantins)
+                            },
+                            custom: {
+                                arrival: 1770
+                            },
+                            dataLabels: {
+                                align: 'right'
+                            }
+                        },
+                        {
+                            name: 'São Paulo',
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [-46.633308, -23.550520] // São Paulo, Brasil
+                            },
+                            custom: {
+                                arrival: 1770
+                            },
+                            dataLabels: {
+                                align: 'right'
+                            }
+                        },
+                        {
+                            name: 'Mato Grosso',
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [-56.097891, -12.681871] // Mato Grosso, Brasil
                             },
                             custom: {
                                 arrival: 1770
@@ -318,10 +420,10 @@
                             }
                         },
                         {
-                            name: 'Antilles',
+                            name: 'Caldas',
                             geometry: {
                                 type: 'Point',
-                                coordinates: [-61.030556, 14.681944] // Antilles
+                                coordinates: [-75.607220, 5.298320] // Caldas, Colombia
                             },
                             custom: {
                                 arrival: 1714
@@ -331,10 +433,24 @@
                             }
                         },
                         {
-                            name: 'Guyane',
+                            name: 'Antananarivo',
                             geometry: {
                                 type: 'Point',
-                                coordinates: [-53, 4] // Guyane
+                                coordinates: [47.5162, -18.8792] // Antananarivo, Madagascar
+                            },
+                            custom: {
+                                arrival: 1714
+                            },
+                            dataLabels: {
+                                align: 'right'
+                            }
+                        }
+                        ,
+                        {
+                            name: 'Pekín',
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [116.4074, 39.9042] // Pekín, China
                             },
                             custom: {
                                 arrival: 1714
@@ -348,6 +464,8 @@
                 }
             ]
         });
+        
+
     })();
 
 </script>

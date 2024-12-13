@@ -1,8 +1,10 @@
 ﻿@model Usuario
-<h2>Editar Usuario</h2>
-<form asp-action="Editar" method="post">
+<div class="text-center">
+    <h2>Editar Usuario</h2>
+</div>
+<form asp-action="Editar" method="post" class="container" style="max-width: 500px;" >
+    
     <input type="hidden" asp-for="ID_usuario" />
-
     <div class="form-group">
         <label asp-for="Nombre_Usuario"></label>
         <input asp-for="Nombre_Usuario" class="form-control" placeholder="Ingrese el nombre de usuario" />
@@ -18,6 +20,6 @@
         <select asp-for="id_rol" class="form-control" asp-items="ViewBag.Roles"></select>
         <span asp-validation-for="id_rol" class="text-danger"></span>
     </div>
-    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-primary m-2">Guardar Cambios</button>
+    <a asp-action="Index" class="btn btn-secondary m-2">Cancelar</a>
 </form>

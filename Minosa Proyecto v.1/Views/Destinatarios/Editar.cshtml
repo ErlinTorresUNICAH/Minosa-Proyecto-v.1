@@ -1,8 +1,10 @@
 ﻿@model Destinatario
 
-<h2>Editar Destinatario</h2>
 
-<form asp-action="Editar" method="post">
+<div class="text-center">
+    <h2>Editar Destinatario</h2>
+</div>
+<form asp-action="Editar" method="post" class="container" style="max-width: 500px;">
     <input type="hidden" asp-for="ID_destinatario" />
 
     <div class="form-group">
@@ -21,6 +23,6 @@
         <label asp-for="id_alerta">Alerta</label>
         <select asp-for="id_alerta" class="form-control" asp-items="ViewBag.Alertas"></select>
     </div>
-    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-    <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    <button type="submit" class="btn btn-primary m-2">Guardar Cambios</button>
+    <a asp-action="Index" class="btn btn-secondary m-2">Cancelar</a>
 </form>

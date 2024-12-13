@@ -1,23 +1,30 @@
 ﻿@model CorreoSettings
 
-<h2>Configuración Actual de Correo</h2>
-<table class="table">
-    <tr>
-        <th>Servidor SMTP</th>
-        <td>@Model.SmtpServer</td>
-    </tr>
-    <tr>
-        <th>Puerto SMTP</th>
-        <td>@Model.SmtpPort</td>
-    </tr>
-    <tr>
-        <th>Email</th>
-        <td>@Model.EmailFrom</td>
-    </tr>
-    <tr>
-        <th>Contraseña</th>
-        <td>********</td>
-    </tr>
-</table>
+<div class="text-center">
+    <h2>Configuración Actual de Correo</h2>
+</div>
 
-<a asp-action="Editar" class="btn btn-primary">Editar Configuración</a>
+<div class="container" style="max-width: 500px;">
+    <table class="table">
+        <tr>
+            <th>Servidor SMTP</th>
+            <td>@Model.SmtpServer</td>
+        </tr>
+        <tr>
+            <th>Puerto SMTP</th>
+            <td>@Model.SmtpPort</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>@Model.EmailFrom</td>
+        </tr>
+        <tr>
+            <th>Contraseña</th>
+            <td>********</td>
+        </tr>
+    </table>
+    <a asp-action="Editar" class="btn btn-primary">Editar Configuración</a>
+</div>
+
+
+
