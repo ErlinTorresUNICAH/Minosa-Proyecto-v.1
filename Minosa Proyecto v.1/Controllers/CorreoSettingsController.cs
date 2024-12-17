@@ -89,10 +89,10 @@ namespace Minosa_Proyecto_v._1.Controllers
             }
             catch
             {
-                // Manejo de errores (log o mensaje para el desarrollador)
+                
 
             }
-            return null; // Devuelve null si hay algún error
+            return null; 
         }
 
         // Método para actualizar la configuración de correo en la base de datos
@@ -119,7 +119,7 @@ namespace Minosa_Proyecto_v._1.Controllers
             }
             catch
             {
-                // Manejo de errores (log o mensaje para el desarrollador)
+                
             }
         }
     }

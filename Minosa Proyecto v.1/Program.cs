@@ -44,9 +44,7 @@ builder.Services.AddAuthorization(options =>
 
 builder.Services.Configure<CorreoSettings>(builder.Configuration.GetSection("CorreoSettings"));
 var correoSettings = builder.Configuration.GetSection("CorreoSettings").Get<CorreoSettings>();
-Console.WriteLine($"SMTP Server: {correoSettings.SmtpServer}");
-Console.WriteLine($"SMTP Port: {correoSettings.SmtpPort}");
-Console.WriteLine($"Email From: {correoSettings.EmailFrom}");
+
 
 var app = builder.Build();
 

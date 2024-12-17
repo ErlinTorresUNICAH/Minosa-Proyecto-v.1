@@ -20,17 +20,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 {
     private readonly IConfiguration _configuration;
 
-    
-
-
-    /*private readonly string _connectionString;
-    private readonly ILogger<ActividadBackgroundService> _logger;
-    private object _configuration;*/
     private readonly string _connectionString = configuration.GetConnectionString("DefaultConnection");
-    private readonly string _smtpServer = configuration["CorreoSettings:SmtpServer"];
-    private readonly int _smtpPort = int.Parse(configuration["CorreoSettings:SmtpPort"]);
-    private readonly string _emailFrom = configuration["CorreoSettings:EmailFrom"];
-    private readonly string _emailPassword = configuration["CorreoSettings:EmailPassword"];
 
 
     private readonly string _nmapPath = configuration["PythonSettings:nmapPath"];
@@ -50,13 +40,13 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             await EscanearDispositivosConNmapAsync(dispositivos);
             await ActualizarEstadoPingAsync(dispositivos);
 
-            _logger.LogInformation("Iniciando inserción de historial de ping...");
+            //_logger.LogInformation("Iniciando inserción de historial de ping...");
             await InsertarHistorialPingAsync(dispositivos);
-            _logger.LogInformation("Finalizada inserción de historial de ping.");
+            //_logger.LogInformation("Finalizada inserción de historial de ping.");
 
-            _logger.LogInformation("Completed activity device scan at: {time}", DateTimeOffset.Now);
+            //_logger.LogInformation("Completed activity device scan at: {time}", DateTimeOffset.Now);
 
-            //await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
+            await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
 
 
             //cambiar este parametro en base del tiempo que se quiere que se ejecute los pings en minutos
@@ -114,18 +104,19 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error pinging IP: {DireccionIP}", dispositivo.DireccionIP);
+               // _logger.LogError(ex, "Error pinging IP: {DireccionIP}", dispositivo.DireccionIP);
                 dispositivo.Ping = false;
             }
 
             stopwatch.Stop();
-            _logger.LogInformation("Ping to {DireccionIP} {Result} in {Seconds} seconds",
-                dispositivo.DireccionIP,
-                dispositivo.Ping ? "succeeded" : "failed",
-                stopwatch.Elapsed.TotalSeconds);
+            // Descomentar para ver posibles errores
+            //_logger.LogInformation("Ping to {DireccionIP} {Result} in {Seconds} seconds",
+            //    dispositivo.DireccionIP,
+            //    dispositivo.Ping ? "succeeded" : "failed",
+            //    stopwatch.Elapsed.TotalSeconds);
 
             dispositivo.UltimaHoraPing = DateTime.Now;
-            _logger.LogInformation("UltimaHoraPing asignada a {Time} para {DireccionIP}", dispositivo.UltimaHoraPing, dispositivo.DireccionIP);
+            //_logger.LogInformation("UltimaHoraPing asignada a {Time} para {DireccionIP}", dispositivo.UltimaHoraPing, dispositivo.DireccionIP);
         }
 
         
@@ -168,8 +159,8 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                     updateCmd.Parameters.AddWithValue("@Ping", dispositivo.Ping ? 1 : 0);
                     updateCmd.Parameters.AddWithValue("@UltimaHoraPing", dispositivo.UltimaHoraPing ?? (object)DBNull.Value);
                     updateCmd.Parameters.AddWithValue("@DireccionIP", dispositivo.DireccionIP);
-
-                    try
+                    // descomentar este codigo para ver los posibles errores
+                    /*try
                     {
                         int rowsAffected = await updateCmd.ExecuteNonQueryAsync();
                         if (rowsAffected > 0)
@@ -184,7 +175,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                     catch (Exception ex)
                     {
                         _logger.LogError(ex, "Error updating database for IP: {DireccionIP}", dispositivo.DireccionIP);
-                    }
+                    }*/
                 }
             }
         }
@@ -210,7 +201,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                     try
                     {
                         await insertCmd.ExecuteNonQueryAsync();
-                        _logger.LogInformation("Historial de ping insertado para IP: {DireccionIP}", dispositivo.DireccionIP);
+                        //_logger.LogInformation("Historial de ping insertado para IP: {DireccionIP}", dispositivo.DireccionIP);
                     }
                     catch (Exception ex)
                     {
@@ -236,16 +227,8 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         var emailFrom = correoSettings.EmailFrom;
         var emailPassword = correoSettings.EmailPassword;
 
-
-
-        //var smtpServer = _smtpServer;
-        _logger.LogInformation("SmtpServer: {SmtpServer}", smtpServer);
-        //var smtpPort = int.Parse(((IConfiguration)_configuration)["CorreoSettings:SmtpPort"]);
-        //var emailFrom = ((IConfiguration)_configuration)["CorreoSettings:EmailFrom"];
-        //var emailPassword = ((IConfiguration)_configuration)["CorreoSettings:EmailPassword"];
-        //var smtpPort = _smtpPort;
-        //var emailFrom = _emailFrom;
-        //var emailPassword = _emailPassword;
+        //_logger.LogInformation("SmtpServer: {SmtpServer}", smtpServer);
+        
 
         var dispositivosDesconectados = dispositivos.Where(d => !d.Ping).ToList();
         if (!dispositivosDesconectados.Any())
@@ -265,10 +248,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 
         // Configurar remitente 
         message.From.Add(new MailboxAddress("NetGuardião", emailFrom));
-        //message.From.Add(new MailboxAddress("NetGuardião", "erla_lopezt@unicah.edu"));
-
-        /*// Agregar destinatarios
-        message.Bcc.Add(new MailboxAddress("Administrador", "erlintorres000@gmail.com"));*/
+        
 
         // Agregar destinatarios desde la base de datos
         for (int i = 0; i < correosDestinatarios.Count; i++)
@@ -281,10 +261,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                 message.Bcc.Add(new MailboxAddress(nombre ?? "Destinatario", correo));
             }
         }
-        //foreach (var correo in correosDestinatarios)
-        //{
-        //    message.Bcc.Add(new MailboxAddress("Destinatario", correo));
-        //}
+        
 
 
         // Asunto del correo
@@ -308,13 +285,9 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                 // Autenticación
                 await client.AuthenticateAsync(emailFrom, emailPassword);
 
-                //// Enviar correo
-                //await client.SendAsync(message);
-                //_logger.LogInformation("Correo enviado correctamente.");
-
                 // Enviar correo
                 await client.SendAsync(message);
-                _logger.LogInformation("Correo enviado correctamente a {CantidadDestinatarios} destinatarios.", correosDestinatarios.Count);
+                
 
                 await client.DisconnectAsync(true);
             }
@@ -355,10 +328,10 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         }
         catch
         {
-            // Manejo de errores (log o mensaje para el desarrollador)
+            
 
         }
-        return null; // Devuelve null si hay algún error
+        return null;
     }
 
     // Cuerpo del correo en formato HTML
@@ -465,7 +438,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         using (SqlConnection conn = new SqlConnection(_connectionString))
         {
             await conn.OpenAsync();
-            using (SqlCommand cmd = new SqlCommand("[dbo].[P_ObtenerHistorialPings]", conn)) // Ajusta el nombre del procedimiento almacenado si es necesario
+            using (SqlCommand cmd = new SqlCommand("[dbo].[P_ObtenerHistorialPings]", conn)) 
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -497,7 +470,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
     //cuenta regresiva para control en el cmd
     private async Task CuentaRegresivaCincoMinutosAsync()
     {
-        int totalSegundos = 2 * 60; // 5 minutes in seconds
+        int totalSegundos = 2 * 60; 
 
         while (totalSegundos > 0)
         {
@@ -505,7 +478,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             _logger.LogInformation("Tiempo restante: {Minutes} minutos {Seconds} segundos",
                 tiempoRestante.Minutes, tiempoRestante.Seconds);
 
-            await Task.Delay(1000); // Wait for 1 second
+            await Task.Delay(1000); 
             totalSegundos--;
         }
 

@@ -25,28 +25,20 @@ namespace Minosa_Proyecto_v._1.Controllers
         public IActionResult PredecirEstado(string ip, string hora)
         {
 
-            Console.WriteLine($"IP: {ip}");
-            Console.WriteLine($"Última Hora de Ping: {hora}");
+            
             try
             {
-                // Ruta al script Python
-                //string scriptPath = @"~/PythonScripts/prediction_service.py";
-                //string scriptPath = IWebHostEnvironment("~/PythonScripts/prediction_service.py");
-                string scriptPath = _configuration["PythonSettings:ScriptPath"];
-                //string scriptPath = @"C:\Users\erlin\source\repos\Minosa Proyecto v.1\Minosa Proyecto v.1\PythonScripts\prediction_service.py";
                 
-
-                // Enciérralo entre comillas
+                string scriptPath = _configuration["PythonSettings:ScriptPath"];
+               
                 string formattedScriptPath = $"\"{scriptPath}\"";
 
 
                 // Configurar el proceso
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
-                    //FileName = @"C:\Users\erlin\AppData\Local\Programs\Python\Python312\python.exe",
 
                     FileName = _configuration["PythonSettings:FileName"],
-                    //Arguments = $"{formattedScriptPath}\"{ip}\" \"{hora}\"",
                     Arguments = $"{formattedScriptPath} \"{ip}\" \"{hora}\"",
 
                     RedirectStandardOutput = true,
@@ -54,8 +46,7 @@ namespace Minosa_Proyecto_v._1.Controllers
                     UseShellExecute = false,
                     CreateNoWindow = true
                 };
-                Console.WriteLine("Path del ejecutable: " + psi.FileName);
-                Console.WriteLine("Argumentos: " + psi.Arguments);
+                
 
 
                 // Ejecutar el script
@@ -66,21 +57,17 @@ namespace Minosa_Proyecto_v._1.Controllers
                     // Leer la salida del script
                     string output = process.StandardOutput.ReadToEnd();
                     string error = process.StandardError.ReadToEnd();
-                    Console.WriteLine("Output: " + output);
-                    /* (!string.IsNullOrEmpty(error))
-                    {
-                        return BadRequest($"Error en el script Python: {error}");
-                    }*/
+                    
+                    
 
-                    // Convertir el JSON a un objeto C#
+                   
                     var predicciones = JsonConvert.DeserializeObject<List<Predicciones>>(output);
-                    //var predicciones = output;
-                    Console.WriteLine("Datos transformados:");
+                    
                     if (predicciones != null)
                     {
                         foreach (var item in predicciones)
                         {
-                            Console.WriteLine(item); // Esto depende de cómo esté implementado el método ToString en PrediccionResult
+                            Console.WriteLine(item); 
                         }
                     }
                     else
