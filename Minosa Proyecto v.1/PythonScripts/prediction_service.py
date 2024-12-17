@@ -9,7 +9,7 @@ from datetime import datetime
 from sqlalchemy import create_engine
 
 def conectar_y_extraer_datos(ip):
-    connection_string = "mssql+pyodbc://localhost/Testv1_MinosaProyecto?driver=SQL+Server&trusted_connection=yes"
+    connection_string = "mssql+pyodbc://localhost/Testv_1MinosaProyectoEmpty?driver=SQL+Server&trusted_connection=yes"
     engine = create_engine(connection_string)
     query = f"""
     SELECT ip, HoraPing, ResultadoPing

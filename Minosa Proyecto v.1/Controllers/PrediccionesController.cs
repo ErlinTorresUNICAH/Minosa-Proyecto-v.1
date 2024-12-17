@@ -34,21 +34,29 @@ namespace Minosa_Proyecto_v._1.Controllers
                 //string scriptPath = IWebHostEnvironment("~/PythonScripts/prediction_service.py");
                 string scriptPath = _configuration["PythonSettings:ScriptPath"];
                 //string scriptPath = @"C:\Users\erlin\source\repos\Minosa Proyecto v.1\Minosa Proyecto v.1\PythonScripts\prediction_service.py";
+                
 
                 // Enciérralo entre comillas
                 string formattedScriptPath = $"\"{scriptPath}\"";
+
 
                 // Configurar el proceso
                 ProcessStartInfo psi = new ProcessStartInfo
                 {
                     //FileName = @"C:\Users\erlin\AppData\Local\Programs\Python\Python312\python.exe",
+
                     FileName = _configuration["PythonSettings:FileName"],
+                    //Arguments = $"{formattedScriptPath}\"{ip}\" \"{hora}\"",
                     Arguments = $"{formattedScriptPath} \"{ip}\" \"{hora}\"",
+
                     RedirectStandardOutput = true,
                     RedirectStandardError = true,
                     UseShellExecute = false,
                     CreateNoWindow = true
                 };
+                Console.WriteLine("Path del ejecutable: " + psi.FileName);
+                Console.WriteLine("Argumentos: " + psi.Arguments);
+
 
                 // Ejecutar el script
                 using (Process process = Process.Start(psi))

@@ -18,6 +18,10 @@ using MimeKit;
 /// </summary>
 public class ActividadBackgroundService(IConfiguration configuration, ILogger<ActividadBackgroundService> logger) : BackgroundService
 {
+    private readonly IConfiguration _configuration;
+
+    
+
 
     /*private readonly string _connectionString;
     private readonly ILogger<ActividadBackgroundService> _logger;
@@ -27,6 +31,8 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
     private readonly int _smtpPort = int.Parse(configuration["CorreoSettings:SmtpPort"]);
     private readonly string _emailFrom = configuration["CorreoSettings:EmailFrom"];
     private readonly string _emailPassword = configuration["CorreoSettings:EmailPassword"];
+
+
     private readonly string _nmapPath = configuration["PythonSettings:nmapPath"];
     private readonly ILogger<ActividadBackgroundService> _logger = logger;
 
@@ -50,7 +56,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 
             _logger.LogInformation("Completed activity device scan at: {time}", DateTimeOffset.Now);
 
-            await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
+            //await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
 
 
             //cambiar este parametro en base del tiempo que se quiere que se ejecute los pings en minutos
@@ -158,6 +164,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                 string updateQuery = "[dbo].[P_ActualizarPingDireccionIp]";
                 using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
                 {
+                    updateCmd.CommandType = CommandType.StoredProcedure;
                     updateCmd.Parameters.AddWithValue("@Ping", dispositivo.Ping ? 1 : 0);
                     updateCmd.Parameters.AddWithValue("@UltimaHoraPing", dispositivo.UltimaHoraPing ?? (object)DBNull.Value);
                     updateCmd.Parameters.AddWithValue("@DireccionIP", dispositivo.DireccionIP);
@@ -217,14 +224,28 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
     // Método para enviar correos electrónicos con dispositivos desconectados
     private async Task EnviarCorreoDispositivosDesconectadosAsync(List<Actividad> dispositivos)
     {
-        var smtpServer = _smtpServer;
+        var correoSettings = ObtenerCorreoSettings();
+        if (correoSettings == null)
+        {
+            _logger.LogError("No se pudo obtener la configuración de correo desde la base de datos.");
+            return;
+        }
+
+        var smtpServer = correoSettings.SmtpServer;
+        var smtpPort = correoSettings.SmtpPort;
+        var emailFrom = correoSettings.EmailFrom;
+        var emailPassword = correoSettings.EmailPassword;
+
+
+
+        //var smtpServer = _smtpServer;
         _logger.LogInformation("SmtpServer: {SmtpServer}", smtpServer);
         //var smtpPort = int.Parse(((IConfiguration)_configuration)["CorreoSettings:SmtpPort"]);
         //var emailFrom = ((IConfiguration)_configuration)["CorreoSettings:EmailFrom"];
         //var emailPassword = ((IConfiguration)_configuration)["CorreoSettings:EmailPassword"];
-        var smtpPort = _smtpPort;
-        var emailFrom = _emailFrom;
-        var emailPassword = _emailPassword;
+        //var smtpPort = _smtpPort;
+        //var emailFrom = _emailFrom;
+        //var emailPassword = _emailPassword;
 
         var dispositivosDesconectados = dispositivos.Where(d => !d.Ping).ToList();
         if (!dispositivosDesconectados.Any())
@@ -302,6 +323,42 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                 _logger.LogError(ex, "Error al enviar el correo electrónico.");
             }
         }
+    }
+    private CorreoSettings ObtenerCorreoSettings()
+    {
+        
+        try
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new SqlCommand("P_ObtenerCorreoSettings", connection))
+                {
+                    
+                    command.CommandType = CommandType.StoredProcedure;
+
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new CorreoSettings
+                            {
+                                SmtpServer = reader["SmtpServer"].ToString(),
+                                SmtpPort = Convert.ToInt32(reader["SmtpPort"]),
+                                EmailFrom = reader["EmailFrom"].ToString(),
+                                EmailPassword = reader["EmailPassword"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+        }
+        catch
+        {
+            // Manejo de errores (log o mensaje para el desarrollador)
+
+        }
+        return null; // Devuelve null si hay algún error
     }
 
     // Cuerpo del correo en formato HTML

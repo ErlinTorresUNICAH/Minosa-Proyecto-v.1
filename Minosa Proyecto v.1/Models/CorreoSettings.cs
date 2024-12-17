@@ -2,6 +2,7 @@
 
 public class CorreoSettings
 {
+    public int Id { get; set; }
     [Required(ErrorMessage = "El servidor SMTP es obligatorio.")]
     public string SmtpServer { get; set; }
 
@@ -16,3 +17,4 @@ public class CorreoSettings
     [Required(ErrorMessage = "La contraseña es obligatoria.")]
     public string EmailPassword { get; set; }
 }
+

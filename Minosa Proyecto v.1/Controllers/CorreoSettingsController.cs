@@ -1,96 +1,126 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
+using Microsoft.Data.SqlClient;
+using Minosa_Proyecto_v._1.Models;
+using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.Data;
+using Microsoft.AspNetCore.Authorization;
 
-public class CorreoSettingsController : Controller
+namespace Minosa_Proyecto_v._1.Controllers
 {
-    private readonly IOptionsMonitor<CorreoSettings> _correoSettings;
-
-    public CorreoSettingsController(IOptionsMonitor<CorreoSettings> correoSettings)
+    [Authorize]
+    public class CorreoSettingsController : Controller
     {
-        _correoSettings = correoSettings;
-    }
+        private readonly IConfiguration _configuration;
 
-    // Muestra la configuración actual
-    //public IActionResult Index()
-    //{
-    //    return View(_correoSettings.CurrentValue);
-    //}
-    public IActionResult Index()
-    {
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
-        var json = System.IO.File.ReadAllText(filePath);
-        dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-
-        var settings = new CorreoSettings
+        public CorreoSettingsController(IConfiguration configuration)
         {
-            SmtpServer = jsonObj["CorreoSettings"]["SmtpServer"],
-            SmtpPort = Convert.ToInt32(jsonObj["CorreoSettings"]["SmtpPort"]),
-            EmailFrom = jsonObj["CorreoSettings"]["EmailFrom"],
-            EmailPassword = jsonObj["CorreoSettings"]["EmailPassword"]
-        };
-
-        return View(settings);
-    }
-
-    // Muestra el formulario para editar
-    //[HttpGet]
-    //public IActionResult Editar()
-    //{
-    //    return View(_correoSettings.CurrentValue);
-    //}
-    [HttpGet]
-    public IActionResult Editar()
-    {
-        // Leer el archivo de configuración
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
-        var json = System.IO.File.ReadAllText(filePath);
-        dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-
-        // Crear el modelo a partir de los valores leídos
-        var settings = new CorreoSettings
-        {
-            SmtpServer = jsonObj["CorreoSettings"]["SmtpServer"],
-            SmtpPort = jsonObj["CorreoSettings"]["SmtpPort"] != null ? Convert.ToInt32(jsonObj["CorreoSettings"]["SmtpPort"]) : 0,
-            EmailFrom = jsonObj["CorreoSettings"]["EmailFrom"],
-            EmailPassword = jsonObj["CorreoSettings"]["EmailPassword"]
-        };
-
-        return View(settings);
-    }
-
-
-    // Guarda los cambios en la configuración
-    [HttpPost]
-    public IActionResult Editar(CorreoSettings settings)
-    {
-        if (ModelState.IsValid)
-        {
-            // Aquí actualizas el archivo appsettings.json o lo que uses
-            UpdateAppSettings(settings);
-            return RedirectToAction("Index");
-        }
-        return View(settings);
-    }
-
-    private void UpdateAppSettings(CorreoSettings settings)
-    {
-        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
-        var json = System.IO.File.ReadAllText(filePath);
-        dynamic jsonObj = Newtonsoft.Json.JsonConvert.DeserializeObject(json);
-
-        // Verifica que "CorreoSettings" no sea nulo
-        if (jsonObj["CorreoSettings"] == null)
-        {
-            jsonObj["CorreoSettings"] = new Newtonsoft.Json.Linq.JObject();
+            _configuration = configuration;
         }
 
-        jsonObj["CorreoSettings"]["SmtpServer"] = settings.SmtpServer;
-        jsonObj["CorreoSettings"]["SmtpPort"] = settings.SmtpPort.ToString();
-        jsonObj["CorreoSettings"]["EmailFrom"] = settings.EmailFrom;
-        jsonObj["CorreoSettings"]["EmailPassword"] = settings.EmailPassword;
+        // Muestra la configuración actual
+        [HttpGet]
+        public IActionResult Index()
+        {
+            var settings = ObtenerCorreoSettings();
+            Console.WriteLine("index : ",settings);
+            if (settings == null)
+            {
+                ModelState.AddModelError(string.Empty, "No se pudo cargar la configuración de correo.");
+                return View(new CorreoSettings());
+            }
+            return View(settings);
+        }
 
-        string output = Newtonsoft.Json.JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
-        System.IO.File.WriteAllText(filePath, output);
+        // Muestra el formulario para editar
+        [HttpGet]
+        public IActionResult Editar()
+        {
+            var settings = ObtenerCorreoSettings();
+            Console.WriteLine("index : " ,settings);
+            if (settings == null)
+            {
+                ModelState.AddModelError(string.Empty, "No se pudo cargar la configuración de correo.");
+                return RedirectToAction("Index");
+            }
+            return View(settings);
+        }
+
+        // Guarda los cambios en la configuración
+        [HttpPost]
+        public IActionResult Editar(CorreoSettings settings)
+        {
+            if (ModelState.IsValid)
+            {
+                ActualizarCorreoSettings(settings);
+                return RedirectToAction("Index");
+            }
+            return View(settings);
+        }
+
+        // Método para obtener la configuración de correo desde la base de datos
+        private CorreoSettings ObtenerCorreoSettings()
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            try
+            {
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (var command = new SqlCommand("P_ObtenerCorreoSettings", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        using (var reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new CorreoSettings
+                                {
+                                    SmtpServer = reader["SmtpServer"].ToString(),
+                                    SmtpPort = Convert.ToInt32(reader["SmtpPort"]),
+                                    EmailFrom = reader["EmailFrom"].ToString(),
+                                    EmailPassword = reader["EmailPassword"].ToString()
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                // Manejo de errores (log o mensaje para el desarrollador)
+
+            }
+            return null; // Devuelve null si hay algún error
+        }
+
+        // Método para actualizar la configuración de correo en la base de datos
+        private void ActualizarCorreoSettings(CorreoSettings settings)
+        {
+            string? connectionString = _configuration.GetConnectionString("DefaultConnection");
+            try
+            {
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (var command = new SqlCommand("P_ActualizarCorreoSettings", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        command.Parameters.AddWithValue("@SmtpServer", settings.SmtpServer);
+                        command.Parameters.AddWithValue("@SmtpPort", settings.SmtpPort);
+                        command.Parameters.AddWithValue("@EmailFrom", settings.EmailFrom);
+                        command.Parameters.AddWithValue("@EmailPassword", settings.EmailPassword);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch
+            {
+                // Manejo de errores (log o mensaje para el desarrollador)
+            }
+        }
     }
-
 }
