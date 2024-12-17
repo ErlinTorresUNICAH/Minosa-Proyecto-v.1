@@ -3977,3 +3977,14 @@ AS
 BEGIN
     DELETE FROM Destinatarios WHERE ID_destinatario = @ID_destinatario
 END
+GO
+-- PROCEDIMIENTO: [dbo].[P_ListaDeCorreosAlertas]
+CREATE PROCEDURE [dbo].[P_ListaDeCorreosAlertas]
+
+AS
+
+BEGIN
+
+SELECT Nombre_Destinatario, Correo_Destinatario FROM Destinatarios
+
+END

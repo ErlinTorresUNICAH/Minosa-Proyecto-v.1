@@ -176,6 +176,14 @@ CREATE TABLE [HistorialPings] (
 
 )
 GO
+CREATE TABLE CorreoSettings (
+    Id integer PRIMARY KEY NOT NULL IDENTITY(1, 1),
+    SmtpServer NVARCHAR(100) NOT NULL,
+    SmtpPort INT NOT NULL,
+    EmailFrom NVARCHAR(100) NOT NULL,
+    EmailPassword NVARCHAR(100) NOT NULL
+);
+GO
 
 ALTER TABLE [Equipos] ADD FOREIGN KEY ([id_tipo_equipo]) REFERENCES [Tipo_Equipos] ([ID_tipo_equipo])
 GO
@@ -240,4 +248,7 @@ SET IDENTITY_INSERT [dbo].[Usuarios] ON
 
 INSERT [dbo].[Usuarios] ([ID_usuario], [Nombre_Usuario], [Contrasena], [id_rol]) VALUES (1, N'admin', N'password', 1)
 SET IDENTITY_INSERT [dbo].[Usuarios] OFF
+GO
+INSERT INTO CorreoSettings (SmtpServer, SmtpPort, EmailFrom, EmailPassword)
+VALUES ('smtp.gmail.com', 587, 'defaulUser', 'defaultPass');
 GO
