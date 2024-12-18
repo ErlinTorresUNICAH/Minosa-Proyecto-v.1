@@ -193,14 +193,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                 int totalRecords;
                 var historialPings = ObtenerHistorialPingsParaIndexHistorial(pageNumber, pageSize, out totalRecords);
 
-                Console.WriteLine("Total Pings: " + historialPings.Count);
-                foreach (var ping in historialPings)
-                {
-                    Console.WriteLine($"ID: {ping.ID_HistorialPing}, IP: {ping.DireccionIP}, Fecha: {ping.UltimaHoraPing}, Resultado: {ping.Ping}");
-                }
-
-                Console.WriteLine("Total records: " + totalRecords);
-
                 // Datos para la vista
                 ViewBag.PageNumber = pageNumber;
                 ViewBag.PageSize = pageSize;

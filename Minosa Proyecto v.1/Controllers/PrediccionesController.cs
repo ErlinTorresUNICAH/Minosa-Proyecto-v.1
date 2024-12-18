@@ -67,7 +67,7 @@ namespace Minosa_Proyecto_v._1.Controllers
                     {
                         foreach (var item in predicciones)
                         {
-                            Console.WriteLine(item); 
+                            //Console.WriteLine(item); 
                         }
                     }
                     else
