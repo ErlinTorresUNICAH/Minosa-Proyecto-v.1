@@ -20,7 +20,17 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 {
     private readonly IConfiguration _configuration;
 
+
+
+
+    /*private readonly string _connectionString;
+    private readonly ILogger<ActividadBackgroundService> _logger;
+    private object _configuration;*/
     private readonly string _connectionString = configuration.GetConnectionString("DefaultConnection");
+    private readonly string _smtpServer = configuration["CorreoSettings:SmtpServer"];
+    private readonly int _smtpPort = int.Parse(configuration["CorreoSettings:SmtpPort"]);
+    private readonly string _emailFrom = configuration["CorreoSettings:EmailFrom"];
+    private readonly string _emailPassword = configuration["CorreoSettings:EmailPassword"];
 
 
     private readonly string _nmapPath = configuration["PythonSettings:nmapPath"];
@@ -35,18 +45,33 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             _logger.LogInformation("Starting activity device scan at: {time}", DateTimeOffset.Now);
 
             var dispositivos = await ObtenerActividadDispositivosAsync();
-           /* var dispositivosHistory = await ObtenerHistorialDispositivosAsync();*/
+
+            _logger.LogInformation("Datos iniciales de dispositivos:");
+            foreach (var dispositivo in dispositivos)
+            {
+                _logger.LogInformation("DireccionIP: {DireccionIP}, Ping: {Ping}, UltimaHoraPing: {UltimaHoraPing}",
+                    dispositivo.DireccionIP, dispositivo.Ping, dispositivo.UltimaHoraPing);
+            }
 
             await EscanearDispositivosConNmapAsync(dispositivos);
+
+            _logger.LogInformation("Datos después de EscanearDispositivosConNmapAsync:");
+            foreach (var dispositivo in dispositivos)
+            {
+                _logger.LogInformation("DireccionIP: {DireccionIP}, Ping: {Ping}, UltimaHoraPing: {UltimaHoraPing}",
+                    dispositivo.DireccionIP, dispositivo.Ping, dispositivo.UltimaHoraPing);
+            }
+
             await ActualizarEstadoPingAsync(dispositivos);
 
-            //_logger.LogInformation("Iniciando inserción de historial de ping...");
+            _logger.LogInformation("Iniciando inserción de historial de ping...");
             await InsertarHistorialPingAsync(dispositivos);
-            //_logger.LogInformation("Finalizada inserción de historial de ping.");
 
-            //_logger.LogInformation("Completed activity device scan at: {time}", DateTimeOffset.Now);
+            _logger.LogInformation("Finalizada inserción de historial de ping.");
 
-            await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
+            _logger.LogInformation("Completed activity device scan at: {time}", DateTimeOffset.Now);
+
+            //await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
 
 
             //cambiar este parametro en base del tiempo que se quiere que se ejecute los pings en minutos
@@ -100,26 +125,23 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 
             try
             {
-                dispositivo.Ping = await EjecutarNmapPingAsync(dispositivo.DireccionIP) == "Activo";
+                dispositivo.Ping = (await EjecutarNmapPingAsync(dispositivo.DireccionIP)) == "Activo";
             }
             catch (Exception ex)
             {
-               // _logger.LogError(ex, "Error pinging IP: {DireccionIP}", dispositivo.DireccionIP);
+                _logger.LogError(ex, "Error pinging IP: {DireccionIP}", dispositivo.DireccionIP);
                 dispositivo.Ping = false;
             }
 
             stopwatch.Stop();
-            // Descomentar para ver posibles errores
-            //_logger.LogInformation("Ping to {DireccionIP} {Result} in {Seconds} seconds",
-            //    dispositivo.DireccionIP,
-            //    dispositivo.Ping ? "succeeded" : "failed",
-            //    stopwatch.Elapsed.TotalSeconds);
+            _logger.LogInformation("Ping to {DireccionIP} {Result} in {Seconds} seconds",
+                dispositivo.DireccionIP,
+                dispositivo.Ping ? "succeeded" : "failed",
+                stopwatch.Elapsed.TotalSeconds);
 
             dispositivo.UltimaHoraPing = DateTime.Now;
-            //_logger.LogInformation("UltimaHoraPing asignada a {Time} para {DireccionIP}", dispositivo.UltimaHoraPing, dispositivo.DireccionIP);
+            _logger.LogInformation("UltimaHoraPing asignada a {Time} para {DireccionIP}", dispositivo.UltimaHoraPing, dispositivo.DireccionIP);
         }
-
-        
     }
 
     // Ejecutor del programa nmap
@@ -128,9 +150,8 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         return await Task.Run(() =>
         {
             Process process = new Process();
-            //process.StartInfo.FileName = @"C:\Program Files (x86)\Nmap\nmap.exe";
-            process.StartInfo.FileName = _nmapPath;
-            process.StartInfo.Arguments = $"-sn {direccionIP}";
+            process.StartInfo.FileName = "cmd.exe";
+            process.StartInfo.Arguments = $"/c ping -n 4 {direccionIP}";
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.UseShellExecute = false;
             process.StartInfo.CreateNoWindow = true;
@@ -139,28 +160,53 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             string output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
 
-            return output.Contains("Host is up") ? "Activo" : "Inactivo";
+            // Verificar si la salida contiene "Reply from" al menos una vez
+            bool activo = output.Contains("Reply from");
+            return activo ? "Activo" : "Inactivo";
         });
     }
 
     //actualiza la actividad del ping
     private async Task ActualizarEstadoPingAsync(List<Actividad> dispositivos)
     {
+
         using (SqlConnection conn = new SqlConnection(_connectionString))
         {
             await conn.OpenAsync();
             foreach (var dispositivo in dispositivos)
             {
+
+                // Log para verificar los datos que se están pasando
+                Console.WriteLine($"DireccionIP A: {dispositivo.DireccionIP}");
+                Console.WriteLine($"Ping A : {dispositivo.Ping}");
+                Console.WriteLine($"UltimaHoraPing A: {dispositivo.UltimaHoraPing}");
+
+                _logger.LogInformation("Verificando datos A: DireccionIP={DireccionIP}, Ping={Ping}, UltimaHoraPing={UltimaHoraPing}",
+                    dispositivo.DireccionIP,
+                    dispositivo.Ping,
+                    dispositivo.UltimaHoraPing);
+
+
                 // Actualizar el estado del ping en la tabla principal
-                string updateQuery = "[dbo].[P_ActualizarPingDireccionIp]";
+                string updateQuery = "P_ActualizarPingDireccionIp";
                 using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
                 {
                     updateCmd.CommandType = CommandType.StoredProcedure;
                     updateCmd.Parameters.AddWithValue("@Ping", dispositivo.Ping ? 1 : 0);
-                    updateCmd.Parameters.AddWithValue("@UltimaHoraPing", dispositivo.UltimaHoraPing ?? (object)DBNull.Value);
+                    if (dispositivo.Ping)
+                    {
+                        Console.WriteLine("-1", dispositivo.Ping);
+                    }
+                    else
+                    {
+                        Console.WriteLine("-2", dispositivo.Ping);
+                    }
+                    updateCmd.Parameters.AddWithValue("@UltimaHoraPing", dispositivo.UltimaHoraPing);
                     updateCmd.Parameters.AddWithValue("@DireccionIP", dispositivo.DireccionIP);
-                    // descomentar este codigo para ver los posibles errores
-                    /*try
+                    Console.WriteLine("-------",dispositivo.DireccionIP);
+                    Console.WriteLine("-------", dispositivo.Ping);
+                    Console.WriteLine("-------", dispositivo.UltimaHoraPing);
+                    try
                     {
                         int rowsAffected = await updateCmd.ExecuteNonQueryAsync();
                         if (rowsAffected > 0)
@@ -175,7 +221,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                     catch (Exception ex)
                     {
                         _logger.LogError(ex, "Error updating database for IP: {DireccionIP}", dispositivo.DireccionIP);
-                    }*/
+                    }
                 }
             }
         }
@@ -189,19 +235,32 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             await conn.OpenAsync();
             foreach (var dispositivo in dispositivos)
             {
+                // Log para verificar los datos que se están pasando
+                Console.WriteLine($"DireccionIP I: {dispositivo.DireccionIP}");
+                Console.WriteLine($"Ping I: {dispositivo.Ping}");
+                Console.WriteLine($"UltimaHoraPing I: {dispositivo.UltimaHoraPing}");
+
+                _logger.LogInformation("Verificando datos I: DireccionIP={DireccionIP}, Ping={Ping}, UltimaHoraPing={UltimaHoraPing}",
+                    dispositivo.DireccionIP,
+                    dispositivo.Ping,
+                    dispositivo.UltimaHoraPing);
+
+
                 // Insertar el historial de ping en la tabla de historial
                 using (SqlCommand insertCmd = new SqlCommand("[dbo].[P_InsertarHistorialPing]", conn))
                 {
                     insertCmd.CommandType = CommandType.StoredProcedure;
-                    insertCmd.Parameters.AddWithValue("@ip", dispositivo.DireccionIP); // Asegúrate de que esto corresponda con el ID correcto de la dirección IP
+                    insertCmd.Parameters.AddWithValue("@ip", dispositivo.DireccionIP);
                     insertCmd.Parameters.AddWithValue("@HoraPing", dispositivo.UltimaHoraPing);
                     insertCmd.Parameters.AddWithValue("@ResultadoPing", dispositivo.Ping ? 1 : 0);
-                    
 
+                    Console.WriteLine("-------", dispositivo.DireccionIP);
+                    Console.WriteLine("-------", dispositivo.Ping);
+                    Console.WriteLine("-------", dispositivo.UltimaHoraPing);
                     try
                     {
                         await insertCmd.ExecuteNonQueryAsync();
-                        //_logger.LogInformation("Historial de ping insertado para IP: {DireccionIP}", dispositivo.DireccionIP);
+                        _logger.LogInformation("Historial de ping insertado para IP: {DireccionIP}", dispositivo.DireccionIP);
                     }
                     catch (Exception ex)
                     {
@@ -227,8 +286,16 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         var emailFrom = correoSettings.EmailFrom;
         var emailPassword = correoSettings.EmailPassword;
 
-        //_logger.LogInformation("SmtpServer: {SmtpServer}", smtpServer);
-        
+
+
+        //var smtpServer = _smtpServer;
+        _logger.LogInformation("SmtpServer: {SmtpServer}", smtpServer);
+        //var smtpPort = int.Parse(((IConfiguration)_configuration)["CorreoSettings:SmtpPort"]);
+        //var emailFrom = ((IConfiguration)_configuration)["CorreoSettings:EmailFrom"];
+        //var emailPassword = ((IConfiguration)_configuration)["CorreoSettings:EmailPassword"];
+        //var smtpPort = _smtpPort;
+        //var emailFrom = _emailFrom;
+        //var emailPassword = _emailPassword;
 
         var dispositivosDesconectados = dispositivos.Where(d => !d.Ping).ToList();
         if (!dispositivosDesconectados.Any())
@@ -248,7 +315,10 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 
         // Configurar remitente 
         message.From.Add(new MailboxAddress("NetGuardião", emailFrom));
-        
+        //message.From.Add(new MailboxAddress("NetGuardião", "erla_lopezt@unicah.edu"));
+
+        /*// Agregar destinatarios
+        message.Bcc.Add(new MailboxAddress("Administrador", "erlintorres000@gmail.com"));*/
 
         // Agregar destinatarios desde la base de datos
         for (int i = 0; i < correosDestinatarios.Count; i++)
@@ -261,7 +331,10 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                 message.Bcc.Add(new MailboxAddress(nombre ?? "Destinatario", correo));
             }
         }
-        
+        //foreach (var correo in correosDestinatarios)
+        //{
+        //    message.Bcc.Add(new MailboxAddress("Destinatario", correo));
+        //}
 
 
         // Asunto del correo
@@ -285,9 +358,13 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                 // Autenticación
                 await client.AuthenticateAsync(emailFrom, emailPassword);
 
+                //// Enviar correo
+                //await client.SendAsync(message);
+                //_logger.LogInformation("Correo enviado correctamente.");
+
                 // Enviar correo
                 await client.SendAsync(message);
-                
+                _logger.LogInformation("Correo enviado correctamente a {CantidadDestinatarios} destinatarios.", correosDestinatarios.Count);
 
                 await client.DisconnectAsync(true);
             }
@@ -299,7 +376,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
     }
     private CorreoSettings ObtenerCorreoSettings()
     {
-        
+
         try
         {
             using (var connection = new SqlConnection(_connectionString))
@@ -307,7 +384,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                 connection.Open();
                 using (var command = new SqlCommand("P_ObtenerCorreoSettings", connection))
                 {
-                    
+
                     command.CommandType = CommandType.StoredProcedure;
 
                     using (var reader = command.ExecuteReader())
@@ -328,10 +405,10 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         }
         catch
         {
-            
+            // Manejo de errores (log o mensaje para el desarrollador)
 
         }
-        return null;
+        return null; // Devuelve null si hay algún error
     }
 
     // Cuerpo del correo en formato HTML
@@ -400,7 +477,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 
         return cuerpo;
     }
-   
+
     // Funcion para optener los correos
     private async Task<List<Actividad>> ObtenerCorreosDestinatariosAsync()
     {
@@ -420,8 +497,8 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                         {
                             Nombre_Destinatario = reader["Nombre_Destinatario"]?.ToString() ?? string.Empty,
                             Correo_Destinatario = reader["Correo_Destinatario"]?.ToString() ?? string.Empty
-                        
-                        
+
+
                         });
                     }
                 }
@@ -438,7 +515,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         using (SqlConnection conn = new SqlConnection(_connectionString))
         {
             await conn.OpenAsync();
-            using (SqlCommand cmd = new SqlCommand("[dbo].[P_ObtenerHistorialPings]", conn)) 
+            using (SqlCommand cmd = new SqlCommand("[dbo].[P_ObtenerHistorialPings]", conn)) // Ajusta el nombre del procedimiento almacenado si es necesario
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -470,7 +547,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
     //cuenta regresiva para control en el cmd
     private async Task CuentaRegresivaCincoMinutosAsync()
     {
-        int totalSegundos = 2 * 60; 
+        int totalSegundos = 2 * 60; // 5 minutes in seconds
 
         while (totalSegundos > 0)
         {
@@ -478,7 +555,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             _logger.LogInformation("Tiempo restante: {Minutes} minutos {Seconds} segundos",
                 tiempoRestante.Minutes, tiempoRestante.Seconds);
 
-            await Task.Delay(1000); 
+            await Task.Delay(1000); // Wait for 1 second
             totalSegundos--;
         }
 

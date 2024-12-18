@@ -162,15 +162,15 @@
                 </div>
                 <span asp-validation-for="Amperaje" class="text-danger"></span>
             </div>
-
             <div class="form-group col">
-                <label for="Num_Puertos_RJ45">Número de Puertos RJ45</label>
+                <label for="Voltaje_Energia">Voltaje de Energía</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-plug"></i></span>
-                    <input type="number" asp-for="Num_Puertos_RJ45" class="form-control" />
+                    <span class="input-group-text"><i class="fas fa-bolt"></i></span>
+                    <input type="text" asp-for="Voltaje_Energia" class="form-control" />
                 </div>
-                <span asp-validation-for="Num_Puertos_RJ45" class="text-danger"></span>
+                <span asp-validation-for="Voltaje_Energia" class="text-danger"></span>
             </div>
+            
         </div>
 
         <div class="row">
@@ -182,15 +182,15 @@
                 </div>
                 <span asp-validation-for="Num_Puertos_SFP" class="text-danger"></span>
             </div>
-
             <div class="form-group col">
-                <label for="Fecha_Compra">Fecha de Compra</label>
+                <label for="Num_Puertos_RJ45">Número de Puertos RJ45</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
-                    <input type="date" asp-for="Fecha_Compra" class="form-control" />
+                    <span class="input-group-text"><i class="fas fa-plug"></i></span>
+                    <input type="number" asp-for="Num_Puertos_RJ45" class="form-control" />
                 </div>
-                <span asp-validation-for="Fecha_Compra" class="text-danger"></span>
+                <span asp-validation-for="Num_Puertos_RJ45" class="text-danger"></span>
             </div>
+            
         </div>
 
         <div class="row">
@@ -202,7 +202,18 @@
                 </div>
                 <span asp-validation-for="Fecha_Garantia" class="text-danger"></span>
             </div>
+            <div class="form-group col">
+                <label for="Fecha_Compra">Fecha de Compra</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-calendar-alt"></i></span>
+                    <input type="date" asp-for="Fecha_Compra" class="form-control" />
+                </div>
+                <span asp-validation-for="Fecha_Compra" class="text-danger"></span>
+            </div>
+            
+        </div>
 
+        <div class="row">
             <div class="form-group col">
                 <label for="Tipo_Garantia">Tipo de Garantía</label>
                 <div class="input-group">
@@ -210,17 +221,6 @@
                     <input type="text" asp-for="Tipo_Garantia" class="form-control" />
                 </div>
                 <span asp-validation-for="Tipo_Garantia" class="text-danger"></span>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="form-group col">
-                <label for="Canal">Canal</label>
-                <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-wifi"></i></span>
-                    <input type="text" asp-for="Canal" class="form-control" />
-                </div>
-                <span asp-validation-for="Canal" class="text-danger"></span>
             </div>
 
             <div class="form-group col">
@@ -277,19 +277,21 @@
                 <label for="Ultima_Actualizacion">Última Actualización</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-sync"></i></span>
-                    <input type="text" asp-for="Ultima_Actualizacion" class="form-control" />
+                    <input type="date" asp-for="Ultima_Actualizacion" class="form-control" />
                 </div>
                 <span asp-validation-for="Ultima_Actualizacion" class="text-danger"></span>
             </div>
 
             <div class="form-group col">
-                <label for="Voltaje_Energia">Voltaje de Energía</label>
+                <label for="Canal">Canal</label>
                 <div class="input-group">
-                    <span class="input-group-text"><i class="fas fa-bolt"></i></span>
-                    <input type="text" asp-for="Voltaje_Energia" class="form-control" />
+                    <span class="input-group-text"><i class="fas fa-wifi"></i></span>
+                    <input type="text" asp-for="Canal" class="form-control" />
                 </div>
-                <span asp-validation-for="Voltaje_Energia" class="text-danger"></span>
+                <span asp-validation-for="Canal" class="text-danger"></span>
             </div>
+
+            
         </div>
     </div>
 </form>

@@ -304,7 +304,7 @@ namespace Minosa_Proyecto_v._1.Controllers
                     command.Parameters.AddWithValue("@Estado", direccion.Estado);
                     command.Parameters.AddWithValue("@id_vlan", direccion.id_vlan);
                     command.Parameters.AddWithValue("@ping", direccion.ping);
-                    command.Parameters.AddWithValue("@Activa", direccion.Activa);
+                    command.Parameters.AddWithValue("@Activa", 1);
                     command.ExecuteNonQuery();
                 }
             }

@@ -107,12 +107,12 @@
                 <input type="number" asp-for="Amperaje" class="form-control" value=3/>
                 <span asp-validation-for="Amperaje" class="text-danger"></span>
             </div>
-
             <div class="form-group col">
-                <label for="Num_Puertos_RJ45">Número de Puertos RJ45</label>
-                <input type="number" asp-for="Num_Puertos_RJ45" class="form-control" value=3/>
-                <span asp-validation-for="Num_Puertos_RJ45" class="text-danger"></span>
+                <label for="Voltaje_Energia">Voltaje de Energía</label>
+                <input type="text" asp-for="Voltaje_Energia" class="form-control" value='e' />
+                <span asp-validation-for="Voltaje_Energia" class="text-danger"></span>
             </div>
+            
         </div>
         <div class="row">
             <div class="form-group col">
@@ -120,15 +120,12 @@
                 <input type="number" asp-for="Num_Puertos_SFP" class="form-control" value=3/>
                 <span asp-validation-for="Num_Puertos_SFP" class="text-danger"></span>
             </div>
-
             <div class="form-group col">
-                <label for="Fecha_Compra">Fecha de Compra</label>
-                @{  
-                   var today = DateTime.Today.ToString("yyyy-MM-dd");  
-                } 
-                <input type="date" asp-for="Fecha_Compra" class="form-control" value="@today"/>
-
+                <label for="Num_Puertos_RJ45">Número de Puertos RJ45</label>
+                <input type="number" asp-for="Num_Puertos_RJ45" class="form-control" value=3 />
+                <span asp-validation-for="Num_Puertos_RJ45" class="text-danger"></span>
             </div>
+            
         </div>
         <div class="row">
             <div class="form-group col">
@@ -139,21 +136,23 @@
 
                 <input type="date" asp-for="Fecha_Garantia" class="form-control" value="@today2" />
             </div>
-
             <div class="form-group col">
-                <label for="Tipo_Garantia">Tipo de Garantía</label>
-                <input type="text" asp-for="Tipo_Garantia" class="form-control" value='e'/>
-                <span asp-validation-for="Tipo_Garantia" class="text-danger"></span>
+                <label for="Fecha_Compra">Fecha de Compra</label>
+                @{
+                    var today = DateTime.Today.ToString("yyyy-MM-dd");
+                }
+                <input type="date" asp-for="Fecha_Compra" class="form-control" value="@today" />
+
             </div>
+            
         </div>
         <div class="row">
+            
             <div class="form-group col">
-                <label for="Canal">Canal</label>
-                <input type="text" asp-for="Canal" class="form-control" value='e'/>
-                <span asp-validation-for="Canal" class="text-danger"></span>
-
+                <label for="Tipo_Garantia">Tipo de Garantía</label>
+                <input type="text" asp-for="Tipo_Garantia" class="form-control" value='e' />
+                <span asp-validation-for="Tipo_Garantia" class="text-danger"></span>
             </div>
-
             <div class="form-group col">
                 <label for="Firmware">Firmware</label>
                 <input type="text" asp-for="Firmware" class="form-control" value='e'/>
@@ -175,29 +174,30 @@
         </div>
         <div class="row">
             <div class="form-group col">
-                <label for="MAC_Address">MAC Address</label>
-                <input type="text" asp-for="MAC_Address" class="form-control" value='e'/>
-                <span asp-validation-for="MAC_Address" class="text-danger"></span>
+                <label for="Ultima_Actualizacion">Última Actualización</label>
+                <input type="text" asp-for="Ultima_Actualizacion" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <span asp-validation-for="Ultima_Actualizacion" class="text-danger"></span>
             </div>
-
             <div class="form-group col">
                 <label for="Fecha_Instalacion">Fecha de Instalación</label>
-                <input type="text" asp-for="Fecha_Instalacion" class="form-control" value='e'/>
+                <input type="text" asp-for="Fecha_Instalacion" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
                 <span asp-validation-for="Fecha_Instalacion" class="text-danger"></span>
             </div>
         </div>
         <div class="row">
             <div class="form-group col">
-                <label for="Ultima_Actualizacion">Última Actualización</label>
-                <input type="text" asp-for="Ultima_Actualizacion" class="form-control" value='e'/>
-                <span asp-validation-for="Ultima_Actualizacion" class="text-danger"></span>
+                <label for="MAC_Address">MAC Address</label>
+                <input type="text" asp-for="MAC_Address" class="form-control" value='e' />
+                <span asp-validation-for="MAC_Address" class="text-danger"></span>
             </div>
-
+            
             <div class="form-group col">
-                <label for="Voltaje_Energia">Voltaje de Energía</label>
-                <input type="text" asp-for="Voltaje_Energia" class="form-control" value='e'/>
-                <span asp-validation-for="Voltaje_Energia" class="text-danger"></span>
+                <label for="Canal">Canal</label>
+                <input type="text" asp-for="Canal" class="form-control" value='e' />
+                <span asp-validation-for="Canal" class="text-danger"></span>
+
             </div>
+            
         </div>
     </div>
 

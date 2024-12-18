@@ -142,7 +142,7 @@
         </div>
     </div>
 
-    <div class="card ">
+    <div class="card rounded p-4 shadow-lg m-3">
         <div class="card-header bg-secondary text-white">
             <h3>Detalles Técnicos del Equipo</h3>
         </div>
@@ -153,10 +153,11 @@
                     <input asp-for="Tipo_Voltaje" class="form-control" />
                     <span asp-validation-for="Tipo_Voltaje" class="text-danger"></span>
                 </div>
+                
                 <div class="form-group col">
-                    <label><strong>Canal:</strong></label>
-                    <input asp-for="Canal" class="form-control" />
-                    <span asp-validation-for="Canal" class="text-danger"></span>
+                    <label><strong>Voltaje de Energía:</strong></label>
+                    <input asp-for="Voltaje_Energia" class="form-control" />
+                    <span asp-validation-for="Voltaje_Energia" class="text-danger"></span>
                 </div>
             </div> 
             <div class="row">
@@ -221,26 +222,27 @@
             </div>
             <div class="row">
                 <div class="form-group col">
-                    <label><strong>MAC Address:</strong></label>
-                    <input asp-for="MAC_Address" class="form-control" />
-                    <span asp-validation-for="MAC_Address" class="text-danger"></span>
+                    <label><strong>Última Actualización:</strong></label>
+                    <input asp-for="Ultima_Actualizacion" type="date" class="form-control" />
+                    <span asp-validation-for="Ultima_Actualizacion" class="text-danger"></span>
                 </div>
                 <div class="form-group col">
                     <label><strong>Fecha de Instalación:</strong></label>
-                    <input asp-for="Fecha_Instalacion" class="form-control" />
+                    <input asp-for="Fecha_Instalacion" type="date" class="form-control" />
                     <span asp-validation-for="Fecha_Instalacion" class="text-danger"></span>
                 </div>
             </div>
             <div class="row">
                 <div class="form-group col">
-                    <label><strong>Última Actualización:</strong></label>
-                    <input asp-for="Ultima_Actualizacion" class="form-control" />
-                    <span asp-validation-for="Ultima_Actualizacion" class="text-danger"></span>
+                    <label><strong>MAC Address:</strong></label>
+                    <input asp-for="MAC_Address" class="form-control" />
+                    <span asp-validation-for="MAC_Address" class="text-danger"></span>
                 </div>
+                
                 <div class="form-group col">
-                    <label><strong>Voltaje de Energía:</strong></label>
-                    <input asp-for="Voltaje_Energia" class="form-control" />
-                    <span asp-validation-for="Voltaje_Energia" class="text-danger"></span>
+                    <label><strong>Canal:</strong></label>
+                    <input asp-for="Canal" class="form-control" />
+                    <span asp-validation-for="Canal" class="text-danger"></span>
                 </div>
             </div>
         </div> 
