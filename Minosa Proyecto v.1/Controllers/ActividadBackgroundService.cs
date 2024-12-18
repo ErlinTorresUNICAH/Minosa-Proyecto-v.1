@@ -61,7 +61,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 
             
 
-            //await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
+            await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
 
 
             //cambiar este parametro en base del tiempo que se quiere que se ejecute los pings en minutos
