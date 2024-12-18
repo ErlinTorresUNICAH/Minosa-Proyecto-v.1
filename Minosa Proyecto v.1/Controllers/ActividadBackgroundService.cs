@@ -20,47 +20,21 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 {
     private readonly IConfiguration _configuration;
 
-
-
-
-    /*private readonly string _connectionString;
-    private readonly ILogger<ActividadBackgroundService> _logger;
-    private object _configuration;*/
     private readonly string _connectionString = configuration.GetConnectionString("DefaultConnection");
-    private readonly string _smtpServer = configuration["CorreoSettings:SmtpServer"];
-    private readonly int _smtpPort = int.Parse(configuration["CorreoSettings:SmtpPort"]);
-    private readonly string _emailFrom = configuration["CorreoSettings:EmailFrom"];
-    private readonly string _emailPassword = configuration["CorreoSettings:EmailPassword"];
-
-
-    private readonly string _nmapPath = configuration["PythonSettings:nmapPath"];
+    
     private readonly ILogger<ActividadBackgroundService> _logger = logger;
 
     //Llama a todas las funcion en orden para su control
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        //await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);
+        
         while (!stoppingToken.IsCancellationRequested)
         {
-            
-
+           
             var dispositivos = await ObtenerActividadDispositivosAsync();
-
-            
-
             await EscanearDispositivosConNmapAsync(dispositivos);
-
-            
-
             await ActualizarEstadoPingAsync(dispositivos);
-
-            
             await InsertarHistorialPingAsync(dispositivos);
-
-            
-
-            
-
             await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
 
 
@@ -239,17 +213,6 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         var emailFrom = correoSettings.EmailFrom;
         var emailPassword = correoSettings.EmailPassword;
 
-
-
-        //var smtpServer = _smtpServer;
-        _logger.LogInformation("SmtpServer: {SmtpServer}", smtpServer);
-        //var smtpPort = int.Parse(((IConfiguration)_configuration)["CorreoSettings:SmtpPort"]);
-        //var emailFrom = ((IConfiguration)_configuration)["CorreoSettings:EmailFrom"];
-        //var emailPassword = ((IConfiguration)_configuration)["CorreoSettings:EmailPassword"];
-        //var smtpPort = _smtpPort;
-        //var emailFrom = _emailFrom;
-        //var emailPassword = _emailPassword;
-
         var dispositivosDesconectados = dispositivos.Where(d => !d.Ping).ToList();
         if (!dispositivosDesconectados.Any())
         {
@@ -268,12 +231,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 
         // Configurar remitente 
         message.From.Add(new MailboxAddress("NetGuardião", emailFrom));
-        //message.From.Add(new MailboxAddress("NetGuardião", "erla_lopezt@unicah.edu"));
-
-        /*// Agregar destinatarios
-        message.Bcc.Add(new MailboxAddress("Administrador", "erlintorres000@gmail.com"));*/
-
-        // Agregar destinatarios desde la base de datos
+        
         for (int i = 0; i < correosDestinatarios.Count; i++)
         {
             var nombre = correosDestinatarios[i].Nombre_Destinatario;
@@ -284,12 +242,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                 message.Bcc.Add(new MailboxAddress(nombre ?? "Destinatario", correo));
             }
         }
-        //foreach (var correo in correosDestinatarios)
-        //{
-        //    message.Bcc.Add(new MailboxAddress("Destinatario", correo));
-        //}
-
-
+        
         // Asunto del correo
         message.Subject = "Alerta: Dispositivos desconectados";
 
@@ -310,14 +263,6 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 
                 // Autenticación
                 await client.AuthenticateAsync(emailFrom, emailPassword);
-
-                //// Enviar correo
-                //await client.SendAsync(message);
-                //_logger.LogInformation("Correo enviado correctamente.");
-
-                // Enviar correo
-                await client.SendAsync(message);
-                _logger.LogInformation("Correo enviado correctamente a {CantidadDestinatarios} destinatarios.", correosDestinatarios.Count);
 
                 await client.DisconnectAsync(true);
             }
@@ -358,10 +303,10 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         }
         catch
         {
-            // Manejo de errores (log o mensaje para el desarrollador)
+            
 
         }
-        return null; // Devuelve null si hay algún error
+        return null; 
     }
 
     // Cuerpo del correo en formato HTML
@@ -468,7 +413,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         using (SqlConnection conn = new SqlConnection(_connectionString))
         {
             await conn.OpenAsync();
-            using (SqlCommand cmd = new SqlCommand("[dbo].[P_ObtenerHistorialPings]", conn)) // Ajusta el nombre del procedimiento almacenado si es necesario
+            using (SqlCommand cmd = new SqlCommand("[dbo].[P_ObtenerHistorialPings]", conn)) 
             {
                 cmd.CommandType = CommandType.StoredProcedure;
 
@@ -508,7 +453,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             _logger.LogInformation("Tiempo restante: {Minutes} minutos {Seconds} segundos",
                 tiempoRestante.Minutes, tiempoRestante.Seconds);
 
-            await Task.Delay(1000); // Wait for 1 second
+            await Task.Delay(1000); 
             totalSegundos--;
         }
 
