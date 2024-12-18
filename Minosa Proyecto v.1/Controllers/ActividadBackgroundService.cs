@@ -42,34 +42,24 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
         //await Task.Delay(TimeSpan.FromMinutes(60), stoppingToken);
         while (!stoppingToken.IsCancellationRequested)
         {
-            _logger.LogInformation("Starting activity device scan at: {time}", DateTimeOffset.Now);
+            
 
             var dispositivos = await ObtenerActividadDispositivosAsync();
 
-            _logger.LogInformation("Datos iniciales de dispositivos:");
-            foreach (var dispositivo in dispositivos)
-            {
-                _logger.LogInformation("DireccionIP: {DireccionIP}, Ping: {Ping}, UltimaHoraPing: {UltimaHoraPing}",
-                    dispositivo.DireccionIP, dispositivo.Ping, dispositivo.UltimaHoraPing);
-            }
+            
 
             await EscanearDispositivosConNmapAsync(dispositivos);
 
-            _logger.LogInformation("Datos después de EscanearDispositivosConNmapAsync:");
-            foreach (var dispositivo in dispositivos)
-            {
-                _logger.LogInformation("DireccionIP: {DireccionIP}, Ping: {Ping}, UltimaHoraPing: {UltimaHoraPing}",
-                    dispositivo.DireccionIP, dispositivo.Ping, dispositivo.UltimaHoraPing);
-            }
+            
 
             await ActualizarEstadoPingAsync(dispositivos);
 
-            _logger.LogInformation("Iniciando inserción de historial de ping...");
+            
             await InsertarHistorialPingAsync(dispositivos);
 
-            _logger.LogInformation("Finalizada inserción de historial de ping.");
+            
 
-            _logger.LogInformation("Completed activity device scan at: {time}", DateTimeOffset.Now);
+            
 
             //await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
 
@@ -120,7 +110,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
     {
         foreach (var dispositivo in dispositivos)
         {
-            _logger.LogInformation("Pinging {DireccionIP} at {Time}", dispositivo.DireccionIP, DateTime.Now);
+            
             var stopwatch = Stopwatch.StartNew();
 
             try
@@ -134,13 +124,10 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             }
 
             stopwatch.Stop();
-            _logger.LogInformation("Ping to {DireccionIP} {Result} in {Seconds} seconds",
-                dispositivo.DireccionIP,
-                dispositivo.Ping ? "succeeded" : "failed",
-                stopwatch.Elapsed.TotalSeconds);
+            
 
             dispositivo.UltimaHoraPing = DateTime.Now;
-            _logger.LogInformation("UltimaHoraPing asignada a {Time} para {DireccionIP}", dispositivo.UltimaHoraPing, dispositivo.DireccionIP);
+            
         }
     }
 
@@ -176,15 +163,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             foreach (var dispositivo in dispositivos)
             {
 
-                // Log para verificar los datos que se están pasando
-                Console.WriteLine($"DireccionIP A: {dispositivo.DireccionIP}");
-                Console.WriteLine($"Ping A : {dispositivo.Ping}");
-                Console.WriteLine($"UltimaHoraPing A: {dispositivo.UltimaHoraPing}");
-
-                _logger.LogInformation("Verificando datos A: DireccionIP={DireccionIP}, Ping={Ping}, UltimaHoraPing={UltimaHoraPing}",
-                    dispositivo.DireccionIP,
-                    dispositivo.Ping,
-                    dispositivo.UltimaHoraPing);
+                
 
 
                 // Actualizar el estado del ping en la tabla principal
@@ -193,30 +172,14 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                 {
                     updateCmd.CommandType = CommandType.StoredProcedure;
                     updateCmd.Parameters.AddWithValue("@Ping", dispositivo.Ping ? 1 : 0);
-                    if (dispositivo.Ping)
-                    {
-                        Console.WriteLine("-1", dispositivo.Ping);
-                    }
-                    else
-                    {
-                        Console.WriteLine("-2", dispositivo.Ping);
-                    }
+                    
                     updateCmd.Parameters.AddWithValue("@UltimaHoraPing", dispositivo.UltimaHoraPing);
                     updateCmd.Parameters.AddWithValue("@DireccionIP", dispositivo.DireccionIP);
-                    Console.WriteLine("-------",dispositivo.DireccionIP);
-                    Console.WriteLine("-------", dispositivo.Ping);
-                    Console.WriteLine("-------", dispositivo.UltimaHoraPing);
+                    
                     try
                     {
                         int rowsAffected = await updateCmd.ExecuteNonQueryAsync();
-                        if (rowsAffected > 0)
-                        {
-                            _logger.LogInformation("Updated {rowsAffected} rows for IP: {DireccionIP}", rowsAffected, dispositivo.DireccionIP);
-                        }
-                        else
-                        {
-                            _logger.LogWarning("No rows were updated for IP: {DireccionIP}", dispositivo.DireccionIP);
-                        }
+                        
                     }
                     catch (Exception ex)
                     {
@@ -235,15 +198,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             await conn.OpenAsync();
             foreach (var dispositivo in dispositivos)
             {
-                // Log para verificar los datos que se están pasando
-                Console.WriteLine($"DireccionIP I: {dispositivo.DireccionIP}");
-                Console.WriteLine($"Ping I: {dispositivo.Ping}");
-                Console.WriteLine($"UltimaHoraPing I: {dispositivo.UltimaHoraPing}");
-
-                _logger.LogInformation("Verificando datos I: DireccionIP={DireccionIP}, Ping={Ping}, UltimaHoraPing={UltimaHoraPing}",
-                    dispositivo.DireccionIP,
-                    dispositivo.Ping,
-                    dispositivo.UltimaHoraPing);
+                
 
 
                 // Insertar el historial de ping en la tabla de historial
@@ -254,13 +209,11 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
                     insertCmd.Parameters.AddWithValue("@HoraPing", dispositivo.UltimaHoraPing);
                     insertCmd.Parameters.AddWithValue("@ResultadoPing", dispositivo.Ping ? 1 : 0);
 
-                    Console.WriteLine("-------", dispositivo.DireccionIP);
-                    Console.WriteLine("-------", dispositivo.Ping);
-                    Console.WriteLine("-------", dispositivo.UltimaHoraPing);
+                    
                     try
                     {
                         await insertCmd.ExecuteNonQueryAsync();
-                        _logger.LogInformation("Historial de ping insertado para IP: {DireccionIP}", dispositivo.DireccionIP);
+                        
                     }
                     catch (Exception ex)
                     {
