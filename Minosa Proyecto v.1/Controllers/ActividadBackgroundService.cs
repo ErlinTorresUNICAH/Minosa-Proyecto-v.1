@@ -253,7 +253,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 
                 // Autenticación
                 await client.AuthenticateAsync(emailFrom, emailPassword);
-
+                await client.SendAsync(message);
                 await client.DisconnectAsync(true);
             }
             catch (Exception ex)
