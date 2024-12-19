@@ -29,10 +29,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Login/Index";  // Página de acceso
-        options.AccessDeniedPath = "/Login/AccessDenied"; // Página de acceso denegado (opcional)
+        options.AccessDeniedPath = "/Login/AccessDenied"; // Página de acceso denegado
     });
 
-//builder.Services.Configure<RoleSettings>(builder.Configuration.GetSection("Roles"));
+
 
 builder.Services.AddHostedService<ActividadBackgroundService>();
 builder.Services.AddAuthorization(options =>

@@ -176,7 +176,6 @@ namespace Minosa_Proyecto_v._1.Controllers
             }
             catch (Exception ex)
             {
-                // Retornamos el error para mostrarlo en la consola del navegador
                 return Json(new
                 {
                     Error = "Error al obtener el historial de pings: " + ex.Message
@@ -193,7 +192,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                 int totalRecords;
                 var historialPings = ObtenerHistorialPingsParaIndexHistorial(pageNumber, pageSize, out totalRecords);
 
-                // Datos para la vista
                 ViewBag.PageNumber = pageNumber;
                 ViewBag.PageSize = pageSize;
                 ViewBag.TotalRecords = totalRecords;
@@ -225,7 +223,6 @@ namespace Minosa_Proyecto_v._1.Controllers
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        // Lee los resultados principales
                         while (reader.Read())
                         {
                             historialPings.Add(new Actividad
@@ -236,8 +233,6 @@ namespace Minosa_Proyecto_v._1.Controllers
                                 Ping = Convert.ToBoolean(reader["ResultadoPing"])
                             });
                         }
-
-                        // Avanza al siguiente conjunto de resultados (total de registros)
                         if (reader.NextResult() && reader.Read())
                         {
                             totalRecords = Convert.ToInt32(reader["TotalRecords"]);

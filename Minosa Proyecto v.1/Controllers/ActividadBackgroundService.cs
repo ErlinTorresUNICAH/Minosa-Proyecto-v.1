@@ -38,7 +38,7 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             await EnviarCorreoDispositivosDesconectadosAsync(dispositivos);
 
 
-            //cambiar este parametro en base del tiempo que se quiere que se ejecute los pings en minutos
+            //cambiar este parametro en base del tiempo que se quiere que se ejecute los pings en minutos y los correos
             await Task.Delay(TimeSpan.FromMinutes(10), stoppingToken);
 
         }
@@ -121,7 +121,6 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             string output = process.StandardOutput.ReadToEnd();
             process.WaitForExit();
 
-            // Verificar si la salida contiene "Reply from" al menos una vez
             bool activo = output.Contains("Reply from");
             return activo ? "Activo" : "Inactivo";
         });
@@ -136,11 +135,6 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             await conn.OpenAsync();
             foreach (var dispositivo in dispositivos)
             {
-
-                
-
-
-                // Actualizar el estado del ping en la tabla principal
                 string updateQuery = "P_ActualizarPingDireccionIp";
                 using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
                 {
@@ -172,10 +166,6 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
             await conn.OpenAsync();
             foreach (var dispositivo in dispositivos)
             {
-                
-
-
-                // Insertar el historial de ping en la tabla de historial
                 using (SqlCommand insertCmd = new SqlCommand("[dbo].[P_InsertarHistorialPing]", conn))
                 {
                     insertCmd.CommandType = CommandType.StoredProcedure;
@@ -405,58 +395,5 @@ public class ActividadBackgroundService(IConfiguration configuration, ILogger<Ac
 
         return correos;
     }
-    // 
-    private async Task<List<Actividad>> ObtenerHistorialDispositivosAsync()
-    {
-        List<Actividad> dispositivosHistory = new List<Actividad>();
-
-        using (SqlConnection conn = new SqlConnection(_connectionString))
-        {
-            await conn.OpenAsync();
-            using (SqlCommand cmd = new SqlCommand("[dbo].[P_ObtenerHistorialPings]", conn)) 
-            {
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                using (SqlDataReader reader = await cmd.ExecuteReaderAsync())
-                {
-                    while (await reader.ReadAsync())
-                    {
-                        dispositivosHistory.Add(new Actividad
-                        {
-                            ID_HistorialPing = reader["ID_HistorialPing"] != DBNull.Value ? Convert.ToInt32(reader["ID_HistorialPing"]) : 0,
-                            DireccionIP = reader["ip"] != DBNull.Value ? reader["ip"].ToString() : string.Empty,
-                            UltimaHoraPing = reader["HoraPing"] != DBNull.Value ? Convert.ToDateTime(reader["HoraPing"]) : DateTime.MinValue,
-                            Ping = reader["ResultadoPing"] != DBNull.Value && Convert.ToBoolean(reader["ResultadoPing"])
-                        });
-                    }
-                }
-            }
-        }
-
-        return dispositivosHistory;
-    }
-
-
-
-
-
-
-
-    //cuenta regresiva para control en el cmd
-    private async Task CuentaRegresivaCincoMinutosAsync()
-    {
-        int totalSegundos = 2 * 60; // 5 minutes in seconds
-
-        while (totalSegundos > 0)
-        {
-            TimeSpan tiempoRestante = TimeSpan.FromSeconds(totalSegundos);
-            _logger.LogInformation("Tiempo restante: {Minutes} minutos {Seconds} segundos",
-                tiempoRestante.Minutes, tiempoRestante.Seconds);
-
-            await Task.Delay(1000); 
-            totalSegundos--;
-        }
-
-        _logger.LogInformation("Han pasado los 5 minutos.");
-    }
+    
 }
